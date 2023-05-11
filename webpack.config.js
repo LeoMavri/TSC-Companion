@@ -40,8 +40,8 @@ module.exports = {
                 // @run-at          document-end
                 // @match           https://www.torn.com/profiles.php?*
                 // @icon            https://www.google.com/s2/favicons?sz=64&domain=torn.com
-                // @updateURL       none
-                // @downloadURL     none
+                // @updateURL       https://github.com/LeoMavri/torn-stats-central-script/raw/main/dist/lib.tsc.user.js
+                // @downloadURL     https://github.com/LeoMavri/torn-stats-central-script/raw/main/dist/lib.tsc.user.js
                 // ==/UserScript==`,
         }),
     ],
