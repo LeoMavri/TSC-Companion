@@ -1,2 +1,3 @@
 # torn-stats-central-script
-The helper script for Torn Stats Central
+
+The helper script for Torn Stats Central. Tutorial pending.

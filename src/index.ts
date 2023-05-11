@@ -1,0 +1,193 @@
+//! This is what you're looking for!
+let key = 'ADD_YOUR_KEY'; //SAME API KEY AS ONE USED IN TORN STATS CENTRAL
+//! This is what you're looking for!
+
+GM_addStyle(`
+table.customTable {
+  position:relative;
+  top: -10px;
+  width: 386px;
+  background-color: #FFFFFF;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-color: #7ea8f8;
+  border-style: solid;
+  overflow: scroll;
+}
+table.customTable td, table.customTable th {
+  border-width: 2px;
+  border-color: #282242;
+  border-style: solid;
+  padding: 5px;
+  color: #FFFFFF;
+}
+table.customTable tbody {
+  background-color: #333333;
+}
+table.customTable thead {
+  background-color: #cf2696;
+}
+.hed {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+}
+`);
+
+interface Spy {
+    success: boolean;
+    message: string;
+    spy: {
+        userId: number;
+        userName: string;
+        estimate: {
+            stats: number;
+            lastUpdated: Date;
+        };
+        statInterval: {
+            min: number;
+            max: number;
+            battleScore: number;
+            lastUpdated: Date;
+        };
+    };
+}
+
+function shortenNumber(number: number): string {
+    let prefix = '';
+    if (number < 0) prefix = '-';
+
+    let num = parseInt(number.toString().replace(/[^0-9.]/g, ''));
+    if (num < 1000) {
+        return num.toString();
+    }
+    let si = [
+        { v: 1e3, s: 'K' },
+        { v: 1e6, s: 'M' },
+        { v: 1e9, s: 'B' },
+        { v: 1e12, s: 'T' },
+        { v: 1e15, s: 'P' },
+        { v: 1e18, s: 'E' },
+    ];
+    let index;
+    for (index = si.length - 1; index > 0; index--) {
+        if (num >= si[index].v) {
+            break;
+        }
+    }
+    return (
+        prefix +
+        (num / si[index].v).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, '$1') +
+        si[index].s
+    );
+}
+
+async function getSpy(key: string, id: string): Promise<any> {
+    let res;
+
+    const bdy = JSON.stringify({
+        apiKey: key,
+        userId: id,
+    });
+
+    await GM.xmlHttpRequest({
+        method: 'POST',
+        url: `https://tsc.diicot.cc/stats/update`,
+        headers: {
+            Authorization: '10000000-6000-0000-0009-000000000001',
+            'x-requested-with': 'XMLHttpRequest',
+            'Content-Type': 'application/json',
+        },
+        data: bdy,
+        onload: function (response: Tampermonkey.Response<any>) {
+            res = response.responseText;
+        },
+    });
+    return res;
+}
+
+(async function () {
+    if (key === '') {
+        key = prompt(`Please fill in your api key with the one used in Torn Stats Central :)`);
+        return;
+    }
+
+    const keyRegex = new RegExp(/^[a-zA-Z0-9]{16}$/);
+    if (keyRegex.test(key) === false) {
+        key = prompt(`Your last api key was invalid, please enter a valid one :)`);
+    }
+
+    const userIdRegex = new RegExp(/XID=(\d+)/);
+    const userId = window.location.href.match(userIdRegex)[1];
+    const spyInfo: Spy = JSON.parse(await getSpy(key, userId));
+    console.table(spyInfo);
+
+    if (spyInfo.success === false) {
+        alert(
+            `Something went wrong, incorrect api key?\nIf the issue persists contact a Torn Stats Central admin :)`
+        );
+        return;
+    }
+
+    setTimeout(() => {
+        let arr = Array.from(
+            document.getElementsByClassName(`profile-right-wrapper right`)
+        )[0].getElementsByClassName(`empty-block`)[0];
+
+        if (!spyInfo) {
+            arr.innerHTML += `
+            <div>
+                <h3 class = "hed">User not spied</h3>
+            </div>
+            `;
+        } else if (spyInfo.spy.statInterval.battleScore > 0) {
+            arr.innerHTML += `
+            <table class="customTable">
+            <thead>
+                <tr>
+                    <th>Battle score</th>
+                    <th>Min stat range</th>
+                    <th>Max stat range</th>
+                    <th>Date spied</th>
+                </tr>
+                </thdead>
+            <tbody>
+                <tr>
+                    <td>${shortenNumber(spyInfo.spy.statInterval.battleScore)}</td>
+                    <td>${shortenNumber(spyInfo.spy.statInterval.min)}</td>
+                    <td>${shortenNumber(spyInfo.spy.statInterval.max)}</td>
+                    <td>${
+                        new Date(spyInfo.spy.statInterval.lastUpdated)
+                            .toLocaleString()
+                            .split(',')[0]
+                    }</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        `;
+        } else {
+            arr.innerHTML += `
+        <table class="customTable">
+            <thead>
+                <tr>
+                    <th>Stat estimate</th>
+                    <th>Date</th>
+                </tr>
+                </thdead>
+            <tbody>
+                <tr>
+                    <td>${shortenNumber(spyInfo.spy.estimate.stats)}</td>
+                    <td>${
+                        new Date(spyInfo.spy.estimate.lastUpdated).toLocaleString().split(',')[0]
+                    }</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    `;
+        }
+    }, 1500);
+})();
