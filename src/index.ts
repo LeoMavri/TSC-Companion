@@ -149,21 +149,22 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
     const userIdRegex = new RegExp(/XID=(\d+)/);
     const userId = window.location.href.match(userIdRegex)[1];
     const spyInfo: Spy = JSON.parse(await getSpy(key, userId));
-    console.table(spyInfo);
 
     if (spyInfo.success === false) {
         key = prompt(
             `Something went wrong, incorrect api key?\nIf the issue persists contact a Torn Stats Central admin :)`
         );
+        console.warn(`The API has returned the following message:`);
+        console.warn(spyInfo);
         return;
     }
 
-    console.log('Waiting for profile-right-wrapper right to load...');
     await waitForElement(
         '#profileroot > div > div > div > div:nth-child(1) > div.profile-right-wrapper.right > div.profile-buttons.profile-action > div > div.cont.bottom-round > div > div > div.empty-block',
         10_000
     );
-    console.log('profile-right-wrapper right loaded!');
+
+    console.log(spyInfo);
 
     let arr = Array.from(
         document.getElementsByClassName(`profile-right-wrapper right`)
