@@ -152,7 +152,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
     console.table(spyInfo);
 
     if (spyInfo.success === false) {
-        alert(
+        key = prompt(
             `Something went wrong, incorrect api key?\nIf the issue persists contact a Torn Stats Central admin :)`
         );
         return;
