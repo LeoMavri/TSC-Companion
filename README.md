@@ -11,12 +11,13 @@ Browser script compatible with **Tampermonkey**, **Greasemonkey** and other simi
 
 ## Installation
 
+-   Install the Tampermonkey extension (or any userscript manager of your choice) for your browser: [Clicky](https://www.tampermonkey.net/)
 -   Click here to install the script: [Clicky](https://github.com/LeoMavri/torn-stats-central-script/raw/main/dist/lib.tsc.user.js).
 -   A new tab will open with the script's source code which should look something like this: [Clicky](https://images.mavri.dev/EdAZldmjnvM8/direct)
 -   Click the `Install` button on the mid-top-right corner of the page that is highlighted in the previous screenshot. The script will be installed and automatically updated when a new version is released.
 -   Upon opening any profile page, you will be prompted to give access to the script to fetch data from our API. Click `Always allow domain` like so: [Clicky](https://images.mavri.dev/ifQkuPyZbuB3/direct)
 -   After that, you will also be asked for your API key. Please use the same API key you used while signing up for TSC on Discord and input it in the field shown on the top of your screen.
--   You can find your keys here: [Clicky](https://www.torn.com/preferences.php#tab=api)
+-   You can find your API keys here: [Clicky](https://www.torn.com/preferences.php#tab=api)
 
 ## Usage
 
