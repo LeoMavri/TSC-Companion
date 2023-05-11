@@ -30,7 +30,7 @@ Now, whenever you go to a user's page, a small table should pop up under their b
 
 ## Links
 
-Below are some links to various places where you can find more information about the script, get support for it, propose improvements or simply chat with the developer.
+Below are some links to various places where you can find more information about the script, get support for it, propose improvements or simply chat with the developer:
 
 1. [Forum Link](https://www.torn.com/forums.php#/p=threads&f=67&t=16290287&b=0&a=0&start=40&to=23443012)
 2. [Discord Link](https://discord.gg/eegQhTUqPS)
