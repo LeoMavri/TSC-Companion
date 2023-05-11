@@ -1,7 +1,3 @@
-//! This is what you're looking for!
-let key = 'ADD_YOUR_KEY'; //SAME API KEY AS ONE USED IN TORN STATS CENTRAL
-//! This is what you're looking for!
-
 GM_addStyle(`
 table.customTable {
   position:relative;
@@ -109,14 +105,17 @@ async function getSpy(key: string, id: string): Promise<any> {
 }
 
 (async function () {
+    let key: string = await GM.getValue('tsc_api_key', '');
     if (key === '') {
         key = prompt(`Please fill in your api key with the one used in Torn Stats Central :)`);
+        GM.setValue('tsc_api_key', key);
         return;
     }
 
     const keyRegex = new RegExp(/^[a-zA-Z0-9]{16}$/);
     if (keyRegex.test(key) === false) {
         key = prompt(`Your last api key was invalid, please enter a valid one :)`);
+        GM.setValue('tsc_api_key', key);
     }
 
     const userIdRegex = new RegExp(/XID=(\d+)/);

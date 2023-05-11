@@ -1,4 +1,3 @@
-declare let key: string;
 interface Spy {
     success: boolean;
     message: string;
