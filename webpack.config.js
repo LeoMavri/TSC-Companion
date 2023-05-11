@@ -20,7 +20,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'lib.tsc.js',
+        filename: 'lib.tsc.user.js',
     },
     plugins: [
         new webpack.BannerPlugin({
@@ -40,6 +40,8 @@ module.exports = {
                 // @run-at          document-end
                 // @match           https://www.torn.com/profiles.php?*
                 // @icon            https://www.google.com/s2/favicons?sz=64&domain=torn.com
+                // @updateURL       none
+                // @downloadURL     none
                 // ==/UserScript==`,
         }),
     ],
