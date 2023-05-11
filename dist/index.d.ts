@@ -18,3 +18,4 @@ interface Spy {
 }
 declare function shortenNumber(number: number): string;
 declare function getSpy(key: string, id: string): Promise<any>;
+declare function waitForElement(querySelector: string, timeout?: number): Promise<void>;

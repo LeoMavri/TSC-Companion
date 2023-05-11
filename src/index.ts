@@ -104,6 +104,34 @@ async function getSpy(key: string, id: string): Promise<any> {
     return res;
 }
 
+async function waitForElement(querySelector: string, timeout?: number): Promise<void> {
+    return await new Promise((resolve, reject) => {
+        let timer = null;
+        if (timeout) {
+            timer = setTimeout(() => {
+                observer.disconnect();
+                reject();
+            }, timeout);
+        }
+        if (document.querySelectorAll(querySelector).length) {
+            return resolve();
+        }
+        const observer = new MutationObserver(() => {
+            if (document.querySelectorAll(querySelector).length) {
+                observer.disconnect();
+                if (timer !== null) {
+                    clearTimeout(timer);
+                }
+                return resolve();
+            }
+        });
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+        });
+    });
+}
+
 (async function () {
     let key: string = await GM.getValue('tsc_api_key', '');
     if (key === '') {
@@ -130,63 +158,70 @@ async function getSpy(key: string, id: string): Promise<any> {
         return;
     }
 
-    setTimeout(() => {
-        let arr = Array.from(
-            document.getElementsByClassName(`profile-right-wrapper right`)
-        )[0].getElementsByClassName(`empty-block`)[0];
+    console.log('Waiting for profile-right-wrapper right to load...');
+    await waitForElement(
+        '#profileroot > div > div > div > div:nth-child(1) > div.profile-right-wrapper.right > div.profile-buttons.profile-action > div > div.cont.bottom-round > div > div > div.empty-block',
+        10_000
+    );
+    console.log('profile-right-wrapper right loaded!');
 
-        if (!spyInfo) {
-            arr.innerHTML += `
+    let arr = Array.from(
+        document.getElementsByClassName(`profile-right-wrapper right`)
+    )[0].getElementsByClassName(`empty-block`)[0];
+
+    if (!spyInfo) {
+        arr.innerHTML += `
             <div>
                 <h3 class = "hed">User not spied</h3>
             </div>
             `;
-        } else if (spyInfo.spy.statInterval.battleScore > 0) {
-            arr.innerHTML += `
+    } else if (spyInfo.spy.statInterval.battleScore > 0) {
+        arr.innerHTML += `
+                <table class="customTable">
+                <thead>
+                    <tr>
+                        <th>Battle score</th>
+                        <th>Min stat range</th>
+                        <th>Max stat range</th>
+                        <th>Date spied</th>
+                    </tr>
+                    </thdead>
+                <tbody>
+                    <tr>
+                        <td>${shortenNumber(spyInfo.spy.statInterval.battleScore)}</td>
+                        <td>${shortenNumber(spyInfo.spy.statInterval.min)}</td>
+                        <td>${shortenNumber(spyInfo.spy.statInterval.max)}</td>
+                        <td>${
+                            new Date(spyInfo.spy.statInterval.lastUpdated)
+                                .toLocaleString()
+                                .split(',')[0]
+                        }</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            `;
+    } else {
+        arr.innerHTML += `
             <table class="customTable">
-            <thead>
-                <tr>
-                    <th>Battle score</th>
-                    <th>Min stat range</th>
-                    <th>Max stat range</th>
-                    <th>Date spied</th>
-                </tr>
-                </thdead>
-            <tbody>
-                <tr>
-                    <td>${shortenNumber(spyInfo.spy.statInterval.battleScore)}</td>
-                    <td>${shortenNumber(spyInfo.spy.statInterval.min)}</td>
-                    <td>${shortenNumber(spyInfo.spy.statInterval.max)}</td>
-                    <td>${
-                        new Date(spyInfo.spy.statInterval.lastUpdated)
-                            .toLocaleString()
-                            .split(',')[0]
-                    }</td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
+                <thead>
+                    <tr>
+                        <th>Stat estimate</th>
+                        <th>Date</th>
+                    </tr>
+                    </thdead>
+                <tbody>
+                    <tr>
+                        <td>${shortenNumber(spyInfo.spy.estimate.stats)}</td>
+                        <td>${
+                            new Date(spyInfo.spy.estimate.lastUpdated)
+                                .toLocaleString()
+                                .split(',')[0]
+                        }</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
         `;
-        } else {
-            arr.innerHTML += `
-        <table class="customTable">
-            <thead>
-                <tr>
-                    <th>Stat estimate</th>
-                    <th>Date</th>
-                </tr>
-                </thdead>
-            <tbody>
-                <tr>
-                    <td>${shortenNumber(spyInfo.spy.estimate.stats)}</td>
-                    <td>${
-                        new Date(spyInfo.spy.estimate.lastUpdated).toLocaleString().split(',')[0]
-                    }</td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-    `;
-        }
-    }, 1500);
+    }
 })();
