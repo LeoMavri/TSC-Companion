@@ -1,6 +1,7 @@
 interface Spy {
     success: boolean;
     message: string;
+    maintenance?: boolean;
     spy: {
         userId: number;
         userName: string;

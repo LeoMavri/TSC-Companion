@@ -35,6 +35,7 @@ table.customTable thead {
 interface Spy {
     success: boolean;
     message: string;
+    maintenance?: boolean;
     spy: {
         userId: number;
         userName: string;
@@ -178,6 +179,12 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
                 <h3 class = "hed">User not spied</h3>
             </div>
             `;
+    } else if (spyInfo.maintenance === true) {
+        arr.innerHTML += `
+        <div>
+            <h3 class = "hed">TSC is undergoing maintenance</h3>
+        </div>
+        `;
     } else if (spyInfo.spy.statInterval.battleScore > 0) {
         arr.innerHTML += `
                 <table class="customTable">
