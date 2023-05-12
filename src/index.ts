@@ -155,6 +155,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
         key = prompt(
             `Something went wrong. Are you using the correct API key? Please try again. If the problem persists, please contact the developer with the apropriate logs found in the console (F12).`
         );
+        await GM.setValue('tsc_api_key', key);
         console.warn(`TORN STATS CENTRAL DEBUG INFORMATION BELOW`);
         console.warn(`The API has returned the following message:`);
         console.table(spyInfo);
