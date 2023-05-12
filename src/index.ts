@@ -135,15 +135,15 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
 (async function () {
     let key: string = await GM.getValue('tsc_api_key', '');
     if (key === '') {
-        key = prompt(`Please fill in your api key with the one used in Torn Stats Central :)`);
-        GM.setValue('tsc_api_key', key);
+        key = prompt(`Please fill in your API key with the one used in Torn Stats Central`);
+        await GM.setValue('tsc_api_key', key);
         return;
     }
 
     const keyRegex = new RegExp(/^[a-zA-Z0-9]{16}$/);
     if (keyRegex.test(key) === false) {
-        key = prompt(`Your last api key was invalid, please enter a valid one :)`);
-        GM.setValue('tsc_api_key', key);
+        key = prompt(`The API key you have entered is invalid, please try again`);
+        await GM.setValue('tsc_api_key', key);
     }
 
     const userIdRegex = new RegExp(/XID=(\d+)/);
@@ -152,10 +152,12 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
 
     if (spyInfo.success === false) {
         key = prompt(
-            `Something went wrong, incorrect api key?\nIf the issue persists contact a Torn Stats Central admin :)`
+            `Something went wrong. Are you using the correct API key? Please try again. If the problem persists, please contact the developer with the apropriate logs found in the console (F12).`
         );
+        console.warn(`TORN STATS CENTRAL DEBUG INFORMATION BELOW`);
         console.warn(`The API has returned the following message:`);
-        console.warn(spyInfo);
+        console.table(spyInfo);
+        console.warn(`TORN STATS CENTRAL DEBUG INFORMATION ABOVE`);
         return;
     }
 
