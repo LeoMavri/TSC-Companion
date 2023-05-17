@@ -81,8 +81,11 @@ function shortenNumber(number: number): string {
     );
 }
 
-async function getSpy(key: string, id: string): Promise<any> {
-    let res;
+async function getSpy(key: string, id: string, debug: boolean): Promise<any> {
+    let res = null;
+    const url = debug
+        ? `http://localhost:25565/stats/update` :
+        `https://tsc.diicot.cc/stats/update`
 
     const bdy = JSON.stringify({
         apiKey: key,
@@ -91,7 +94,7 @@ async function getSpy(key: string, id: string): Promise<any> {
 
     await GM.xmlHttpRequest({
         method: 'POST',
-        url: `https://tsc.diicot.cc/stats/update`,
+        url: url,
         headers: {
             Authorization: '10000000-6000-0000-0009-000000000001',
             'x-requested-with': 'XMLHttpRequest',
@@ -134,6 +137,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
 }
 
 (async function () {
+    const debug = false;
     let key: string = await GM.getValue('tsc_api_key', '');
     if (key === '') {
         key = prompt(`Please fill in your API key with the one used in Torn Stats Central`);
@@ -149,9 +153,9 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
 
     const userIdRegex = new RegExp(/XID=(\d+)/);
     const userId = window.location.href.match(userIdRegex)[1];
-    const spyInfo: Spy = JSON.parse(await getSpy(key, userId));
+    const spyInfo: Spy = JSON.parse(await getSpy(key, userId, debug));
 
-    if (spyInfo.success === false) {
+    if (spyInfo.success === false && spyInfo?.maintenance !== true) {
         key = prompt(
             `Something went wrong. Are you using the correct API key? Please try again. If the problem persists, please contact the developer with the apropriate logs found in the console (F12).`
         );
@@ -160,7 +164,6 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
         console.warn(`The API has returned the following message:`);
         console.table(spyInfo);
         console.warn(`TORN STATS CENTRAL DEBUG INFORMATION ABOVE`);
-        return;
     }
 
     await waitForElement(
@@ -174,7 +177,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
         document.getElementsByClassName(`profile-right-wrapper right`)
     )[0].getElementsByClassName(`empty-block`)[0];
 
-    if (!spyInfo) {
+    if (spyInfo == null) {
         arr.innerHTML += `
             <div>
                 <h3 class = "hed">User not spied</h3>
