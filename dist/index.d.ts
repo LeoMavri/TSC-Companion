@@ -2,6 +2,7 @@ interface Spy {
     success: boolean;
     message: string;
     maintenance?: boolean;
+    serviceDown?: boolean;
     spy: {
         userId: number;
         userName: string;

@@ -36,6 +36,7 @@ interface Spy {
     success: boolean;
     message: string;
     maintenance?: boolean;
+    serviceDown?: boolean;
     spy: {
         userId: number;
         userName: string;
@@ -104,7 +105,20 @@ async function getSpy(key: string, id: string, debug: boolean): Promise<any> {
         onload: function (response: Tampermonkey.Response<any>) {
             res = response.responseText;
         },
+        onerror: function () {
+            res = {
+                success: false,
+                serviceDown: true
+            };
+        }
     });
+
+    // This is horrible, but it works.
+    res ??= `{
+        "success": false,
+        "serviceDown": true
+    }`;
+
     return res;
 }
 
@@ -155,7 +169,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
     const userId = window.location.href.match(userIdRegex)[1];
     const spyInfo: Spy = JSON.parse(await getSpy(key, userId, debug));
 
-    if (spyInfo.success === false && spyInfo?.maintenance !== true) {
+    if (spyInfo.success === false && spyInfo?.maintenance !== true && spyInfo?.serviceDown !== true) {
         key = prompt(
             `Something went wrong. Are you using the correct API key? Please try again. If the problem persists, please contact the developer with the apropriate logs found in the console (F12).`
         );
@@ -187,6 +201,12 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
         arr.innerHTML += `
         <div>
             <h3 class = "hed">TSC is undergoing maintenance</h3>
+        </div>
+        `;
+    } else if (spyInfo.serviceDown === true) {
+        arr.innerHTML += `
+        <div>
+            <h3 class = "hed">TSC is down</h3>
         </div>
         `;
     } else if (spyInfo.spy.statInterval.battleScore > 0) {
