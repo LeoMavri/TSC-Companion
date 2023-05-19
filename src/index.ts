@@ -167,7 +167,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
 }
 
 (async function () {
-    const debug = true;
+    const debug = false;
     let key: string = await GM.getValue('tsc_api_key', '');
     if (key === '') {
         key = prompt(`Please fill in your API key with the one used in Torn Stats Central.`);
