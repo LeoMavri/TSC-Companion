@@ -1,7 +1,14 @@
+declare enum ErrorCode {
+    InvalidRequest = 1,
+    Maintenance = 2,
+    InvalidApiKey = 3,
+    InternalError = 4,
+    ServiceDown = 5
+}
 interface Spy {
     success: boolean;
     message: string;
-    maintenance?: boolean;
+    code?: ErrorCode;
     serviceDown?: boolean;
     spy: {
         userId: number;
