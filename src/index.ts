@@ -37,7 +37,9 @@ enum ErrorCode {
     Maintenance = 2,
     InvalidApiKey = 3,
     InternalError = 4,
-    ServiceDown = 5,
+    UserDisabled = 5,
+    CachedOnly = 6,
+    ServiceDown = 999,
 }
 
 interface Spy {
@@ -125,7 +127,7 @@ async function getSpy(key: string, id: string, debug: boolean): Promise<any> {
         // This is horrible, but it works.
         res ??= `{
             "success": false,
-            "code": 5
+            "code": 999
         }`;
 
         return res;
@@ -133,7 +135,7 @@ async function getSpy(key: string, id: string, debug: boolean): Promise<any> {
         // This is also horrible
         return `{
             "success": false,
-            "code": 5
+            "code": 999
         }`;
     }
 }
@@ -167,7 +169,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
 }
 
 (async function () {
-    const debug = false;
+    const debug = true;
     let key: string = await GM.getValue('tsc_api_key', '');
     if (key === '') {
         key = prompt(`Please fill in your API key with the one used in Torn Stats Central.`);
@@ -240,6 +242,20 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
                 `;
                 break;
 
+            case ErrorCode.UserDisabled:
+                text = `
+                <div>
+                    <h3 class = "hed">Your TSC account has been disabled. Contact Mavri</h3>
+                </div>
+                `;
+                break;
+            case ErrorCode.CachedOnly:
+                text = `
+                <div>
+                    <h3 class = "hed">User not found in cache.</h3>
+                </div>
+                `;
+                break;
             default:
                 text = `
                     <div>

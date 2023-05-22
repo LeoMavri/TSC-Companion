@@ -3,7 +3,9 @@ declare enum ErrorCode {
     Maintenance = 2,
     InvalidApiKey = 3,
     InternalError = 4,
-    ServiceDown = 5
+    UserDisabled = 5,
+    CachedOnly = 6,
+    ServiceDown = 999
 }
 interface Spy {
     success: boolean;
