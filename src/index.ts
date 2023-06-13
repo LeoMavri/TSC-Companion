@@ -154,7 +154,6 @@ async function getSpy(key: string, id: string, debug: boolean): Promise<any> {
             },
         });
 
-        // This is horrible, but it works.
         res ??= `{
             "success": false,
             "code": 999
@@ -162,7 +161,6 @@ async function getSpy(key: string, id: string, debug: boolean): Promise<any> {
 
         return res;
     } catch (err) {
-        // This is also horrible
         return `{
             "success": false,
             "code": 999
@@ -247,7 +245,6 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
                 requestNewKey = true;
                 break;
 
-            // TODO: Handle whether the key is invalid or not
             case ErrorCode.InternalError:
                 text = `
                 <div>
@@ -363,83 +360,3 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
 
     arr.innerHTML += text;
 })();
-
-// Ignore this garbage. Or don't. I don't care.
-// if (spyInfo.success === false && spyInfo?.maintenance !== true && spyInfo?.serviceDown !== true) {
-//     key = prompt(
-//         `Something went wrong. Are you using the correct API key? Please try again. If the problem persists, please contact the developer with the apropriate logs found in the console (F12).`
-//     );
-//     await GM.setValue('tsc_api_key', key);
-//     console.warn(`TORN STATS CENTRAL DEBUG INFORMATION BELOW`);
-//     console.warn(`The API has returned the following message:`);
-//     console.table(spyInfo);
-//     console.warn(`TORN STATS CENTRAL DEBUG INFORMATION ABOVE`);
-// }
-
-// if (spyInfo == null) {
-//     arr.innerHTML += `
-//         <div>
-//             <h3 class = "hed">User not spied</h3>
-//         </div>
-//         `;
-// } else if (spyInfo?.code === ErrorCode.Maintenance) {
-//     arr.innerHTML += `
-//     <div>
-//         <h3 class = "hed">TSC is undergoing maintenance.</h3>
-//     </div>
-//     `;
-// } else if (spyInfo.serviceDown === true) {
-//     arr.innerHTML += `
-//     <div>
-//         <h3 class = "hed">TSC is down.</h3>
-//     </div>
-//     `;
-// } else if (spyInfo.spy.statInterval.battleScore > 0) {
-//     arr.innerHTML += `
-//             <table class="customTable">
-//             <thead>
-//                 <tr>
-//                     <th>Battle score</th>
-//                     <th>Min stat range</th>
-//                     <th>Max stat range</th>
-//                     <th>Date spied</th>
-//                 </tr>
-//                 </thdead>
-//             <tbody>
-//                 <tr>
-//                     <td>${shortenNumber(spyInfo.spy.statInterval.battleScore)}</td>
-//                     <td>${shortenNumber(spyInfo.spy.statInterval.min)}</td>
-//                     <td>${shortenNumber(spyInfo.spy.statInterval.max)}</td>
-//                     <td>${
-//                         new Date(spyInfo.spy.statInterval.lastUpdated)
-//                             .toLocaleString()
-//                             .split(',')[0]
-//                     }</td>
-//                 </tr>
-//             </tbody>
-//         </table>
-//         </div>
-//         `;
-// } else {
-//     arr.innerHTML += `
-//         <table class="customTable">
-//             <thead>
-//                 <tr>
-//                     <th>Stat estimate</th>
-//                     <th>Date</th>
-//                 </tr>
-//                 </thdead>
-//             <tbody>
-//                 <tr>
-//                     <td>${shortenNumber(spyInfo.spy.estimate.stats)}</td>
-//                     <td>${
-//                         new Date(spyInfo.spy.estimate.lastUpdated)
-//                             .toLocaleString()
-//                             .split(',')[0]
-//                     }</td>
-//                 </tr>
-//             </tbody>
-//         </table>
-//         </div>
-//     `;
-// }
