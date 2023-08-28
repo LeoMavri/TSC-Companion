@@ -29,7 +29,7 @@ module.exports = {
                 // ==UserScript==
                 // @name            TSC Spies
                 // @namespace       Torn Stats Central
-                // @version         1.1.4
+                // @version         1.1.5
                 // @author          mitza [2549762]
                 // @description     Thanks mitza! <3
                 // @copyright       2023, diicot.cc
@@ -39,7 +39,7 @@ module.exports = {
                 // @grant           GM_xmlhttpRequest
                 // @run-at          document-end
                 // @match           https://www.torn.com/profiles.php?*
-                // @icon            https://www.google.com/s2/favicons?sz=64&domain=torn.com
+                // @icon            https://i.imgur.com/8eydsOA.png
                 // @updateURL       https://github.com/LeoMavri/torn-stats-central-script/raw/main/dist/lib.tsc.user.js
                 // @downloadURL     https://github.com/LeoMavri/torn-stats-central-script/raw/main/dist/lib.tsc.user.js
                 // ==/UserScript==`,

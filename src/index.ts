@@ -1,66 +1,10 @@
-GM_addStyle(`
-table.customTable {
-    position:static;
-    top: -8px;
-    width: 386px;
-    background-color: #FFFFFF;
-    border-collapse: collapse;
-    border-width: 2px;
-    border-color: #7ea8f8;
-    border-style: solid;
-    overflow: scroll;
-    z-index: 999;
-}
-table.customTable td, table.customTable th {
-    border-width: 2px;
-    border-color: #282242;
-    border-style: solid;
-    padding: 5px;
-    color: #FFFFFF;
-}
-table.customTable tbody {
-    background-color: #333333;
-}
-table.customTable thead {
-    background-color: #cf2696;
-}
-.hed {
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #FFFFFF;
-}
-.tablecolor {
-    position: relative;
-    top :-53px;
-    left:100%;
-}
-.clr-btn {
-    color: #ddd;
-    height: 75%;
-    width:17%;
-    box-sizing: border-box;
-    border-radius: 4px;
-    line-height: 14px;
-    padding: 4px 8px;
-    text-shadow: 0 1px 0 #ffffff66;
-    text-decoration: none;
-    text-transform: uppercase;
-    background: #333;
-    min-width: 30px;
-    position: relative;
-    top :-53px;
-    left:100%;
-    border: 1px solid transparent;
-    border-color: #fff;
-    display:block 
-}
-.clr-btn:hover {
-    background: #111;
-    color: #fff;
-}
-`);
+const DEBUG = false;
+
+const TSC_API = 'https://tsc.diicot.cc/stats/update';
+const DEBUG_API = 'http://localhost:25565/stats/update';
+const AUTHORIZATION = '10000000-6000-0000-0009-000000000001';
+
+const API_KEY_ENTRY = 'tsc_api_key';
 
 enum ErrorCode {
     InvalidRequest = 1,
@@ -72,26 +16,28 @@ enum ErrorCode {
     ServiceDown = 999,
 }
 
-interface Spy {
-    success: boolean;
-    message: string;
-    code?: ErrorCode;
-    serviceDown?: boolean;
-    spy: {
-        userId: number;
-        userName: string;
-        estimate: {
-            stats: number;
-            lastUpdated: Date;
-        };
-        statInterval: {
-            min: number;
-            max: number;
-            battleScore: number;
-            lastUpdated: Date;
-        };
-    };
-}
+type SpyErrorable =
+    | {
+          success: true;
+          spy: {
+              userId: number;
+              userName: string;
+              estimate: {
+                  stats: number;
+                  lastUpdated: Date;
+              };
+              statInterval?: {
+                  min: number;
+                  max: number;
+                  battleScore: number;
+                  lastUpdated: Date;
+              };
+          };
+      }
+    | {
+          success: false;
+          code: ErrorCode;
+      };
 
 function shortenNumber(number: number): string {
     let prefix = '';
@@ -122,50 +68,43 @@ function shortenNumber(number: number): string {
     );
 }
 
-async function getSpy(key: string, id: string, debug: boolean): Promise<any> {
+async function getSpy(key: string, id: string, debug: boolean): Promise<SpyErrorable> {
     let res = null;
-    const url = debug
-        ? `http://localhost:25565/stats/update`
-        : `https://tsc.diicot.cc/stats/update`;
-
-    const body = JSON.stringify({
-        apiKey: key,
-        userId: id,
-    });
-
     try {
         await GM.xmlHttpRequest({
             method: 'POST',
-            url: url,
+            url: debug ? DEBUG_API : TSC_API,
             headers: {
-                Authorization: '10000000-6000-0000-0009-000000000001',
+                Authorization: AUTHORIZATION,
                 'x-requested-with': 'XMLHttpRequest',
                 'Content-Type': 'application/json',
             },
-            data: body,
+            data: JSON.stringify({
+                apiKey: key,
+                userId: id,
+            }),
             onload: function (response: Tampermonkey.Response<any>) {
-                res = response.responseText;
+                res = JSON.parse(response.responseText);
             },
             onerror: function () {
                 res = {
                     success: false,
-                    serviceDown: true,
+                    code: ErrorCode.ServiceDown,
                 };
             },
         });
-
-        res ??= `{
-            "success": false,
-            "code": 999
-        }`;
-
-        return res;
     } catch (err) {
-        return `{
-            "success": false,
-            "code": 999
-        }`;
+        res = {
+            success: false,
+            code: ErrorCode.ServiceDown,
+        };
+    } finally {
+        res ??= {
+            success: false,
+            code: ErrorCode.ServiceDown,
+        };
     }
+    return res;
 }
 
 async function waitForElement(querySelector: string, timeout?: number): Promise<void> {
@@ -197,30 +136,29 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
 }
 
 (async function () {
-    const debug = false;
-    let key: string = await GM.getValue('tsc_api_key', '');
+    let key: string = await GM.getValue(API_KEY_ENTRY, '');
     if (key === '') {
         key = prompt(`Please fill in your API key with the one used in Torn Stats Central.`);
-        await GM.setValue('tsc_api_key', key);
+        await GM.setValue(API_KEY_ENTRY, key);
         return;
     }
 
     const keyRegex = new RegExp(/^[a-zA-Z0-9]{16}$/);
     if (keyRegex.test(key) === false) {
         key = prompt(`The API key you have entered is invalid, please try again.`);
-        await GM.setValue('tsc_api_key', key);
+        await GM.setValue(API_KEY_ENTRY, key);
     }
 
     const userIdRegex = new RegExp(/XID=(\d+)/);
     const userId = window.location.href.match(userIdRegex)[1];
-    const spyInfo: Spy = JSON.parse(await getSpy(key, userId, debug));
+    const spyInfo = await getSpy(key, userId, DEBUG);
 
     await waitForElement(
         '#profileroot > div > div > div > div:nth-child(1) > div.profile-right-wrapper.right > div.profile-buttons.profile-action > div > div.cont.bottom-round > div > div > div.empty-block',
         10_000
     );
 
-    const arr = Array.from(
+    const profile = Array.from(
         document.getElementsByClassName(`profile-right-wrapper right`)
     )[0].getElementsByClassName(`empty-block`)[0];
 
@@ -264,7 +202,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
             case ErrorCode.ServiceDown:
                 text = `
                 <div>
-                    <h3 class = "hed">Torn Stats Central is down.</h3>
+                    <h3 class = "hed"><a href="https://discord.gg/eegQhTUqPS" style="color: #3777FF;">TSC is down. Check Discord</a></h3>
                 </div>
                 `;
                 break;
@@ -272,10 +210,11 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
             case ErrorCode.UserDisabled:
                 text = `
                 <div>
-                    <h3 class = "hed">Your TSC account has been disabled. Contact Mavri</h3>
+                    <h3 class = "hed"><a href="https://discord.gg/eegQhTUqPS" style="color: #3777FF;">Account disabled. Check Discord</a></h3>
                 </div>
                 `;
                 break;
+
             case ErrorCode.CachedOnly:
                 text = `
                 <div>
@@ -283,6 +222,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
                 </div>
                 `;
                 break;
+
             default:
                 text = `
                     <div>
@@ -296,13 +236,13 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
         console.warn(`The API has returned the following message:`);
         console.log(spyInfo);
         console.warn(`TORN STATS CENTRAL DEBUG INFORMATION ABOVE`);
-        arr.innerHTML += text;
+        profile.innerHTML += text;
 
         if (requestNewKey) {
             key = prompt(
                 `The API key you have entered does not match the one used in Torn Stats Central, please try again. If you believe this is an error, please contact Mavri.`
             );
-            await GM.setValue('tsc_api_key', key);
+            await GM.setValue(API_KEY_ENTRY, key);
         }
 
         return;
@@ -358,5 +298,72 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
             `;
     }
 
-    arr.innerHTML += text;
+    profile.innerHTML += text;
 })();
+
+GM_addStyle(`
+table.customTable {
+    position:static;
+    top: -8px;
+    width: 386px;
+    background-color: #FFFFFF;
+    border-collapse: collapse;
+    border-width: 2px;
+    border-color: #7ea8f8;
+    border-style: solid;
+    overflow: scroll;
+    z-index: 999;
+}
+table.customTable td, table.customTable th {
+    border-width: 2px;
+    border-color: #282242;
+    border-style: solid;
+    padding: 5px;
+    color: #FFFFFF;
+}
+table.customTable tbody {
+    background-color: #333333;
+}
+table.customTable thead {
+    background-color: #cf2696;
+}
+.hed {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+}
+.hed:link {
+    color: #3777FF;
+}
+.tablecolor {
+    position: relative;
+    top :-53px;
+    left:100%;
+}
+.clr-btn {
+    color: #ddd;
+    height: 75%;
+    width:17%;
+    box-sizing: border-box;
+    border-radius: 4px;
+    line-height: 14px;
+    padding: 4px 8px;
+    text-shadow: 0 1px 0 #ffffff66;
+    text-decoration: none;
+    text-transform: uppercase;
+    background: #333;
+    min-width: 30px;
+    position: relative;
+    top :-53px;
+    left:100%;
+    border: 1px solid transparent;
+    border-color: #fff;
+    display:block 
+}
+.clr-btn:hover {
+    background: #111;
+    color: #fff;
+}
+`);
