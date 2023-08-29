@@ -29,7 +29,7 @@ module.exports = {
                 // ==UserScript==
                 // @name            TSC Spies
                 // @namespace       Torn Stats Central
-                // @version         1.1.5
+                // @version         1.1.6
                 // @author          mitza [2549762]
                 // @description     Thanks mitza! <3
                 // @copyright       2023, diicot.cc

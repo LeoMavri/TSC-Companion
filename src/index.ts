@@ -1,3 +1,6 @@
+// You don't really want to mess with anything here :p
+// Do you have any suggestions? Feel free to contact either of us on Torn (mavri [2402357] / mitza[2549762]) or on Discord (@mavri.dev).
+// If you're wondering why this looks so weird, it's becaused this is written in TypeScript, transpiled to JavaScript and then packed with Webpack.
 const DEBUG = false;
 
 const TSC_API = 'https://tsc.diicot.cc/stats/update';
