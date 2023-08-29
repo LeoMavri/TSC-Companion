@@ -68,12 +68,12 @@ function shortenNumber(number: number): string {
     );
 }
 
-async function getSpy(key: string, id: string, debug: boolean): Promise<SpyErrorable> {
+async function getSpy(key: string, id: string): Promise<SpyErrorable> {
     let res = null;
     try {
         await GM.xmlHttpRequest({
             method: 'POST',
-            url: debug ? DEBUG_API : TSC_API,
+            url: DEBUG ? DEBUG_API : TSC_API,
             headers: {
                 Authorization: AUTHORIZATION,
                 'x-requested-with': 'XMLHttpRequest',
@@ -151,7 +151,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
 
     const userIdRegex = new RegExp(/XID=(\d+)/);
     const userId = window.location.href.match(userIdRegex)[1];
-    const spyInfo = await getSpy(key, userId, DEBUG);
+    const spyInfo = await getSpy(key, userId);
 
     await waitForElement(
         '#profileroot > div > div > div > div:nth-child(1) > div.profile-right-wrapper.right > div.profile-buttons.profile-action > div > div.cont.bottom-round > div > div > div.empty-block',

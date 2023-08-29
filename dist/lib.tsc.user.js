@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            TSC Spies
 // @namespace       Torn Stats Central
-// @version         1.1.5
+// @version         1.1.6
 // @author          mitza [2549762]
 // @description     Thanks mitza! <3
 // @copyright       2023, diicot.cc
@@ -61,12 +61,12 @@ function shortenNumber(number) {
         (num / si[index].v).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, '$1') +
         si[index].s);
 }
-async function getSpy(key, id, debug) {
+async function getSpy(key, id) {
     let res = null;
     try {
         await GM.xmlHttpRequest({
             method: 'POST',
-            url: debug ? DEBUG_API : TSC_API,
+            url: DEBUG ? DEBUG_API : TSC_API,
             headers: {
                 Authorization: AUTHORIZATION,
                 'x-requested-with': 'XMLHttpRequest',
@@ -142,7 +142,7 @@ async function waitForElement(querySelector, timeout) {
     }
     const userIdRegex = new RegExp(/XID=(\d+)/);
     const userId = window.location.href.match(userIdRegex)[1];
-    const spyInfo = await getSpy(key, userId, DEBUG);
+    const spyInfo = await getSpy(key, userId);
     await waitForElement('#profileroot > div > div > div > div:nth-child(1) > div.profile-right-wrapper.right > div.profile-buttons.profile-action > div > div.cont.bottom-round > div > div > div.empty-block', 10000);
     const profile = Array.from(document.getElementsByClassName(`profile-right-wrapper right`))[0].getElementsByClassName(`empty-block`)[0];
     let text;

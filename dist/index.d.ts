@@ -33,5 +33,5 @@ type SpyErrorable = {
     code: ErrorCode;
 };
 declare function shortenNumber(number: number): string;
-declare function getSpy(key: string, id: string, debug: boolean): Promise<SpyErrorable>;
+declare function getSpy(key: string, id: string): Promise<SpyErrorable>;
 declare function waitForElement(querySelector: string, timeout?: number): Promise<void>;
