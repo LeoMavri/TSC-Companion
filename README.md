@@ -1,6 +1,6 @@
 # TSC Helper Script
 
-Browser script compatible with **Tampermonkey**, **Greasemonkey** and other similar extensions that adds TSC-style stat estimates straight to the user's profile page.
+Browser script is compatible with **Tampermonkey**, **Greasemonkey** and other similar extensions that adds Torn Attack Central-style stat estimates straight to the user's profile page.
 
 **Table of Contents**
 
@@ -39,4 +39,4 @@ Below are some links to various places where you can find more information about
 
 ## API
 
-As of now, the API is not public and any attempts will result in you getting permanently banned from using the script. If you wish to use the API, please contact me on Discord at `Mavri#0001` or in the TSC Discord and we can discuss it further.
+As of now, the API is not public and any attempts will result in you getting permanently banned from using the script. If you wish to use the API, please contact me on Discord at `@mavri.dev` or in the TSC Discord and we can discuss it further.
