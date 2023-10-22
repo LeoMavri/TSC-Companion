@@ -24,10 +24,10 @@ Browser script compatible with **Tampermonkey**, **Greasemonkey** and other simi
 Now, whenever you go to a user's page, a small table should pop up under their buttons that looks something like this:
 
 **Stat Interval:**  
-![Stat Interval only](https://images.mavri.dev/r/09j9xrsuLl8p?compress=false)
+![Stat Interval Only](https://images.mavri.dev/r/09j9xrsuLl8p?compress=false)
 
 **Stat Estimate:**  
-![Stat Estimate only](https://images.mavri.dev/r/IIVppBnijYcY?compress=false)
+![Stat Estimate Only](https://images.mavri.dev/r/IIVppBnijYcY?compress=false)
 
 ## Links
 
