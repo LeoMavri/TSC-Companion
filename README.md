@@ -11,6 +11,7 @@ Browser script is compatible with **Tampermonkey**, **Greasemonkey** and other s
 
 ## Installation
 
+-   Join the Discord server and follow the instructions in #how-to: [Clicky](https://discord.gg/eegQhTUqPS)
 -   Install the Tampermonkey extension (or any userscript manager of your choice) for your browser: [Clicky](https://www.tampermonkey.net/)
 -   Click here to install the script: [Clicky](https://github.com/LeoMavri/torn-stats-central-script/raw/main/dist/lib.tsc.user.js).
 -   A new tab will open with the script's source code which should look something like this: [Clicky](https://images.mavri.dev/cKhRCs.png)
