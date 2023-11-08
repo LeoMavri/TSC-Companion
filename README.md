@@ -1,5 +1,7 @@
 # TSC Helper Script
 
+[![forthebadge](https://forthebadge.com/images/badges/contains-technical-debt.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/ctrl-c-ctrl-v.svg)](https://forthebadge.com)
+
 Browser script is compatible with **Tampermonkey**, **Greasemonkey** and other similar extensions that adds Torn Attack Central-style stat estimates straight to the user's profile page.
 
 **Table of Contents**
