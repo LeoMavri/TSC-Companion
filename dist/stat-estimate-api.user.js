@@ -158,6 +158,8 @@
     console.log(spyInfo);
     if ("error" in spyInfo) {
       profile.innerHTML += createErrorHeader(`Unexpected Response`);
+      console.warn(`The API encountered an error before it could finish your request`);
+      console.warn(spyInfo);
       return;
     }
     let text;
