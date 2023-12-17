@@ -38,7 +38,7 @@ Below are some links to various places where you can find more information about
 
 1. [Forum Link](https://www.torn.com/forums.php#/p=threads&f=67&t=16290287&b=0&a=0&start=40&to=23443012)
 2. [Discord Link](https://discord.gg/eegQhTUqPS)
-3. [Script Link](https://github.com/LeoMavri/torn-stats-central-script/raw/main/dist/lib.tsc.user.js)
+3. [Script Link](https://raw.githubusercontent.com/LeoMavri/torn-stats-central-script/main/dist/stat-estimate-api.user.js)
 
 ## API
 
