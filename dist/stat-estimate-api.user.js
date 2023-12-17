@@ -102,7 +102,8 @@
   const API_KEY_ENTRY = "tsc_api_key";
   async function getSpy(key, id) {
     return await new Promise((resolve, reject) => {
-      GM.xmlHttpRequest({
+      const request = GM.xmlHttpRequest ?? GM.xmlhttpRequest;
+      request({
         method: "POST",
         url: TSC_API,
         headers: {

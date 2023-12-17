@@ -15,7 +15,8 @@ const API_KEY_ENTRY = 'tsc_api_key';
 
 async function getSpy(key: string, id: string): Promise<SpyErrorable> {
     return await new Promise<SpyErrorable>((resolve, reject) => {
-        GM.xmlHttpRequest({
+        const request = GM.xmlHttpRequest ?? (GM as any).xmlhttpRequest;
+        request({
             method: 'POST',
             url: DEBUG ? DEBUG_API : TSC_API,
             headers: {
