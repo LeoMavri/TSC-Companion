@@ -15,7 +15,7 @@ Browser script is compatible with **Tampermonkey**, **Greasemonkey** and other s
 
 -   Join the Discord server and follow the instructions in #how-to: [Clicky](https://discord.gg/eegQhTUqPS)
 -   Install the Tampermonkey extension (or any userscript manager of your choice) for your browser: [Clicky](https://www.tampermonkey.net/)
--   Click here to install the script: [Clicky](https://github.com/LeoMavri/torn-stats-central-script/raw/main/dist/lib.tsc.user.js).
+-   Click here to install the script: [Clicky](https://raw.githubusercontent.com/LeoMavri/torn-stats-central-script/main/dist/stat-estimate-api.user.js).
 -   A new tab will open with the script's source code which should look something like this: [Clicky](https://images.mavri.dev/cKhRCs.png)
 -   Click the `Install` button on the mid-top-right corner of the page that is highlighted in the previous screenshot. The script will be installed and automatically updated when a new version is released.
 -   Upon opening any profile page, you will be prompted to give access to the script to fetch data from our API. Click `Always allow domain` like so: [Clicky](https://images.mavri.dev/11xO6M.png)
