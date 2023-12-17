@@ -21,26 +21,26 @@ enum ErrorCode {
 
 type SpyErrorable =
     | {
-          success: true;
-          spy: {
-              userId: number;
-              userName: string;
-              estimate: {
-                  stats: number;
-                  lastUpdated: Date;
-              };
-              statInterval?: {
-                  min: number;
-                  max: number;
-                  battleScore: number;
-                  lastUpdated: Date;
-              };
-          };
-      }
+        success: true;
+        spy: {
+            userId: number;
+            userName: string;
+            estimate: {
+                stats: number;
+                lastUpdated: Date;
+            };
+            statInterval?: {
+                min: number;
+                max: number;
+                battleScore: number;
+                lastUpdated: Date;
+            };
+        };
+    }
     | {
-          success: false;
-          code: ErrorCode;
-      };
+        success: false;
+        code: ErrorCode;
+    };
 
 function shortenNumber(number: number): string {
     let prefix = '';
@@ -71,31 +71,35 @@ function shortenNumber(number: number): string {
     );
 }
 
-async function getSpy(key: string, id: string): Promise<SpyErrorable> {
+async function getSpy(key, id) {
     let res = null;
+    const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     try {
-        await GM.xmlHttpRequest({
-            method: 'POST',
-            url: DEBUG ? DEBUG_API : TSC_API,
-            headers: {
-                Authorization: AUTHORIZATION,
-                'x-requested-with': 'XMLHttpRequest',
-                'Content-Type': 'application/json',
-            },
-            data: JSON.stringify({
-                apiKey: key,
-                userId: id,
+        const response = await Promise.race([
+            GM.xmlHttpRequest({
+                method: 'POST',
+                url: DEBUG ? DEBUG_API : TSC_API,
+                headers: {
+                    Authorization: AUTHORIZATION,
+                    'x-requested-with': 'XMLHttpRequest',
+                    'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({
+                    apiKey: key,
+                    userId: id,
+                }),
+                onload: function (response) {
+                    res = JSON.parse(response.responseText);
+                },
+                onerror: function () {
+                    res = {
+                        success: false,
+                        code: ErrorCode.ServiceDown,
+                    };
+                },
             }),
-            onload: function (response: Tampermonkey.Response<any>) {
-                res = JSON.parse(response.responseText);
-            },
-            onerror: function () {
-                res = {
-                    success: false,
-                    code: ErrorCode.ServiceDown,
-                };
-            },
-        });
+            timeout(3000), // Timeout after millseconds
+        ]);
     } catch (err) {
         res = {
             success: false,
@@ -166,7 +170,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
     )[0].getElementsByClassName(`empty-block`)[0];
 
     let text: string;
-    if (spyInfo.success === false) {
+    if (spyInfo.success === false || typeof spyInfo.success == 'undefined' || spyInfo.error == true ) {
         let requestNewKey = false;
         switch (spyInfo.code) {
             case ErrorCode.Maintenance:
@@ -229,7 +233,7 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
             default:
                 text = `
                     <div>
-                        <h3 class = "hed">Unknown error.</h3>
+                        <p style = "font-size:10pt;">Unknown error: <textarea>` + spyInfo.message + `</textarea></p>
                     </div>
                     `;
                 break;
@@ -267,11 +271,10 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
                             <td>${shortenNumber(spyInfo.spy.statInterval.battleScore)}</td>
                             <td>${shortenNumber(spyInfo.spy.statInterval.min)}</td>
                             <td>${shortenNumber(spyInfo.spy.statInterval.max)}</td>
-                            <td>${
-                                new Date(spyInfo.spy.statInterval.lastUpdated)
-                                    .toLocaleString()
-                                    .split(',')[0]
-                            }</td>
+                            <td>${new Date(spyInfo.spy.statInterval.lastUpdated)
+                .toLocaleString()
+                .split(',')[0]
+            }</td>
                         </tr>
                     </tbody>
                 </table>
@@ -289,11 +292,10 @@ async function waitForElement(querySelector: string, timeout?: number): Promise<
                     <tbody>
                         <tr>
                             <td>${shortenNumber(spyInfo.spy.estimate.stats)}</td>
-                            <td>${
-                                new Date(spyInfo.spy.estimate.lastUpdated)
-                                    .toLocaleString()
-                                    .split(',')[0]
-                            }</td>
+                            <td>${new Date(spyInfo.spy.estimate.lastUpdated)
+                .toLocaleString()
+                .split(',')[0]
+            }</td>
                         </tr>
                     </tbody>
                 </table>
