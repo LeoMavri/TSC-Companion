@@ -1,7 +1,9 @@
 table.customTable {
     position: static;
     top: -8px;
-    width: 386px;
+    /* width: 386px; */
+    width: 100%;
+    height: 100%;
     background-color: #ffffff;
     border-collapse: collapse;
     border-width: 2px;
