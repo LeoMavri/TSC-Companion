@@ -30,12 +30,6 @@ export function shortenNumber(number: number): string {
 export async function waitForElement(querySelector: string, timeout?: number): Promise<void> {
     return await new Promise((resolve, reject) => {
         let timer: NodeJS.Timeout;
-        if (timeout) {
-            timer = setTimeout(() => {
-                observer.disconnect();
-                reject();
-            }, timeout);
-        }
         if (document.querySelectorAll(querySelector).length) {
             return resolve();
         }
@@ -52,6 +46,12 @@ export async function waitForElement(querySelector: string, timeout?: number): P
             childList: true,
             subtree: true,
         });
+        if (timeout) {
+            timer = setTimeout(() => {
+                observer.disconnect();
+                reject();
+            }, timeout);
+        }
     });
 }
 
