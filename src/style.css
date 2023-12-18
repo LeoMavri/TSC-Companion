@@ -1,3 +1,12 @@
+/*! If it ever breaks on phones, this is why :p  */
+@media only screen and (max-width: 600px) {
+    .profile-buttons .empty-block {
+        border-top: 1px solid #fff;
+        border-top: var(--profile-empty-block-border-top);
+        height: 60px !important;
+    }
+}
+
 table.customTable {
     position: static;
     top: -8px;
