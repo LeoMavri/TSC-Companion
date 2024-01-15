@@ -10,7 +10,7 @@ export default defineConfig({
                 name: 'TSC Spies',
                 namespace: 'Torn Stats Central',
                 description: 'Companion script for TSC',
-                version: '2.0.2',
+                version: '2.0.3',
                 icon: 'https://i.imgur.com/8eydsOA.png',
                 match: ['https://www.torn.com/profiles.php?*'],
                 updateURL:

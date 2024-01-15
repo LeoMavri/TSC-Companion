@@ -12,6 +12,9 @@ const DEBUG_API = 'http://localhost:25565/stats/update';
 const AUTHORIZATION = '10000000-6000-0000-0009-000000000001';
 
 const API_KEY_ENTRY = 'tsc_api_key';
+const PROFILE_ELEMENT = `#profileroot > div > div > div > div:nth-child(1) > div.profile-right-wrapper.right > div.profile-buttons.profile-action > div > div.cont.bottom-round > div > div > div.empty-block`;
+
+const KNWON_ISSUES = ['99177'];
 
 async function getSpy(key: string, id: string): Promise<SpyErrorable> {
     return await new Promise<SpyErrorable>((resolve, reject) => {
@@ -63,12 +66,11 @@ async function getSpy(key: string, id: string): Promise<SpyErrorable> {
 
     const userIdRegex = new RegExp(/XID=(\d+)/);
     const userId = window.location.href.match(userIdRegex)![1];
-    const spyInfo = await getSpy(key, userId);
 
-    await waitForElement(
-        '#profileroot > div > div > div > div:nth-child(1) > div.profile-right-wrapper.right > div.profile-buttons.profile-action > div > div.cont.bottom-round > div > div > div.empty-block',
-        10_000
-    );
+    const [_, spyInfo] = await Promise.all([
+        waitForElement(PROFILE_ELEMENT, 10_000),
+        getSpy(key, userId),
+    ]);
 
     const profile = Array.from(
         document.getElementsByClassName(`profile-right-wrapper right`)
@@ -77,6 +79,11 @@ async function getSpy(key: string, id: string): Promise<SpyErrorable> {
     console.log(spyInfo);
 
     if ('error' in spyInfo) {
+        if (KNWON_ISSUES.includes(userId)) {
+            profile.innerHTML += createErrorHeader(`This is a known issue. Sorry :(`);
+            console.warn(spyInfo);
+            return;
+        }
         profile.innerHTML += createErrorHeader(`Unexpected Response`);
         console.warn(`The API encountered an error before it could finish your request`);
         console.warn(spyInfo);
