@@ -150,6 +150,10 @@
     }
     const userIdRegex = new RegExp(/XID=(\d+)/);
     const userId = window.location.href.match(userIdRegex)[1];
+    if (KNWON_ISSUES.includes(userId)) {
+      console.warn(`This user is known to cause issues with TSC's algorithms. Sorry :()`);
+      return;
+    }
     const [_, spyInfo] = await Promise.all([
       waitForElement(PROFILE_ELEMENT, 1e4),
       getSpy(key, userId)
