@@ -7,8 +7,8 @@
 // @license      MIT
 // @copyright    2024, diicot.cc
 // @icon         https://i.imgur.com/8eydsOA.png
-// @downloadURL  https://raw.githubusercontent.com/LeoMavri/torn-stats-central-script/main/dist/stat-estimate-api.user.js
-// @updateURL    https://raw.githubusercontent.com/LeoMavri/torn-stats-central-script/main/dist/stat-estimate-api.user.js
+// @downloadURL  https://github.com/LeoMavri/TSC-Companion/raw/main/dist/tsc-companion-script.user.js
+// @updateURL    https://github.com/LeoMavri/TSC-Companion/raw/main/dist/tsc-companion-script.user.js
 // @match        https://www.torn.com/profiles.php?*
 // @grant        GM.getValue
 // @grant        GM.setValue

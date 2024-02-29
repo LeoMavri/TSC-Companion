@@ -14,9 +14,9 @@ export default defineConfig({
                 icon: 'https://i.imgur.com/8eydsOA.png',
                 match: ['https://www.torn.com/profiles.php?*'],
                 updateURL:
-                    'https://raw.githubusercontent.com/LeoMavri/torn-stats-central-script/main/dist/stat-estimate-api.user.js',
+                    'https://github.com/LeoMavri/TSC-Companion/raw/main/dist/tsc-companion-script.user.js',
                 downloadURL:
-                    'https://raw.githubusercontent.com/LeoMavri/torn-stats-central-script/main/dist/stat-estimate-api.user.js',
+                    'https://github.com/LeoMavri/TSC-Companion/raw/main/dist/tsc-companion-script.user.js',
                 'run-at': 'document-end',
                 copyright: '2024, diicot.cc',
                 author: 'mitza [2549762] && mavri [2402357]',
