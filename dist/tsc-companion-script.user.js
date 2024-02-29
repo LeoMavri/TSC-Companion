@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name         TSC Spies
-// @namespace    Torn Stats Central
-// @version      2.0.3
+// @name         Torn Spies Central Companion
+// @namespace    TSC
+// @version      2.0.4
 // @author       mitza [2549762] && mavri [2402357]
-// @description  Companion script for TSC
+// @description  Companion script for Torn Spies Central
 // @license      MIT
-// @copyright    2023, diicot.cc
+// @copyright    2024, diicot.cc
 // @icon         https://i.imgur.com/8eydsOA.png
 // @downloadURL  https://raw.githubusercontent.com/LeoMavri/torn-stats-central-script/main/dist/stat-estimate-api.user.js
 // @updateURL    https://raw.githubusercontent.com/LeoMavri/torn-stats-central-script/main/dist/stat-estimate-api.user.js
@@ -136,7 +136,7 @@
     var _a, _b;
     let key = await GM.getValue(API_KEY_ENTRY, null);
     if (key === "" || key == null) {
-      key = prompt(`Please fill in your API key with the one used in Torn Stats Central.`);
+      key = prompt(`Please fill in your API key with the one used in Torn Spies Central.`);
       await GM.setValue(API_KEY_ENTRY, key);
       return;
     }
@@ -209,14 +209,14 @@
           text = createErrorHeader(`Unknown error.`);
           break;
       }
-      console.warn(`TORN STATS CENTRAL DEBUG INFORMATION BELOW`);
+      console.warn(`TORN SPIES CENTRAL DEBUG INFORMATION BELOW`);
       console.warn(`The API has returned the following message:`);
       console.log(spyInfo);
-      console.warn(`TORN STATS CENTRAL DEBUG INFORMATION ABOVE`);
+      console.warn(`TORN SPIES CENTRAL DEBUG INFORMATION ABOVE`);
       profile.innerHTML += text;
       if (requestNewKey) {
         key = prompt(
-          `The API key you have entered does not match the one used in Torn Stats Central, please try again. If you believe this is an error, please contact Mavri.`
+          `The API key you have entered does not match the one used in Torn Spies Central, please try again. If you believe this is an error, please contact Mavri.`
         );
         await GM.setValue(API_KEY_ENTRY, key);
       }
