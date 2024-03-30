@@ -23,45 +23,6 @@
     __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
     return value;
   };
-  const CONSTANTS = {
-    DEBUG: true,
-    COLOURS: {
-      INFO: "#05668D",
-      WARN: "#EDDEA4",
-      ERROR: "#ff0000",
-      DEBUG: "#5C415D"
-    }
-  };
-  class Logger {
-    static info(message, ...obj) {
-      console.info(
-        `%c[TSC Companion] ${message}`,
-        `color: ${CONSTANTS.COLOURS.INFO}`,
-        ...obj
-      );
-    }
-    static warn(message, ...obj) {
-      console.log(
-        `%c[TSC Companion] ${message}`,
-        `color: ${CONSTANTS.COLOURS.WARN}`,
-        ...obj
-      );
-    }
-    static error(message, ...obj) {
-      console.error(
-        `%c[TSC Companion] ${message}`,
-        `color: ${CONSTANTS.COLOURS.ERROR}`,
-        ...obj
-      );
-    }
-    static debug(message, ...obj) {
-      console.log(
-        `%c[TSC Companion] ${message}`,
-        `color: ${CONSTANTS.COLOURS.DEBUG}`,
-        ...obj
-      );
-    }
-  }
   class ProfilePage {
     constructor() {
       __publicField(this, "name", "Profile Page");
@@ -119,6 +80,10 @@
         Logger.warn(`${this.name}: Failed to find element to append to.`);
         return;
       }
+      const relevantFeatures = Constants.Features.filter(
+        (f) => f.name !== "Settings Panel"
+      );
+      Logger.debug(`Features:`, relevantFeatures);
       $(element).after(
         $("<details>").addClass("tsc-accordion").append($("<summary>").text("TSC Settings")).append(
           $("<p>").text(
@@ -126,6 +91,10 @@
           ),
           $("<p>").text(
             "Here you can configure the settings to your liking. Please note that changes will be saved automatically."
+          ),
+          $("<br>"),
+          relevantFeatures.map(
+            (feature) => $("<p>").text(feature.name).append($("<p>").text(feature.description))
           )
           // todo: for loop through all of the settings and create a checkbox for each
         )
@@ -137,6 +106,46 @@
     ProfilePage,
     SettingsPanel
   }, Symbol.toStringTag, { value: "Module" }));
+  const Constants = {
+    Debug: true,
+    Colours: {
+      Info: "#05668D",
+      Warn: "#EDDEA4",
+      Error: "#ff0000",
+      Debug: "#5C415D"
+    },
+    Features: Object.values(Features).map((f) => new f())
+  };
+  class Logger {
+    static info(message, ...obj) {
+      console.info(
+        `%c[TSC Companion] ${message}`,
+        `color: ${Constants.Colours.Info}`,
+        ...obj
+      );
+    }
+    static warn(message, ...obj) {
+      console.log(
+        `%c[TSC Companion] ${message}`,
+        `color: ${Constants.Colours.Warn}`,
+        ...obj
+      );
+    }
+    static error(message, ...obj) {
+      console.error(
+        `%c[TSC Companion] ${message}`,
+        `color: ${Constants.Colours.Error}`,
+        ...obj
+      );
+    }
+    static debug(message, ...obj) {
+      console.log(
+        `%c[TSC Companion] ${message}`,
+        `color: ${Constants.Colours.Debug}`,
+        ...obj
+      );
+    }
+  }
   async function main() {
     for (const entry of Object.values(Features)) {
       const Feature = new entry();

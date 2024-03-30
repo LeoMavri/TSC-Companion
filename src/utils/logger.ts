@@ -1,10 +1,10 @@
-import { CONSTANTS } from "../constants";
+import { Constants } from "../constants";
 
 export default class Logger {
   public static info(message: string, ...obj: any): void {
     console.info(
       `%c[TSC Companion] ${message}`,
-      `color: ${CONSTANTS.COLOURS.INFO}`,
+      `color: ${Constants.Colours.Info}`,
       ...obj
     );
   }
@@ -12,7 +12,7 @@ export default class Logger {
   public static warn(message: string, ...obj: any): void {
     console.log(
       `%c[TSC Companion] ${message}`,
-      `color: ${CONSTANTS.COLOURS.WARN}`,
+      `color: ${Constants.Colours.Warn}`,
       ...obj
     );
   }
@@ -20,17 +20,17 @@ export default class Logger {
   public static error(message: string, ...obj: any): void {
     console.error(
       `%c[TSC Companion] ${message}`,
-      `color: ${CONSTANTS.COLOURS.ERROR}`,
+      `color: ${Constants.Colours.Error}`,
       ...obj
     );
   }
 
   public static debug(message: string, ...obj: any): void {
-    if (!CONSTANTS.DEBUG) return;
+    if (!Constants.Debug) return;
 
     console.log(
       `%c[TSC Companion] ${message}`,
-      `color: ${CONSTANTS.COLOURS.DEBUG}`,
+      `color: ${Constants.Colours.Debug}`,
       ...obj
     );
   }

@@ -1,8 +1,8 @@
 import Page from "../page";
 
 export class ProfilePage implements Page {
-  public name = "Profile Page";
-  public description = "Shows a user's spy on their profile page";
+  public readonly name = "Profile Page";
+  public readonly description = "Shows a user's spy on their profile page";
   public enabled = true; // todo: fetch from ls
 
   public async shouldRun(): Promise<boolean> {

@@ -1,10 +1,14 @@
-export const CONSTANTS = {
-  DEBUG: true,
+import * as Feat from "./pages/index.js";
 
-  COLOURS: {
-    INFO: "#05668D",
-    WARN: "#EDDEA4",
-    ERROR: "#ff0000",
-    DEBUG: "#5C415D",
+export const Constants = {
+  Debug: true,
+
+  Colours: {
+    Info: "#05668D",
+    Warn: "#EDDEA4",
+    Error: "#ff0000",
+    Debug: "#5C415D",
   },
+
+  Features: Object.values(Feat).map((f) => new f()),
 };

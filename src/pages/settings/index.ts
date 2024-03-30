@@ -1,11 +1,12 @@
 import "./settings.css";
 import { waitForElement } from "../../utils/dom.js";
+import { Constants } from "../../constants.js";
 import Logger from "../../utils/logger.js";
 import Page from "../page.js";
 
 export class SettingsPanel implements Page {
-  public name = "Settings Panel";
-  public description = "Adds a settings panel to the factions page.";
+  public readonly name = "Settings Panel";
+  public readonly description = "Adds a settings panel to the factions page.";
   public enabled = true; // can't be disabled lol
 
   public async shouldRun(): Promise<boolean> {
@@ -20,6 +21,12 @@ export class SettingsPanel implements Page {
       return;
     }
 
+    const relevantFeatures = Constants.Features.filter(
+      (f) => f.name !== "Settings Panel"
+    ); // remove the settings panel lol
+
+    Logger.debug(`Features:`, relevantFeatures);
+
     $(element).after(
       $("<details>")
         .addClass("tsc-accordion")
@@ -30,6 +37,14 @@ export class SettingsPanel implements Page {
           ),
           $("<p>").text(
             "Here you can configure the settings to your liking. Please note that changes will be saved automatically."
+          ),
+
+          $("<br>"),
+
+          relevantFeatures.map((feature) =>
+            $("<p>")
+              .text(feature.name)
+              .append($("<p>").text(feature.description))
           )
           // todo: for loop through all of the settings and create a checkbox for each
         )
