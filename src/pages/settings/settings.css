@@ -1,0 +1,7 @@
+.tsc-accordion {
+  background-color: var(--tsc-bg-color);
+  border: 1px solid var(--tsc-border-color);
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 10px;
+}
