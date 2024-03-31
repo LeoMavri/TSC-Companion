@@ -1,15 +1,49 @@
-import Page from "../page";
+import Page from "../page.js";
+import Settings from "../../utils/local-storage.js";
+import { waitForElement } from "../../utils/dom.js";
+import Logger from "../../utils/logger.js";
+import { getSpyOld } from "../../utils/api.js";
 
-export class ProfilePage implements Page {
-  public readonly name = "Profile Page";
-  public readonly description = "Shows a user's spy on their profile page";
-  public enabled = true; // todo: fetch from ls
+export const ProfilePage = new Page({
+  name: "Profile Page",
+  description: "Shows a user's spy on their profile page",
 
-  public async shouldRun(): Promise<boolean> {
-    return false;
-  }
+  shouldRun: async function () {
+    return (
+      Settings.getToggle(this.name) &&
+      window.location.pathname === "/profiles.php"
+    );
+  },
 
-  public async start(): Promise<void> {
-    console.log("Profile Page started");
-  }
-}
+  start: async () => {
+    const emptyBlock = await waitForElement(`.empty-block`);
+
+    if (emptyBlock === null) {
+      Logger.warn("Could not find the empty block on the profile page");
+      return;
+    }
+
+    const userId = window.location.search.split("XID=")[1];
+    const key = Settings.getSetting("apiKey");
+
+    if (!key) {
+      Logger.warn("No API key found, cannot fetch spy");
+      // todo: show a message to the user
+      return;
+    }
+
+    const spy = await getSpyOld(userId, key);
+
+    if ("error" in spy) {
+      Logger.error(spy.message);
+      return;
+    }
+
+    if (!spy.success) {
+      Logger.error(`Failed to fetch spy: ${spy.code}`);
+      return;
+    }
+
+    // create a table with jquery
+  },
+});

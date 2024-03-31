@@ -1,9 +1,13 @@
 body {
   --tsc-bg-color: #f0f0f0;
   --tsc-border-color: #ccc;
+  --tsc-input-color: #ccc;
+  --tsc-text-color: #000;
 }
 
 body.dark-mode {
   --tsc-bg-color: #333;
   --tsc-border-color: #444;
+  --tsc-input-color: #504f4f;
+  --tsc-text-color: #ccc;
 }

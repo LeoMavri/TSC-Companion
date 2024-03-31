@@ -3,9 +3,7 @@ import Logger from "./utils/logger.js";
 import * as Features from "./pages/index.js";
 
 async function main() {
-  for (const entry of Object.values(Features)) {
-    const Feature = new entry();
-
+  for (const Feature of Object.values(Features)) {
     if ((await Feature.shouldRun()) === false) {
       Logger.info(`${Feature.name} feature not applicable`);
       continue;

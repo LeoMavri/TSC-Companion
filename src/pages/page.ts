@@ -1,8 +1,21 @@
-export default interface Page {
+type PageOptions = {
   name: string;
   description: string;
-  enabled: boolean; // this will be fetched from local storage or something along those lines
 
-  shouldRun(): Promise<boolean>;
-  start(): Promise<void>;
+  shouldRun: () => Promise<boolean>;
+  start: () => Promise<void>;
+};
+
+export default class Page {
+  readonly name: string;
+  readonly description: string;
+  shouldRun: () => Promise<boolean>;
+  start: () => Promise<void>;
+
+  constructor({ name, description, shouldRun, start }: PageOptions) {
+    this.name = name;
+    this.description = description;
+    this.shouldRun = shouldRun;
+    this.start = start;
+  }
 }

@@ -8,6 +8,9 @@ devDependencies:
   '@types/jquery':
     specifier: ^3.5.29
     version: 3.5.29
+  '@types/tampermonkey':
+    specifier: ^5.0.2
+    version: 5.0.2
   typescript:
     specifier: ^5.4.3
     version: 5.4.3
@@ -363,6 +366,10 @@ packages:
 
   /@types/sizzle@2.3.8:
     resolution: {integrity: sha512-0vWLNK2D5MT9dg0iOo8GlKguPAU02QjmZitPEsXRuJXU/OGIOt9vT9Fc26wtYuavLxtO45v9PGleoL9Z0k1LHg==}
+    dev: true
+
+  /@types/tampermonkey@5.0.2:
+    resolution: {integrity: sha512-keKnYemqWts68wO2+TBdEg84iQd5vymK5SEQGxitI9uOfOnjm/ZskBoK9ZH3mnSYp79HidZMA/Y7ODQtiA/VIg==}
     dev: true
 
   /acorn-walk@8.3.2:

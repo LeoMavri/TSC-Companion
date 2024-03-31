@@ -1,5 +1,3 @@
-import * as Feat from "./pages/index.js";
-
 export const Constants = {
   Debug: true,
 
@@ -9,6 +7,4 @@ export const Constants = {
     Error: "#ff0000",
     Debug: "#5C415D",
   },
-
-  Features: Object.values(Feat).map((f) => new f()),
 };

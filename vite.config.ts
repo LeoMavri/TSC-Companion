@@ -14,6 +14,7 @@ export default defineConfig({
         version: "NEXT-1",
         icon: "https://i.imgur.com/8eydsOA.png",
         namespace: "TSC",
+        connect: ["api.torn.com", "api.diicot.cc"],
         match: [
           "https://www.torn.com/profiles.php?*", // User Profile
           "https://www.torn.com/factions.php?step=your*", // Our Faction profile
