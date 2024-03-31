@@ -1,236 +1,26 @@
 // ==UserScript==
-// @name         TSC - Companion NEXT
+// @name         TSC Companion - Next
 // @namespace    TSC
-// @version      NEXT-1
+// @version      next-2
 // @author       mavri [2402357]
-// @description  A very early version of the new TSC Companion script
+// @description  A very early version of the new TSC Companion. Special thanks to Kwack [2190604]
 // @copyright    2024, diicot.cc
 // @icon         https://i.imgur.com/8eydsOA.png
+// @updateURL    https://github.com/LeoMavri/TSC-Companion/raw/next/dist/tsc-companion.user.js
 // @match        https://www.torn.com/profiles.php?*
 // @match        https://www.torn.com/factions.php?step=your*
 // @connect      api.torn.com
-// @connect      api.diicot.cc
+// @connect      tsc.diicot.cc
+// @grant        GM.xmlHttpRequest
 // @grant        GM_addStyle
 // @run-at       document-end
 // ==/UserScript==
 
-(o=>{if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const c=document.createElement("style");c.textContent=o,document.head.append(c)})(" body{--tsc-bg-color: #f0f0f0;--tsc-border-color: #ccc;--tsc-input-color: #ccc;--tsc-text-color: #000}body.dark-mode{--tsc-bg-color: #333;--tsc-border-color: #444;--tsc-input-color: #504f4f;--tsc-text-color: #ccc}.tsc-accordion{background-color:var(--tsc-bg-color);border:1px solid var(--tsc-border-color);border-radius:5px;margin:10px 0;padding:10px}.tsc-setting-entry{display:flex;align-items:center;gap:5px;margin-bottom:5px}.tsc-key-input{width:120px;padding-left:5px;background-color:var(--tsc-input-color);color:var(--tsc-text-color)} ");
+(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const o=document.createElement("style");o.textContent=t,document.head.append(o)})(" body{--tsc-bg-color: #f0f0f0;--tsc-border-color: #ccc;--tsc-input-color: #ccc;--tsc-text-color: #000}body.dark-mode{--tsc-bg-color: #333;--tsc-border-color: #444;--tsc-input-color: #504f4f;--tsc-text-color: #ccc}table.tsc-stat-table{width:100%;border-collapse:collapse;color:var(--tsc-text-color);background-color:var(--tsc-bg-color)}table.tsc-stat-table th,table.tsc-stat-table td{border:1px solid var(--tsc-border-color);color:var(--tsc-text-color);padding:5px;text-align:center}table.tsc-stat-table th{background-color:var(--tsc-bg-color);color:var(--tsc-text-color)}.tsc-accordion{background-color:var(--tsc-bg-color);border:1px solid var(--tsc-border-color);border-radius:5px;margin:10px 0;padding:10px}.tsc-setting-entry{display:flex;align-items:center;gap:5px;margin-bottom:5px}.tsc-key-input{width:120px;padding-left:5px;background-color:var(--tsc-input-color);color:var(--tsc-text-color)} ");
 
 (function () {
-  'use strict';
+	'use strict';
 
-  var __defProp = Object.defineProperty;
-  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-  var __publicField = (obj, key, value) => {
-    __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-    return value;
-  };
-  const Features = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-    __proto__: null,
-    get ProfilePage() {
-      return ProfilePage;
-    },
-    get SettingsPanel() {
-      return SettingsPanel;
-    }
-  }, Symbol.toStringTag, { value: "Module" }));
-  const Constants = {
-    Debug: true,
-    Colours: {
-      Info: "#05668D",
-      Warn: "#EDDEA4",
-      Error: "#ff0000",
-      Debug: "#5C415D"
-    }
-  };
-  class Logger {
-    static info(message, ...obj) {
-      console.info(
-        `%c[TSC Companion] ${message}`,
-        `color: ${Constants.Colours.Info}`,
-        ...obj
-      );
-    }
-    static warn(message, ...obj) {
-      console.log(
-        `%c[TSC Companion] ${message}`,
-        `color: ${Constants.Colours.Warn}`,
-        ...obj
-      );
-    }
-    static error(message, ...obj) {
-      console.error(
-        `%c[TSC Companion] ${message}`,
-        `color: ${Constants.Colours.Error}`,
-        ...obj
-      );
-    }
-    static debug(message, ...obj) {
-      console.log(
-        `%c[TSC Companion] ${message}`,
-        `color: ${Constants.Colours.Debug}`,
-        ...obj
-      );
-    }
-  }
-  class Page {
-    constructor({ name, description, shouldRun, start }) {
-      __publicField(this, "name");
-      __publicField(this, "description");
-      __publicField(this, "shouldRun");
-      __publicField(this, "start");
-      this.name = name;
-      this.description = description;
-      this.shouldRun = shouldRun;
-      this.start = start;
-    }
-  }
-  class Settings {
-    constructor(storageKey) {
-      __publicField(this, "storageKey");
-      this.storageKey = storageKey;
-    }
-    getToggle(key) {
-      return this.getSetting(key) === "true";
-    }
-    getSetting(key) {
-      return localStorage.getItem(`${this.storageKey}-${key}`);
-    }
-    setSetting(key, value) {
-      localStorage.setItem(`${this.storageKey}-${key}`, value);
-    }
-  }
-  const Settings$1 = new Settings("kwack.mavri.tsc.rocks");
-  const ProfilePage = new Page({
-    name: "Profile Page",
-    description: "Shows a user's spy on their profile page",
-    shouldRun: async function() {
-      return Settings$1.getToggle(this.name) && window.location.pathname === "/profiles.php";
-    },
-    start: async () => console.log("Profile Page Started")
-  });
-  function waitForElement(querySelector, timeout) {
-    return new Promise((resolve, _reject) => {
-      let timer;
-      if (document.querySelectorAll(querySelector).length) {
-        return resolve(document.querySelector(querySelector));
-      }
-      const observer = new MutationObserver(() => {
-        if (document.querySelectorAll(querySelector).length) {
-          observer.disconnect();
-          if (timer != null) {
-            clearTimeout(timer);
-          }
-          return resolve(document.querySelector(querySelector));
-        }
-      });
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
-      if (timeout) {
-        timer = setTimeout(() => {
-          observer.disconnect();
-          resolve(null);
-        }, timeout);
-      }
-    });
-  }
-  const SettingsPanel = new Page({
-    name: "Settings Panel",
-    description: "Adds a settings panel to the factions page.",
-    shouldRun: async function() {
-      return window.location.pathname === "/factions.php";
-    },
-    start: async function() {
-      const element = await waitForElement(`#factions > ul`);
-      if (element === null) {
-        Logger.warn(`${this.name}: Failed to find element to append to.`);
-        return;
-      }
-      const relevantFeatures = Object.values(Features).filter(
-        (f) => f.name !== "Settings Panel"
-      );
-      Logger.debug(`Features:`, relevantFeatures);
-      $(element).after(
-        $("<details>").attr("open", "").addClass("tsc-accordion").append($("<summary>").text("TSC Settings")).append(
-          $("<p>").css("margin-top", "5px").text(
-            "This is the settings panel for the Torn Spies Central script."
-          ),
-          $("<p>").text(
-            "Here you can configure the settings to your liking. Please note that changes will be saved automatically."
-          ),
-          // TODO: Clear cached spies, Clear all cache
-          $("<br>"),
-          // GLOBAL TOGGLE - BEGIN
-          $("<div>").addClass("tsc-setting-entry").append(
-            $("<input>").attr("type", "checkbox").attr("id", "enable").prop("checked", Settings$1.getToggle("enable")).on("change", function() {
-              Settings$1.setSetting("enable", $(this).prop("checked"));
-              Logger.debug(`Set enable to ${$(this).prop("checked")}`);
-            })
-          ).append($("<p>").text("Enable Script")),
-          // GLOBAL TOGGLE - END
-          $("<br>"),
-          // API KEY INPUT - BEGIN
-          $("<div>").addClass("tsc-setting-entry").append(
-            $("<label>").attr("for", "api-key").text("API Key"),
-            $("<input>").attr("type", "text").attr("id", "api-key").attr("placeholder", "Paste your key here...").addClass("tsc-key-input").val(Settings$1.getSetting("api-key") || "").on("change", function() {
-              const key = $(this).val();
-              if (typeof key !== "string") {
-                Logger.warn("API Key is not a string.");
-                return;
-              }
-              if (!/^[a-zA-Z0-9]{16}$/.test(key)) {
-                Logger.warn("API Key is not valid.");
-                this.style.outline = "1px solid red";
-                return;
-              }
-              this.style.outline = "none";
-              if (key === Settings$1.getSetting("api-key"))
-                return;
-              Settings$1.setSetting("api-key", key);
-              Logger.debug(`Set api-key to ${key}`);
-            })
-          ),
-          // API KEY INPUT - END
-          $("<br>"),
-          // FEATURE TOGGLES - BEGIN
-          relevantFeatures.map(
-            (feature) => $("<div>").append(
-              $("<div>").addClass("tsc-setting-entry").append(
-                $("<input>").attr("type", "checkbox").attr("id", feature.name).prop("checked", Settings$1.getToggle(feature.name)).on("change", function() {
-                  Settings$1.setSetting(
-                    feature.name,
-                    $(this).prop("checked")
-                  );
-                  Logger.debug(
-                    `Set ${feature.name} to ${$(this).prop("checked")}`
-                  );
-                })
-              ).append($("<p>").text(feature.name))
-            ).append($("<p>").text(feature.description))
-          )
-          // FEATURE TOGGLES - END
-        )
-      );
-    }
-  });
-  async function main() {
-    for (const Feature of Object.values(Features)) {
-      if (await Feature.shouldRun() === false) {
-        Logger.info(`${Feature.name} feature not applicable`);
-        continue;
-      }
-      try {
-        await Feature.start();
-        Logger.info(`${Feature.name} feature started`);
-      } catch (err) {
-        Logger.error(`Failed to start ${Feature.name} feature:`, err);
-      }
-    }
-  }
-  main().catch((err) => {
-    Logger.error("TSC failed catastrophically:", err);
-  });
+	var y=Object.defineProperty;var S=(n,e,t)=>e in n?y(n,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):n[e]=t;var c=(n,e,t)=>(S(n,typeof e!="symbol"?e+"":e,t),t);const g=Object.freeze(Object.defineProperty({__proto__:null,get ProfilePage(){return C},get SettingsPanel(){return d}},Symbol.toStringTag,{value:"Module"})),p={Debug:!0,Colours:{Info:"#05668D",Warn:"#EDDEA4",Error:"#ff0000",Debug:"#5C415D"}};class a{static info(e,...t){console.info(`%c[TSC Companion] ${e}`,`color: ${p.Colours.Info}`,...t);}static warn(e,...t){console.log(`%c[TSC Companion] ${e}`,`color: ${p.Colours.Warn}`,...t);}static error(e,...t){console.error(`%c[TSC Companion] ${e}`,`color: ${p.Colours.Error}`,...t);}static debug(e,...t){console.log(`%c[TSC Companion] ${e}`,`color: ${p.Colours.Debug}`,...t);}}class f{constructor({name:e,description:t,shouldRun:r,start:i}){c(this,"name");c(this,"description");c(this,"shouldRun");c(this,"start");this.name=e,this.description=t,this.shouldRun=r,this.start=i;}}class b{constructor(e){c(this,"storageKey");this.storageKey=e;}getToggle(e){return this.getSetting(e)==="true"}getSetting(e){return localStorage.getItem(`${this.storageKey}-${e}`)}setSetting(e,t){localStorage.setItem(`${this.storageKey}-${e}`,t);}getJSON(e){const t=this.getSetting(e);return t===null?null:JSON.parse(t)}setJSON(e,t){this.setSetting(e,JSON.stringify(t));}}const o=new b("kwack.mavri.tsc.rocks");function h(n,e){return new Promise((t,r)=>{let i;if(document.querySelectorAll(n).length)return t(document.querySelector(n));const s=new MutationObserver(()=>{if(document.querySelectorAll(n).length)return s.disconnect(),i!=null&&clearTimeout(i),t(document.querySelector(n))});s.observe(document.body,{childList:!0,subtree:!0}),e&&(i=setTimeout(()=>{s.disconnect(),t(null);},e));})}function w(n,e){const t=o.getJSON(`spy-${n}`);return t?Promise.resolve(t):new Promise((r,i)=>{(GM.xmlHttpRequest??GM.xmlhttpRequest)({method:"POST",url:"https://tsc.diicot.cc/stats/update",headers:{authorization:"10000000-6000-0000-0009-000000000001","x-requested-with":"XMLHttpRequest","Content-Type":"application/json"},data:JSON.stringify({apiKey:e,userId:n}),onload(m){const l=JSON.parse(m.responseText);console.log(l),!("error"in l)&&l.success&&o.setJSON(`spy-${n}`,l),r(l);},onerror(){i({success:!1,code:999});},timeout:5e3});})}function u(n){return Intl.NumberFormat("en-US",{notation:"compact",maximumFractionDigits:2,minimumFractionDigits:2}).format(n)}const C=new f({name:"Profile Page",description:"Shows a user's spy on their profile page",shouldRun:async function(){return o.getToggle(this.name)&&window.location.pathname==="/profiles.php"},start:async()=>{const n=await h(".empty-block",15e3);if(n===null){a.warn("Could not find the empty block on the profile page");return}const e=window.location.search.split("XID=")[1],t=o.getSetting("api-key");if(!t){a.warn("No API key found, cannot fetch spy");return}const r=await w(e,t);if("error"in r){a.error(r.message);return}if(!r.success){a.error(`Failed to fetch spy: ${r.code}`);return}const{estimate:i,statInterval:s}=r.spy;$(n).append($("<table>").addClass("tsc-stat-table").append($("<tr>").append($("<th>").text("Estimate Stats")).append($("<th>").text("Min")).append($("<th>").text("Max")).append($("<th>").text("Battle Score"))).append($("<tr>").append($("<td>").text(u(BigInt(i.stats)))).append($("<td>").text(s?u(BigInt(s.min)):"N/A")).append($("<td>").text(s?u(BigInt(s.max)):"N/A")).append($("<td>").text(s?s.battleScore:"N/A"))));}}),d=new f({name:"Settings Panel",description:"Adds a settings panel to the factions page.",shouldRun:async function(){return window.location.pathname==="/factions.php"},start:async function(){const n=await h("#factions > ul",15e3);if(n===null){a.warn(`${this.name}: Failed to find element to append to.`);return}const e=Object.values(g).filter(t=>t.name!=="Settings Panel");a.debug("Features:",e),$(n).after($("<details>").attr("open","").addClass("tsc-accordion").append($("<summary>").text("TSC Settings")).append($("<p>").css("margin-top","5px").text("This is the settings panel for the Torn Spies Central script."),$("<p>").text("Here you can configure the settings to your liking. Please note that changes will be saved automatically."),$("<br>"),$("<div>").addClass("tsc-setting-entry").append($("<input>").attr("type","checkbox").attr("id","enable").prop("checked",o.getToggle("enable")).on("change",function(){o.setSetting("enable",$(this).prop("checked")),a.debug(`Set enable to ${$(this).prop("checked")}`);})).append($("<p>").text("Enable Script")),$("<br>"),$("<div>").addClass("tsc-setting-entry").append($("<label>").attr("for","api-key").text("API Key"),$("<input>").attr("type","text").attr("id","api-key").attr("placeholder","Paste your key here...").addClass("tsc-key-input").val(o.getSetting("api-key")||"").on("change",function(){const t=$(this).val();if(typeof t!="string"){a.warn("API Key is not a string.");return}if(!/^[a-zA-Z0-9]{16}$/.test(t)){a.warn("API Key is not valid."),this.style.outline="1px solid red";return}this.style.outline="none",t!==o.getSetting("api-key")&&(o.setSetting("api-key",t),a.debug(`Set api-key to ${t}`));})),$("<br>"),e.map(t=>$("<div>").append($("<div>").addClass("tsc-setting-entry").append($("<input>").attr("type","checkbox").attr("id",t.name).prop("checked",o.getToggle(t.name)).on("change",function(){o.setSetting(t.name,$(this).prop("checked")),a.debug(`Set ${t.name} to ${$(this).prop("checked")}`);})).append($("<p>").text(t.name))).append($("<p>").text(t.description)))));}});async function k(){if(await d.shouldRun()===!0&&(a.info("Settings panel feature started"),await d.start()),o.getToggle("enable")===!1){a.info("TSC is disabled");return}if(a.info("Starting TSC features..."),o)for(const n of Object.values(g)){if(await n.shouldRun()===!1){a.info(`${n.name} feature not applicable`);continue}try{await n.start(),a.info(`${n.name} feature started`);}catch(e){a.error(`Failed to start ${n.name} feature:`,e);}}}k().catch(n=>{a.error("TSC failed catastrophically:",n);});
 
 })();

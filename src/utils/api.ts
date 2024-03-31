@@ -1,6 +1,4 @@
-// export function checkApiKey(key: string): Promise<unknown> {
-//   throw new Error("Not implemented");
-// }
+import Settings from "./local-storage.js";
 
 // TODO: Absolutely redo these, they're just so I can get the profile page going
 enum ErrorCode {
@@ -41,6 +39,12 @@ type SpyErrorable =
     };
 
 export function getSpyOld(userId: string, key: string): Promise<SpyErrorable> {
+  const spy = Settings.getJSON<SpyErrorable>(`spy-${userId}`);
+
+  if (spy) {
+    return Promise.resolve(spy);
+  }
+
   return new Promise((resolve, reject) => {
     const request = GM.xmlHttpRequest ?? (GM as any).xmlhttpRequest;
     request({
@@ -58,6 +62,11 @@ export function getSpyOld(userId: string, key: string): Promise<SpyErrorable> {
       onload(response: Tampermonkey.Response<any>) {
         const test = JSON.parse(response.responseText);
         console.log(test);
+
+        if (!("error" in test) && test.success) {
+          Settings.setJSON(`spy-${userId}`, test);
+        }
+
         resolve(test);
       },
       onerror() {

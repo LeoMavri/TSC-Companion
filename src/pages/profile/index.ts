@@ -1,8 +1,10 @@
+import "./profile.css";
 import Page from "../page.js";
 import Settings from "../../utils/local-storage.js";
-import { waitForElement } from "../../utils/dom.js";
 import Logger from "../../utils/logger.js";
+import { waitForElement } from "../../utils/dom.js";
 import { getSpyOld } from "../../utils/api.js";
+import { formatNumber } from "../../utils/format";
 
 export const ProfilePage = new Page({
   name: "Profile Page",
@@ -16,7 +18,7 @@ export const ProfilePage = new Page({
   },
 
   start: async () => {
-    const emptyBlock = await waitForElement(`.empty-block`);
+    const emptyBlock = await waitForElement(`.empty-block`, 15_000);
 
     if (emptyBlock === null) {
       Logger.warn("Could not find the empty block on the profile page");
@@ -24,7 +26,7 @@ export const ProfilePage = new Page({
     }
 
     const userId = window.location.search.split("XID=")[1];
-    const key = Settings.getSetting("apiKey");
+    const key = Settings.getSetting("api-key");
 
     if (!key) {
       Logger.warn("No API key found, cannot fetch spy");
@@ -44,6 +46,35 @@ export const ProfilePage = new Page({
       return;
     }
 
-    // create a table with jquery
+    const { estimate, statInterval } = spy.spy;
+
+    $(emptyBlock).append(
+      $("<table>")
+        .addClass("tsc-stat-table")
+        .append(
+          $("<tr>")
+            .append($("<th>").text("Estimate Stats"))
+            .append($("<th>").text("Min"))
+            .append($("<th>").text("Max"))
+            .append($("<th>").text("Battle Score"))
+        )
+        .append(
+          $("<tr>")
+            .append($("<td>").text(formatNumber(BigInt(estimate.stats))))
+            .append(
+              $("<td>").text(
+                statInterval ? formatNumber(BigInt(statInterval.min)) : "N/A"
+              )
+            )
+            .append(
+              $("<td>").text(
+                statInterval ? formatNumber(BigInt(statInterval.max)) : "N/A"
+              )
+            )
+            .append(
+              $("<td>").text(statInterval ? statInterval.battleScore : "N/A")
+            )
+        )
+    );
   },
 });

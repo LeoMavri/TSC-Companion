@@ -1,0 +1,19 @@
+table.tsc-stat-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--tsc-text-color);
+  background-color: var(--tsc-bg-color);
+}
+
+table.tsc-stat-table th,
+table.tsc-stat-table td {
+  border: 1px solid var(--tsc-border-color);
+  color: var(--tsc-text-color);
+  padding: 5px;
+  text-align: center;
+}
+
+table.tsc-stat-table th {
+  background-color: var(--tsc-bg-color);
+  color: var(--tsc-text-color);
+}

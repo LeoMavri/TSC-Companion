@@ -14,7 +14,7 @@ export const SettingsPanel = new Page({
   },
 
   start: async function () {
-    const element = await waitForElement(`#factions > ul`);
+    const element = await waitForElement(`#factions > ul`, 15_000);
 
     if (element === null) {
       Logger.warn(`${this.name}: Failed to find element to append to.`);
