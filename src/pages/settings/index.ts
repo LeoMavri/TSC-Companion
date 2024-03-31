@@ -27,7 +27,7 @@ export const SettingsPanel = new Page({
 
     $(element).after(
       $("<details>")
-        .attr("open", "")
+        // .attr("open", "")
         .addClass("tsc-accordion")
         .append($("<summary>").text("TSC Settings"))
         .append(
