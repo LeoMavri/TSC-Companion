@@ -1,7 +1,7 @@
 import "./style.css";
 import Logger from "./utils/logger.js";
 import * as Features from "./pages/index.js";
-import { SettingsPanel } from "./pages/index.js";
+import { SettingsPanel } from "./pages/settings/index.js";
 import Settings from "./utils/local-storage.js";
 
 async function main() {
@@ -17,20 +17,19 @@ async function main() {
 
   Logger.info("Starting TSC features...");
 
-  if (Settings)
-    for (const Feature of Object.values(Features)) {
-      if ((await Feature.shouldRun()) === false) {
-        Logger.info(`${Feature.name} feature not applicable`);
-        continue;
-      }
-
-      try {
-        await Feature.start();
-        Logger.info(`${Feature.name} feature started`);
-      } catch (err) {
-        Logger.error(`Failed to start ${Feature.name} feature:`, err);
-      }
+  for (const Feature of Object.values(Features)) {
+    if ((await Feature.shouldRun()) === false) {
+      Logger.info(`${Feature.name} feature not applicable`);
+      continue;
     }
+
+    try {
+      await Feature.start();
+      Logger.info(`${Feature.name} feature started`);
+    } catch (err) {
+      Logger.error(`Failed to start ${Feature.name} feature:`, err);
+    }
+  }
 }
 
 main().catch((err) => {

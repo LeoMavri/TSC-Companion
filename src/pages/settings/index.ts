@@ -21,9 +21,7 @@ export const SettingsPanel = new Page({
       return;
     }
 
-    const relevantFeatures = Object.values(Features).filter(
-      (f) => f.name !== "Settings Panel"
-    ); // remove the settings panel lol
+    const relevantFeatures = Object.values(Features);
 
     Logger.debug(`Features:`, relevantFeatures);
 
