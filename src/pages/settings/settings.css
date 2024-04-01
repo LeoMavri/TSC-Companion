@@ -19,3 +19,12 @@
   background-color: var(--tsc-input-color);
   color: var(--tsc-text-color);
 }
+
+.tsc-blur {
+  filter: blur(3px);
+  transition: filter 2s;
+}
+
+.tsc-blur:hover {
+  filter: blur(0);
+}

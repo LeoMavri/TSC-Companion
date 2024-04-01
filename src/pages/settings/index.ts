@@ -73,6 +73,7 @@ export const SettingsPanel = new Page({
                 .attr("id", "api-key")
                 .attr("placeholder", "Paste your key here...")
                 .addClass("tsc-key-input")
+                .addClass("tsc-blur")
                 .val(Settings.getSetting("api-key") || "")
                 .on("change", function () {
                   const key = $(this).val();
@@ -84,18 +85,16 @@ export const SettingsPanel = new Page({
 
                   if (!/^[a-zA-Z0-9]{16}$/.test(key)) {
                     Logger.warn("API Key is not valid.");
-                    this.style.outline = "1px solid red";
+                    $(this).css("outline", "1px solid red");
                     return;
                   }
 
-                  this.style.outline = "none";
+                  $(this).css("outline", "none");
 
                   if (key === Settings.getSetting("api-key")) return;
 
                   Settings.setSetting("api-key", key);
                   Logger.debug(`Set api-key to ${key}`);
-
-                  // check if key is valid
                 })
             ),
           // API KEY INPUT - END
