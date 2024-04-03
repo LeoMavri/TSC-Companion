@@ -40,8 +40,6 @@ export const SettingsPanel = new Page({
             "Here you can configure the settings to your liking. Please note that changes will be saved automatically."
           ),
 
-          // TODO: Clear cached spies, Clear all cache
-
           $("<br>"),
 
           // GLOBAL TOGGLE - BEGIN
@@ -125,8 +123,66 @@ export const SettingsPanel = new Page({
                   .append($("<p>").text(feature.name))
               )
               .append($("<p>").text(feature.description))
-          )
+          ),
           // FEATURE TOGGLES - END
+
+          $("<br>"),
+          $("<br>"),
+
+          $("<p>")
+            .text(
+              "The following buttons need to be double clicked to prevent accidental clicks."
+            )
+            .css("margin-bottom", "10px"),
+
+          $("<button>")
+            .text("Clear cached spies")
+            .addClass("tsc-button")
+            .css("margin-right", "5px")
+            .on("dblclick", async function () {
+              const counter = Settings.spyClear();
+              Logger.debug("Cleared all cached spies");
+
+              const btn = $(this);
+
+              btn
+                .animate({ opacity: 0 }, "slow", function () {
+                  btn.text(`Cleared ${counter} spies`);
+                })
+                .animate({ opacity: 1 }, "slow");
+
+              setTimeout(function () {
+                btn
+                  .animate({ opacity: 0 }, "slow", function () {
+                    btn.text("Clear cached spies");
+                  })
+                  .animate({ opacity: 1 }, "slow");
+              }, 3000);
+            }),
+
+          $("<button>")
+            .text("Clear all cache")
+            .addClass("tsc-button")
+            .on("dblclick", async function () {
+              const counter = Settings.fullClear();
+              Logger.debug("Cleared all cache");
+
+              const btn = $(this);
+
+              btn
+                .animate({ opacity: 0 }, "slow", function () {
+                  btn.text(`Cleared ${counter} items`);
+                })
+                .animate({ opacity: 1 }, "slow");
+
+              setTimeout(function () {
+                btn
+                  .animate({ opacity: 0 }, "slow", function () {
+                    btn.text("Clear all cache");
+                  })
+                  .animate({ opacity: 1 }, "slow");
+              }, 3000);
+            })
         )
     );
   },

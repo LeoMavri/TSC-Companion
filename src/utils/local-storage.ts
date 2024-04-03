@@ -1,5 +1,7 @@
 // TODO: Type the "key" with only the known keys
 
+import Logger from "./logger";
+
 class Settings {
   private storageKey: string;
   constructor(storageKey: string) {
@@ -26,6 +28,35 @@ class Settings {
 
   setJSON(key: string, value: any) {
     this.setSetting(key, JSON.stringify(value));
+  }
+
+  fullClear(): number {
+    let counter = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.startsWith(this.storageKey)) {
+        localStorage.removeItem(key);
+        Logger.debug(`Cleared ${key}`);
+        ++counter;
+      }
+    }
+
+    return counter;
+  }
+
+  spyClear(): number {
+    let counter = 0;
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.startsWith(`${this.storageKey}-spy`)) {
+        localStorage.removeItem(key);
+        Logger.debug(`Cleared ${key}`);
+        ++counter;
+      }
+    }
+
+    return counter;
   }
 }
 

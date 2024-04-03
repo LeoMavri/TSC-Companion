@@ -20,6 +20,15 @@
   color: var(--tsc-text-color);
 }
 
+.tsc-button {
+  background-color: var(--tsc-bg-color);
+  color: var(--tsc-text-color);
+  border: 1px solid var(--tsc-border-color);
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
 .tsc-blur {
   filter: blur(3px);
   transition: filter 2s;
