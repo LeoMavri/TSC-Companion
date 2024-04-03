@@ -6,15 +6,15 @@ class Settings {
     this.storageKey = storageKey;
   }
 
-  getToggle(key: string) {
+  getToggle(key: string): boolean {
     return this.getSetting(key) === "true";
   }
 
-  getSetting(key: string) {
+  getSetting(key: string): string | null {
     return localStorage.getItem(`${this.storageKey}-${key}`);
   }
 
-  setSetting(key: string, value: string) {
+  setSetting(key: string, value: string): void {
     localStorage.setItem(`${this.storageKey}-${key}`, value);
   }
 
