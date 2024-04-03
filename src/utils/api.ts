@@ -1,4 +1,5 @@
 import Settings from "./local-storage.js";
+import Logger from "./logger.js";
 
 // TODO: Absolutely redo these, they're just so I can get the profile page going
 enum ErrorCode {
@@ -22,8 +23,8 @@ type SpyErrorable =
           lastUpdated: Date;
         };
         statInterval?: {
-          min: number;
-          max: number;
+          min: string;
+          max: string;
           battleScore: number;
           lastUpdated: Date;
         };
@@ -38,11 +39,24 @@ type SpyErrorable =
       message: string;
     };
 
+const CACHE_TIME = 12 * 60 * 60 * 1000; // 12 hours
+
 export function getSpyOld(userId: string, key: string): Promise<SpyErrorable> {
-  const spy = Settings.getJSON<SpyErrorable>(`spy-${userId}`);
+  const spy = Settings.getJSON<SpyErrorable & { insertedAt: Date }>(
+    `spy-${userId}`
+  );
 
   if (spy) {
-    return Promise.resolve(spy);
+    if (
+      spy.insertedAt &&
+      new Date().getTime() - new Date(spy.insertedAt).getTime() < CACHE_TIME
+    ) {
+      Logger.debug("Spy cache still valid");
+      return Promise.resolve(spy);
+    } else {
+      Logger.debug("Spy cache expired, fetching new data");
+      Settings.setJSON(`spy-${userId}`, null);
+    }
   }
 
   return new Promise((resolve, reject) => {
@@ -64,7 +78,10 @@ export function getSpyOld(userId: string, key: string): Promise<SpyErrorable> {
         console.log(test);
 
         if (!("error" in test) && test.success) {
-          Settings.setJSON(`spy-${userId}`, test);
+          Settings.setJSON(`spy-${userId}`, {
+            ...test,
+            insertedAt: new Date().getTime(),
+          });
         }
 
         resolve(test);
