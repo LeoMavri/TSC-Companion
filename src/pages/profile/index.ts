@@ -53,7 +53,7 @@ export const ProfilePage = new Page({
         .addClass("tsc-stat-table")
         .append(
           $("<tr>")
-            .append($("<th>").text("Estimate Stats"))
+            .append($("<th>").text("Estimated Stats"))
             .append($("<th>").text("Min"))
             .append($("<th>").text("Max"))
             .append($("<th>").text("Battle Score"))
@@ -63,16 +63,22 @@ export const ProfilePage = new Page({
             .append($("<td>").text(formatNumber(BigInt(estimate.stats))))
             .append(
               $("<td>").text(
-                statInterval ? formatNumber(BigInt(statInterval.min)) : "N/A"
+                statInterval?.battleScore
+                  ? formatNumber(BigInt(statInterval.min))
+                  : "N/A"
               )
             )
             .append(
               $("<td>").text(
-                statInterval ? formatNumber(BigInt(statInterval.max)) : "N/A"
+                statInterval?.battleScore
+                  ? formatNumber(BigInt(statInterval.max))
+                  : "N/A"
               )
             )
             .append(
-              $("<td>").text(statInterval ? statInterval.battleScore : "N/A")
+              $("<td>").text(
+                statInterval?.battleScore ? statInterval.battleScore : "N/A"
+              )
             )
         )
     );
