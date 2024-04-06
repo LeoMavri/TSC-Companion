@@ -3,6 +3,7 @@ body {
   --tsc-border-color: #ccc;
   --tsc-input-color: #ccc;
   --tsc-text-color: #000;
+  --tsc-hover-color: #ddd;
 }
 
 body.dark-mode {
@@ -10,4 +11,5 @@ body.dark-mode {
   --tsc-border-color: #444;
   --tsc-input-color: #504f4f;
   --tsc-text-color: #ccc;
+  --tsc-hover-color: #555;
 }

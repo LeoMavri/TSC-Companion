@@ -17,7 +17,7 @@ export default defineConfig({
         connect: ["api.torn.com", "tsc.diicot.cc"],
         match: [
           "https://www.torn.com/profiles.php?*", // User Profile
-          "https://www.torn.com/factions.php?step=your*", // Our Faction profile
+          "https://www.torn.com/factions.php*", // All factions
         ],
         updateURL:
           "https://github.com/LeoMavri/TSC-Companion/raw/next/dist/tsc-companion.user.js",

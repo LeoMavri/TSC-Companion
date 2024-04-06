@@ -7,10 +7,10 @@ import { waitForElement } from "../../utils/dom.js";
 
 export const SettingsPanel = new Page({
   name: "Settings Panel",
-  description: "Adds a settings panel to the factions page.",
+  description: "Adds a settings panel to your own faction page.",
 
   shouldRun: async function () {
-    return window.location.pathname === "/factions.php";
+    return window.location.href.includes("factions.php?step=your");
   },
 
   start: async function () {
@@ -27,7 +27,7 @@ export const SettingsPanel = new Page({
 
     $(element).after(
       $("<details>")
-        // .attr("open", "")
+        .attr("open", "")
         .addClass("tsc-accordion")
         .append($("<summary>").text("TSC Settings"))
         .append(
@@ -57,8 +57,6 @@ export const SettingsPanel = new Page({
             )
             .append($("<p>").text("Enable Script")),
           // GLOBAL TOGGLE - END
-
-          $("<br>"),
 
           // API KEY INPUT - BEGIN
           $("<div>")
@@ -99,6 +97,8 @@ export const SettingsPanel = new Page({
 
           $("<br>"),
 
+          $("<p>").text("Feature toggles:"),
+
           // FEATURE TOGGLES - BEGIN
           relevantFeatures.map((feature) =>
             $("<div>")
@@ -138,7 +138,7 @@ export const SettingsPanel = new Page({
           $("<button>")
             .text("Clear cached spies")
             .addClass("tsc-button")
-            .css("margin-right", "5px")
+            .css("margin-right", "10px")
             .on("dblclick", async function () {
               const counter = Settings.spyClear();
               Logger.debug("Cleared all cached spies");
