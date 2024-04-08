@@ -1,7 +1,7 @@
 {
   "name": "tsc-companion",
   "private": true,
-  "version": "next-5",
+  "version": "next-6",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@types/jquery": "^3.5.29",
+    "@types/jqueryui": "^1.12.22",
     "@types/tampermonkey": "^5.0.2",
     "typescript": "^5.4.4",
     "vite": "^5.2.8",

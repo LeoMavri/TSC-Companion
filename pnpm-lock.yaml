@@ -8,6 +8,9 @@ devDependencies:
   '@types/jquery':
     specifier: ^3.5.29
     version: 3.5.29
+  '@types/jqueryui':
+    specifier: ^1.12.22
+    version: 1.12.22
   '@types/tampermonkey':
     specifier: ^5.0.2
     version: 5.0.2
@@ -362,6 +365,12 @@ packages:
     resolution: {integrity: sha512-oXQQC9X9MOPRrMhPHHOsXqeQDnWeCDT3PelUIg/Oy8FAbzSZtFHRjc7IpbfFVmpLtJ+UOoywpRsuO5Jxjybyeg==}
     dependencies:
       '@types/sizzle': 2.3.8
+    dev: true
+
+  /@types/jqueryui@1.12.22:
+    resolution: {integrity: sha512-4r7ROoUJ5gaIWvQa2qAHyrhskJcUNM62Md8M9+4DtabEiIQ9Y0pVlW88ojyXvn4M1HNUc/47KpFJaXhrk8P/rg==}
+    dependencies:
+      '@types/jquery': 3.5.29
     dev: true
 
   /@types/sizzle@2.3.8:

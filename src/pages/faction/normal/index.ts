@@ -4,7 +4,8 @@ import Page from "../../page";
 import Settings from "../../../utils/local-storage";
 import { waitForElement } from "../../../utils/dom";
 import Logger from "../../../utils/logger";
-// import { getSpyOld } from "../../../utils/api";
+import { getSpyOld } from "../../../utils/api";
+import { formatNumber } from "../../../utils/format";
 
 export const FactionNormal = new Page({
   name: "Faction - Normal",
@@ -13,7 +14,7 @@ export const FactionNormal = new Page({
   shouldRun: async function () {
     return (
       Settings.getToggle(this.name) &&
-      window.location.href.includes("factions.php?step=profile&ID=")
+      window.location.href.includes("factions.php?step=profile")
     );
   },
 
@@ -30,21 +31,76 @@ export const FactionNormal = new Page({
 
     const memberDiv = $(firstMember).parent().parent()[0];
 
-    Logger.debug(`Member Div:`, memberDiv);
+    $(memberDiv)
+      .find<HTMLLIElement>("li")
+      .each((_index, member) => {
+        const infoBox = $(member).find<HTMLDivElement>(
+          `[class*="userInfoBox"]`
+        )[0];
 
-    const header = $(memberDiv).find("li[role='heading']")[0];
+        //! This is a bit of a hack, but it works for now
+        $(infoBox).css("width", "157px");
 
-    Logger.debug(`Header:`, header);
+        if (infoBox === undefined) {
+          return;
+        }
 
-    $(header).after(
-      $("<li>")
-        .addClass("table-cell")
-        .append(
-          $("<div>")
-            .addClass("table-cell c-pointer divider-vertical torn-divider")
-            .text("Spy")
-            .css("font-weight", "bold")
-        )
-    );
+        const userHref = $(infoBox).find<HTMLAnchorElement>(
+          'a[href^="/profiles.php?XID="]'
+        )[0];
+
+        if (userHref === undefined) {
+          return;
+        }
+
+        const userId = userHref.href.split("XID=")[1];
+
+        getSpyOld(userId, Settings.getSetting("api-key")!).then((spy) => {
+          if ("error" in spy || spy.success !== true) {
+            Logger.warn(`Failed to find spy for ${userId}`, spy);
+            return;
+          }
+
+          const { estimate, statInterval } = spy.spy;
+
+          let spyText = formatNumber(estimate.stats, 1);
+          let tooltipText = `Estimate: ${formatNumber(estimate.stats, 2)}`;
+
+          if (statInterval?.battleScore) {
+            spyText = `${formatNumber(
+              BigInt(statInterval.min),
+              1
+            )} - ${formatNumber(BigInt(statInterval.max), 1)}`;
+
+            tooltipText += `<br>Interval: ${formatNumber(
+              BigInt(statInterval.min),
+              2
+            )} - ${formatNumber(
+              BigInt(statInterval.max),
+              2
+            )}<br>Battle Score: ${formatNumber(statInterval.battleScore, 2)}`;
+          }
+
+          $(infoBox).after(
+            $("<div>")
+              .addClass("tsc-faction-spy")
+              .text(spyText)
+              .attr("title", tooltipText)
+          );
+        });
+      });
   },
 });
+
+// TODO: Eventually make this a new column with sorting etc. etc.
+// const header = $(memberDiv).find("li[role='heading']")[0];
+// $(header).after(
+//   $("<li>")
+//     .addClass("table-cell")
+//     .append(
+//       $("<div>")
+//         .addClass("table-cell c-pointer divider-vertical torn-divider")
+//         .text("Spy")
+//         .css("font-weight", "bold")
+//     )
+// );

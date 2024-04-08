@@ -1,11 +1,8 @@
-.tsc-stat-pop-up {
-  /* make a simple tooltip style pop up */
-  position: absolute;
-  z-index: 1000;
-  background: var(--tsc-bg-color);
+.tsc-faction-spy {
+  background-color: var(--tsc-bg-color);
   color: var(--tsc-text-color);
   border: 1px solid var(--tsc-border-color);
-  padding: 5px;
   border-radius: 5px;
-  font-size: 12px;
+  padding: 3px 5px;
+  cursor: pointer;
 }

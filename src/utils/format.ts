@@ -1,7 +1,10 @@
-export function formatNumber(number: number | bigint): string {
+export function formatNumber(
+  number: number | bigint,
+  digits: number = 2
+): string {
   return Intl.NumberFormat("en-US", {
     notation: "compact",
-    maximumFractionDigits: 2,
-    minimumFractionDigits: 2,
+    maximumFractionDigits: digits,
+    minimumFractionDigits: digits,
   }).format(number);
 }
