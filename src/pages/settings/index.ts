@@ -21,6 +21,11 @@ export const SettingsPanel = new Page({
       return;
     }
 
+    if (element.nextElementSibling?.classList.contains("tsc-accordion")) {
+      Logger.warn(`${this.name}: Element already exists`);
+      return;
+    };
+
     const relevantFeatures = Object.values(Features);
 
     Logger.debug(`Features:`, relevantFeatures);
