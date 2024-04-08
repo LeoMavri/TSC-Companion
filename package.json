@@ -1,7 +1,7 @@
 {
   "name": "tsc-companion",
   "private": true,
-  "version": "next-6",
+  "version": "next-7",
   "type": "module",
   "scripts": {
     "dev": "vite",
