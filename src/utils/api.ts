@@ -39,9 +39,33 @@ type SpyErrorable =
       message: string;
     };
 
+type Errorable<T> = T | { error: boolean; message: string };
+
+export type UserBasic = {
+  level: number;
+  gender: "Enby" | "Female" | "Male";
+  player_id: number;
+  name: string;
+  status: {
+    color: "blue" | "green" | "red";
+    description: string;
+    details: string;
+    state:
+      | "Hospital"
+      | "Okay"
+      | "Jail"
+      | "Traveling"
+      | "Abroad"
+      | "Federal"
+      | "Fallen";
+    // Epoch TS (in seconds)
+    until: number;
+  };
+};
+
 const CACHE_TIME = 12 * 60 * 60 * 1000; // 12 hours
 
-export function getSpyOld(userId: string, key: string): Promise<SpyErrorable> {
+export function getTSCSpyOld(userId: string): Promise<SpyErrorable> {
   const spy = Settings.getJSON<SpyErrorable & { insertedAt: Date }>(
     `spy-${userId}`
   );
@@ -70,7 +94,7 @@ export function getSpyOld(userId: string, key: string): Promise<SpyErrorable> {
         "Content-Type": "application/json",
       },
       data: JSON.stringify({
-        apiKey: key,
+        apiKey: Settings.get("api-key") ?? "",
         userId: userId,
       }),
       onload(response: Tampermonkey.Response<any>) {
@@ -95,4 +119,67 @@ export function getSpyOld(userId: string, key: string): Promise<SpyErrorable> {
       timeout: 5_000,
     });
   });
+}
+
+export async function getLocalUserData(): Promise<Errorable<UserBasic>> {
+  if (Settings.get("api-key") === null) {
+    return {
+      error: true,
+      message: "API Key not set",
+    };
+  }
+  const userData = Settings.getJSON<UserBasic & { insertedAt: Date }>(
+    "user-data"
+  );
+
+  if (userData) {
+    if (
+      userData.insertedAt &&
+      new Date().getTime() - new Date(userData.insertedAt).getTime() <
+        CACHE_TIME
+    ) {
+      Logger.debug("User cache still valid");
+      return userData;
+    } else {
+      Logger.debug("User cache expired, fetching new data");
+      Settings.setJSON("user-data", null);
+    }
+  }
+
+  const res = await fetch(
+    `https://api.torn.com/user/?selections=basic&key=${Settings.get("api-key")}`
+  );
+
+  if (!res.ok) {
+    return {
+      error: true,
+      message: res.statusText,
+    };
+  }
+
+  const data = await res.json();
+
+  if (data.error) {
+    return {
+      error: true,
+      message: data.error.error,
+    };
+  }
+
+  Settings.setJSON("user-data", {
+    ...data,
+    insertedAt: new Date().getTime(),
+  });
+
+  return data;
+}
+
+export function getYATASpy(_userId: string) {
+  // todo
+  throw new Error("Not implemented");
+}
+
+export function getTornStatsSpy(_userId: string) {
+  // todo
+  throw new Error("Not implemented");
 }

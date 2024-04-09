@@ -4,10 +4,10 @@ This is the _next_ version of the TSC Companion script. It's not ready for use b
 
 ## Features
 
-- [ ] Settings menu (on own faction page, 2 more buttons pending + api key obfuscation)
+- [x] Settings menu
+- [x] Spies on profile page
+- [x] Spies on faction page
 - [x] Spy caching
 - [ ] TS / YATA spy fetching
-- [x] Spies on profile page
 - [ ] Spies on war page
-- [ ] Spies on faction page
 - [ ] Spies on enemies / friends page

@@ -4,7 +4,7 @@ import Page from "../../page";
 import Settings from "../../../utils/local-storage";
 import { waitForElement } from "../../../utils/dom";
 import Logger from "../../../utils/logger";
-import { getSpyOld } from "../../../utils/api";
+import { getTSCSpyOld } from "../../../utils/api";
 import { formatNumber } from "../../../utils/format";
 
 export const FactionNormal = new Page({
@@ -42,6 +42,7 @@ export const FactionNormal = new Page({
         $(infoBox).css("width", "157px");
 
         if (infoBox === undefined) {
+          Logger.warn("Failed to find infoBox", member);
           return;
         }
 
@@ -50,12 +51,13 @@ export const FactionNormal = new Page({
         )[0];
 
         if (userHref === undefined) {
+          Logger.warn("Failed to find userHref", infoBox);
           return;
         }
 
         const userId = userHref.href.split("XID=")[1];
 
-        getSpyOld(userId, Settings.getSetting("api-key")!).then((spy) => {
+        getTSCSpyOld(userId).then((spy) => {
           if ("error" in spy || spy.success !== true) {
             Logger.warn(`Failed to find spy for ${userId}`, spy);
             return;

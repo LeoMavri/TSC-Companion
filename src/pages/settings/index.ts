@@ -4,6 +4,12 @@ import Page from "../page.js";
 import Settings from "../../utils/local-storage.js";
 import * as Features from "../index.js";
 import { waitForElement } from "../../utils/dom.js";
+import { getLocalUserData } from "../../utils/api";
+
+/**
+ * TODO: Look into making an object that contains each setting and just iterate over that.
+ * TODO: Move this to your own profile page (I'll have to either check the sidebar or cache the userID)
+ */
 
 export const SettingsPanel = new Page({
   name: "Settings Panel",
@@ -24,18 +30,29 @@ export const SettingsPanel = new Page({
     if (element.nextElementSibling?.classList.contains("tsc-accordion")) {
       Logger.warn(`${this.name}: Element already exists`);
       return;
-    };
+    }
 
-    const relevantFeatures = Object.values(Features);
-
-    Logger.debug(`Features:`, relevantFeatures);
+    Logger.debug(`Features:`, Object.values(Features));
+    const userData = await getLocalUserData();
 
     $(element).after(
       $("<details>")
-        // .attr("open", "")
+        .attr("open", "")
         .addClass("tsc-accordion")
         .append($("<summary>").text("TSC Settings"))
         .append(
+          $("<p>")
+            .html(
+              "error" in userData
+                ? "Welcome! Please set your API key to continue."
+                : // make the name italic
+                  `Hey, ${userData.name}!`
+            )
+            .css("font-weight", "bold")
+            .css("font-size", "1.2em")
+            .css("margin-top", "10px")
+            .css("margin-bottom", "10px"),
+
           $("<p>")
             .css("margin-top", "5px")
             .text(
@@ -56,7 +73,7 @@ export const SettingsPanel = new Page({
                 .attr("id", "enable")
                 .prop("checked", Settings.getToggle("enable"))
                 .on("change", function () {
-                  Settings.setSetting("enable", $(this).prop("checked"));
+                  Settings.set("enable", $(this).prop("checked"));
                   Logger.debug(`Set enable to ${$(this).prop("checked")}`);
                 })
             )
@@ -75,7 +92,7 @@ export const SettingsPanel = new Page({
                 .attr("placeholder", "Paste your key here...")
                 .addClass("tsc-key-input")
                 .addClass("tsc-blur")
-                .val(Settings.getSetting("api-key") || "")
+                .val(Settings.get("api-key") || "")
                 .on("change", function () {
                   const key = $(this).val();
 
@@ -92,9 +109,9 @@ export const SettingsPanel = new Page({
 
                   $(this).css("outline", "none");
 
-                  if (key === Settings.getSetting("api-key")) return;
+                  if (key === Settings.get("api-key")) return;
 
-                  Settings.setSetting("api-key", key);
+                  Settings.set("api-key", key);
                   Logger.debug(`Set api-key to ${key}`);
                 })
             ),
@@ -105,7 +122,7 @@ export const SettingsPanel = new Page({
           $("<p>").text("Feature toggles:"),
 
           // FEATURE TOGGLES - BEGIN
-          relevantFeatures.map((feature) =>
+          Object.values(Features).map((feature) =>
             $("<div>")
               .append(
                 $("<div>")
@@ -116,10 +133,7 @@ export const SettingsPanel = new Page({
                       .attr("id", feature.name)
                       .prop("checked", Settings.getToggle(feature.name))
                       .on("change", function () {
-                        Settings.setSetting(
-                          feature.name,
-                          $(this).prop("checked")
-                        );
+                        Settings.set(feature.name, $(this).prop("checked"));
                         Logger.debug(
                           `Set ${feature.name} to ${$(this).prop("checked")}`
                         );
@@ -132,7 +146,7 @@ export const SettingsPanel = new Page({
           // FEATURE TOGGLES - END
 
           $("<br>"),
-          $("<br>"),
+          // $("<br>"),
 
           $("<p>")
             .text(
@@ -187,7 +201,29 @@ export const SettingsPanel = new Page({
                   })
                   .animate({ opacity: 1 }, "slow");
               }, 3000);
-            })
+            }),
+
+          $("<br>"),
+          $("<br>"),
+
+          // DEBUG TOGGLES - BEGIN
+
+          $("<p>").text("Debug settings:"),
+
+          $("<div>")
+            .addClass("tsc-setting-entry")
+            .append(
+              $("<input>")
+                .attr("type", "checkbox")
+                .attr("id", "debug-logs")
+                .prop("checked", Settings.getToggle("debug-logs"))
+                .on("change", function () {
+                  Settings.set("debug-logs", $(this).prop("checked"));
+                })
+            )
+            .append($("<p>").text("Extra debug logs"))
+
+          // DEBUG TOGGLES - END
         )
     );
   },
