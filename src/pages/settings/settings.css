@@ -41,6 +41,7 @@
   background-color: var(--tsc-bg-color);
   color: var(--tsc-text-color);
   border: 1px solid var(--tsc-border-color);
+  transition: background-color 0.5s;
   border-radius: 5px;
   padding: 5px 10px;
   cursor: pointer;
@@ -48,6 +49,7 @@
 
 .tsc-button:hover {
   background-color: var(--tsc-hover-color);
+  transition: background-color 0.5s;
 }
 
 .tsc-blur {
