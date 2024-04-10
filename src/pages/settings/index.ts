@@ -8,7 +8,7 @@ import { getLocalUserData } from "../../utils/api";
 
 /**
  * TODO: Look into making an object that contains each setting and just iterate over that.
- * TODO: Move this to your own profile page (I'll have to either check the sidebar or cache the userID)
+ * TODO: Move this to your own profile page (I'll have to check the sidebar)
  */
 
 export const SettingsPanel = new Page({
@@ -35,23 +35,23 @@ export const SettingsPanel = new Page({
     Logger.debug(`Features:`, Object.values(Features));
     const userData = await getLocalUserData();
 
+    const headerHtml =
+      "error" in userData
+        ? $("<div>").text("Welcome!")
+        : $("<div>").html(
+            `Hey, ${$("<div>")
+              .addClass("tsc-header-username")
+              .text(userData.name)
+              .prop("outerHTML")}!`
+          );
+
     $(element).after(
       $("<details>")
-        .attr("open", "")
+        // .attr("open", "")
         .addClass("tsc-accordion")
         .append($("<summary>").text("TSC Settings"))
         .append(
-          $("<p>")
-            .html(
-              "error" in userData
-                ? "Welcome! Please set your API key to continue."
-                : // make the name italic
-                  `Hey, ${userData.name}!`
-            )
-            .css("font-weight", "bold")
-            .css("font-size", "1.2em")
-            .css("margin-top", "10px")
-            .css("margin-bottom", "10px"),
+          $("<div>").addClass("tsc-header").append(headerHtml),
 
           $("<p>")
             .css("margin-top", "5px")

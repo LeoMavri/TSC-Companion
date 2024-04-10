@@ -6,6 +6,22 @@
   padding: 10px;
 }
 
+.tsc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.tsc-header-username {
+  font-style: italic;
+  display: inline;
+}
+
 .tsc-setting-entry {
   display: flex;
   align-items: center;
