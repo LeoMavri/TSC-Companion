@@ -57,6 +57,8 @@
   transition: filter 2s;
 }
 
-.tsc-blur:hover {
+.tsc-blur:focus,
+.tsc-blur:active {
+  transition-duration: 0.5s;
   filter: blur(0);
 }
