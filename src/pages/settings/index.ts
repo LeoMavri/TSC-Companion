@@ -146,11 +146,10 @@ export const SettingsPanel = new Page({
           // FEATURE TOGGLES - END
 
           $("<br>"),
-          // $("<br>"),
 
           $("<p>")
             .text(
-              "The following buttons need to be double clicked to prevent accidental clicks."
+              "The following buttons require a confirmation before anything is deleted."
             )
             .css("margin-bottom", "10px"),
 
@@ -158,7 +157,13 @@ export const SettingsPanel = new Page({
             .text("Clear cached spies")
             .addClass("tsc-button")
             .css("margin-right", "10px")
-            .on("dblclick", async function () {
+            .on("click", async function () {
+              const check = confirm(
+                "Are you sure you want to clear cached spies?"
+              );
+
+              if (!check) return;
+
               const counter = Settings.spyClear();
               Logger.debug("Cleared all cached spies");
 
@@ -182,7 +187,13 @@ export const SettingsPanel = new Page({
           $("<button>")
             .text("Clear all cache")
             .addClass("tsc-button")
-            .on("dblclick", async function () {
+            .on("click", async function () {
+              const check = confirm(
+                "Are you sure you want to clear all cache?"
+              );
+
+              if (!check) return;
+
               const counter = Settings.fullClear();
               Logger.debug("Cleared all cache");
 
