@@ -2,7 +2,7 @@
     "name": "tsc-companion-script",
     "author": "Mavri && Mitza",
     "license": "MIT",
-    "version": "2.0.4",
+    "version": "2.0.5",
     "description": "",
     "type": "module",
     "scripts": {
