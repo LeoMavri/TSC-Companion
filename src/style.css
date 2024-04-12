@@ -8,7 +8,7 @@
 }
 
 table.customTable {
-    position: static;
+    position: relative;
     top: -8px;
     /* width: 386px; */
     width: 100%;
