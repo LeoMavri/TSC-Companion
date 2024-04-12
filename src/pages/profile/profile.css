@@ -9,7 +9,7 @@ table.tsc-stat-table th,
 table.tsc-stat-table td {
   border: 1px solid var(--tsc-border-color);
   color: var(--tsc-text-color);
-  padding: 5px;
+  padding: 4px;
   text-align: center;
 }
 
