@@ -1,6 +1,4 @@
 export const Constants = {
-  Debug: true,
-
   Colours: {
     Info: "#05668D",
     Warn: "#EDDEA4",

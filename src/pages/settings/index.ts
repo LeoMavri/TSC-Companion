@@ -4,6 +4,12 @@ import Page from "../page.js";
 import Settings from "../../utils/local-storage.js";
 import * as Features from "../index.js";
 import { waitForElement } from "../../utils/dom.js";
+import { getLocalUserData } from "../../utils/api";
+
+/**
+ * TODO: Look into making an object that contains each setting and just iterate over that.
+ * TODO: Move this to your own profile page (I'll have to check the sidebar)
+ */
 
 export const SettingsPanel = new Page({
   name: "Settings Panel",
@@ -24,11 +30,20 @@ export const SettingsPanel = new Page({
     if (element.nextElementSibling?.classList.contains("tsc-accordion")) {
       Logger.warn(`${this.name}: Element already exists`);
       return;
-    };
+    }
 
-    const relevantFeatures = Object.values(Features);
+    Logger.debug(`Features:`, Object.values(Features));
+    const userData = await getLocalUserData();
 
-    Logger.debug(`Features:`, relevantFeatures);
+    const headerHtml =
+      "error" in userData
+        ? $("<div>").text("Welcome!")
+        : $("<div>").html(
+            `Hey, ${$("<div>")
+              .addClass("tsc-header-username")
+              .text(userData.name)
+              .prop("outerHTML")}!`
+          );
 
     $(element).after(
       $("<details>")
@@ -36,6 +51,8 @@ export const SettingsPanel = new Page({
         .addClass("tsc-accordion")
         .append($("<summary>").text("TSC Settings"))
         .append(
+          $("<div>").addClass("tsc-header").append(headerHtml),
+
           $("<p>")
             .css("margin-top", "5px")
             .text(
@@ -56,7 +73,7 @@ export const SettingsPanel = new Page({
                 .attr("id", "enable")
                 .prop("checked", Settings.getToggle("enable"))
                 .on("change", function () {
-                  Settings.setSetting("enable", $(this).prop("checked"));
+                  Settings.set("enable", $(this).prop("checked"));
                   Logger.debug(`Set enable to ${$(this).prop("checked")}`);
                 })
             )
@@ -75,7 +92,7 @@ export const SettingsPanel = new Page({
                 .attr("placeholder", "Paste your key here...")
                 .addClass("tsc-key-input")
                 .addClass("tsc-blur")
-                .val(Settings.getSetting("api-key") || "")
+                .val(Settings.get("api-key") || "")
                 .on("change", function () {
                   const key = $(this).val();
 
@@ -92,9 +109,9 @@ export const SettingsPanel = new Page({
 
                   $(this).css("outline", "none");
 
-                  if (key === Settings.getSetting("api-key")) return;
+                  if (key === Settings.get("api-key")) return;
 
-                  Settings.setSetting("api-key", key);
+                  Settings.set("api-key", key);
                   Logger.debug(`Set api-key to ${key}`);
                 })
             ),
@@ -105,7 +122,7 @@ export const SettingsPanel = new Page({
           $("<p>").text("Feature toggles:"),
 
           // FEATURE TOGGLES - BEGIN
-          relevantFeatures.map((feature) =>
+          Object.values(Features).map((feature) =>
             $("<div>")
               .append(
                 $("<div>")
@@ -116,10 +133,7 @@ export const SettingsPanel = new Page({
                       .attr("id", feature.name)
                       .prop("checked", Settings.getToggle(feature.name))
                       .on("change", function () {
-                        Settings.setSetting(
-                          feature.name,
-                          $(this).prop("checked")
-                        );
+                        Settings.set(feature.name, $(this).prop("checked"));
                         Logger.debug(
                           `Set ${feature.name} to ${$(this).prop("checked")}`
                         );
@@ -132,11 +146,10 @@ export const SettingsPanel = new Page({
           // FEATURE TOGGLES - END
 
           $("<br>"),
-          $("<br>"),
 
           $("<p>")
             .text(
-              "The following buttons need to be double clicked to prevent accidental clicks."
+              "The following buttons require a confirmation before anything is deleted."
             )
             .css("margin-bottom", "10px"),
 
@@ -144,7 +157,13 @@ export const SettingsPanel = new Page({
             .text("Clear cached spies")
             .addClass("tsc-button")
             .css("margin-right", "10px")
-            .on("dblclick", async function () {
+            .on("click", async function () {
+              const check = confirm(
+                "Are you sure you want to clear cached spies?"
+              );
+
+              if (!check) return;
+
               const counter = Settings.spyClear();
               Logger.debug("Cleared all cached spies");
 
@@ -168,7 +187,13 @@ export const SettingsPanel = new Page({
           $("<button>")
             .text("Clear all cache")
             .addClass("tsc-button")
-            .on("dblclick", async function () {
+            .on("click", async function () {
+              const check = confirm(
+                "Are you sure you want to clear all cache?"
+              );
+
+              if (!check) return;
+
               const counter = Settings.fullClear();
               Logger.debug("Cleared all cache");
 
@@ -187,7 +212,29 @@ export const SettingsPanel = new Page({
                   })
                   .animate({ opacity: 1 }, "slow");
               }, 3000);
-            })
+            }),
+
+          $("<br>"),
+          $("<br>"),
+
+          // DEBUG TOGGLES - BEGIN
+
+          $("<p>").text("Debug settings:"),
+
+          $("<div>")
+            .addClass("tsc-setting-entry")
+            .append(
+              $("<input>")
+                .attr("type", "checkbox")
+                .attr("id", "debug-logs")
+                .prop("checked", Settings.getToggle("debug-logs"))
+                .on("change", function () {
+                  Settings.set("debug-logs", $(this).prop("checked"));
+                })
+            )
+            .append($("<p>").text("Extra debug logs"))
+
+          // DEBUG TOGGLES - END
         )
     );
   },

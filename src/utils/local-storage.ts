@@ -1,6 +1,7 @@
-// TODO: Type the "key" with only the known keys
-
 import Logger from "./logger";
+
+// TODO: Add types to local storage stuff
+// type KnownLS = "tsc-key" | "ts-key" | "yata-key" | `spy-${number}`;
 
 class Settings {
   private storageKey: string;
@@ -8,26 +9,26 @@ class Settings {
     this.storageKey = storageKey;
   }
 
-  getToggle(key: string): boolean {
-    return this.getSetting(key) === "true";
-  }
-
-  getSetting(key: string): string | null {
+  get(key: string): string | null {
     return localStorage.getItem(`${this.storageKey}-${key}`);
   }
 
-  setSetting(key: string, value: string): void {
+  set(key: string, value: string): void {
     localStorage.setItem(`${this.storageKey}-${key}`, value);
   }
 
+  getToggle(key: string): boolean {
+    return this.get(key) === "true";
+  }
+
   getJSON<T>(key: string): T | null {
-    const value = this.getSetting(key);
+    const value = this.get(key);
     if (value === null) return null;
     return JSON.parse(value);
   }
 
   setJSON(key: string, value: any) {
-    this.setSetting(key, JSON.stringify(value));
+    this.set(key, JSON.stringify(value));
   }
 
   fullClear(): number {

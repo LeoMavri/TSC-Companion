@@ -1,4 +1,5 @@
 import { Constants } from "../constants";
+import Settings from "./local-storage.js";
 
 export default class Logger {
   public static info(message: string, ...obj: any): void {
@@ -26,7 +27,7 @@ export default class Logger {
   }
 
   public static debug(message: string, ...obj: any): void {
-    if (!Constants.Debug) return;
+    if (!Settings.getToggle("debug-logs")) return;
 
     console.log(
       `%c[TSC Companion] ${message}`,

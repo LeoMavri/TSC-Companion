@@ -3,7 +3,7 @@ import Page from "../page.js";
 import Settings from "../../utils/local-storage.js";
 import Logger from "../../utils/logger.js";
 import { waitForElement } from "../../utils/dom.js";
-import { getSpyOld } from "../../utils/api.js";
+import { getTSCSpyOld } from "../../utils/api.js";
 import { formatNumber } from "../../utils/format";
 
 export const ProfilePage = new Page({
@@ -26,7 +26,7 @@ export const ProfilePage = new Page({
     }
 
     const userId = window.location.search.split("XID=")[1];
-    const key = Settings.getSetting("api-key");
+    const key = Settings.get("api-key");
 
     if (!key) {
       Logger.warn("No API key found, cannot fetch spy");
@@ -34,7 +34,7 @@ export const ProfilePage = new Page({
       return;
     }
 
-    const spy = await getSpyOld(userId, key);
+    const spy = await getTSCSpyOld(userId);
 
     if ("error" in spy) {
       Logger.error(spy.message);
