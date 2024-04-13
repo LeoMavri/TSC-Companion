@@ -39,7 +39,9 @@ export const FactionNormal = new Page({
         )[0];
 
         //! This is a bit of a hack, but it works for now
-        $(infoBox).css("width", "157px");
+        $(infoBox).css("width", "169px");
+        $(infoBox).css("overflow", "hidden");
+        $(infoBox).css("text-overflow", "ellipsis");
 
         if (infoBox === undefined) {
           Logger.warn("Failed to find infoBox", member);
