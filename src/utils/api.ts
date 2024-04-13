@@ -25,6 +25,7 @@ type SpyErrorable =
         statInterval?: {
           min: string;
           max: string;
+          fairFight: string;
           battleScore: number;
           lastUpdated: Date;
         };
@@ -65,7 +66,9 @@ export type UserBasic = {
 
 const CACHE_TIME = 12 * 60 * 60 * 1000; // 12 hours
 
-export function getTSCSpyOld(userId: string): Promise<SpyErrorable> {
+export function getTSCSpyOld(
+  userId: string
+): Promise<SpyErrorable & { insertedAt: Date }> {
   const spy = Settings.getJSON<SpyErrorable & { insertedAt: Date }>(
     `spy-${userId}`
   );
