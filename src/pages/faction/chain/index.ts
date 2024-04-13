@@ -11,6 +11,11 @@ export const FactionChain = new Page({
   name: "Faction - Chain",
   description: "Shows spies on the chain page",
 
+  /**
+   TODO: Generalise the selector in case the __eE_Ve part changes
+   TODO: Make it run if you visit the chain page directly (this only runs if you visit the faction page first)
+   */
+
   shouldRun: async function () {
     if (
       !Settings.getToggle(this.name) ||
