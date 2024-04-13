@@ -10,7 +10,6 @@ export default defineConfig({
                 name: 'Torn Spies Central Companion',
                 namespace: 'TSC',
                 description: 'Companion script for Torn Spies Central',
-                version: '2.0.4',
                 icon: 'https://i.imgur.com/8eydsOA.png',
                 match: ['https://www.torn.com/profiles.php?*'],
                 updateURL:
