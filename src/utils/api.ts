@@ -147,7 +147,9 @@ export async function getLocalUserData(): Promise<Errorable<UserBasic>> {
   }
 
   const res = await fetch(
-    `https://api.torn.com/user/?selections=basic&key=${Settings.get("api-key")}`
+    `https://api.torn.com/user/?selections=basic&key=${Settings.get(
+      "api-key"
+    )}&comment=TSC-Next`
   );
 
   if (!res.ok) {
