@@ -1,5 +1,3 @@
-import Logger from "./logger";
-
 // TODO: Add types to local storage stuff
 // type KnownLS = "tsc-key" | "ts-key" | "yata-key" | `spy-${number}`;
 

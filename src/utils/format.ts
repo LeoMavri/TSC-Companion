@@ -8,3 +8,5 @@ export function formatNumber(
     minimumFractionDigits: digits,
   }).format(number);
 }
+
+// TODO: make a function that formts the spy (interval, battle score, etc.)

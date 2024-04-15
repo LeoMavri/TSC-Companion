@@ -125,8 +125,6 @@ export const FactionChain = new Page({
       };
 
       updateChainMO = new MutationObserver(async (_mutations) => {
-        // check if there's rows that don't have a spy yet
-
         let redo = false;
         $(`${CHAIN_ITEM_SELECTOR} li`).each(function (_index, element) {
           if (
