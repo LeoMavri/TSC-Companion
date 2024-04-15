@@ -43,7 +43,10 @@ export const FactionNormal = new Page({
         $(infoBox).css("text-overflow", "ellipsis");
 
         if (infoBox === undefined) {
-          Logger.warn("Failed to find infoBox", member);
+          Logger.debug(
+            `${this.name}: Failed to find the player's profile box.`,
+            member
+          );
           return;
         }
 
@@ -51,7 +54,7 @@ export const FactionNormal = new Page({
           $(infoBox).find<HTMLAnchorElement>(ID_HREF_SELECTOR)[0];
 
         if (userHref === undefined) {
-          Logger.warn("Failed to find user's ID", infoBox);
+          Logger.debug(`${this.name}: Failed to find user's ID`, infoBox);
           return;
         }
 
@@ -59,7 +62,7 @@ export const FactionNormal = new Page({
 
         getTSCSpyOld(userId).then((spy) => {
           if ("error" in spy || spy.success !== true) {
-            Logger.warn(`Failed to find spy for ${userId}`, spy);
+            Logger.warn(`${this.name}: Failed to find spy for ${userId}`, spy);
             return;
           }
 

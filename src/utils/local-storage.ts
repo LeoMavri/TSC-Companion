@@ -37,7 +37,6 @@ class Settings {
       const key = localStorage.key(i);
       if (key?.startsWith(this.storageKey)) {
         localStorage.removeItem(key);
-        Logger.debug(`Cleared ${key}`);
         ++counter;
       }
     }
@@ -52,7 +51,6 @@ class Settings {
       const key = localStorage.key(i);
       if (key?.startsWith(`${this.storageKey}-spy`)) {
         localStorage.removeItem(key);
-        Logger.debug(`Cleared ${key}`);
         ++counter;
       }
     }

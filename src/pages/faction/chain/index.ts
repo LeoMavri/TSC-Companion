@@ -46,7 +46,7 @@ export const FactionChain = new Page({
         return;
       }
 
-      Logger.info(`Chain is active`);
+      Logger.debug(`${this.name}: Chain is active`);
       if (updateChainMO !== null) {
         updateChainMO.disconnect();
         updateChainMO = null;
@@ -55,7 +55,9 @@ export const FactionChain = new Page({
       const attacks = await waitForElement(ATTACK_LIST_SELECTOR, 15_000);
 
       if (!attacks) {
-        Logger.warn(`Could not find attacks list (probable time-out)`);
+        Logger.debug(
+          `${this.name}: Could not find attacks list (element did not show up in time)`
+        );
         return;
       }
 
@@ -73,7 +75,7 @@ export const FactionChain = new Page({
             const id = $(u).find("a").attr("href");
 
             if (!id) {
-              Logger.warn(`Failed to find ID.`);
+              Logger.warn(`Faction - Chain: Failed to find ID.`);
               return;
             }
 
@@ -81,7 +83,10 @@ export const FactionChain = new Page({
 
             getTSCSpyOld(userId).then((spy) => {
               if ("error" in spy || spy.success !== true) {
-                Logger.warn(`Failed to find spy for ${userId}`, spy);
+                Logger.warn(
+                  `Faction - Chain: Failed to find spy for ${userId}`,
+                  spy
+                );
                 return;
               }
 
@@ -143,7 +148,7 @@ export const FactionChain = new Page({
     });
 
     if (!chainBig) {
-      Logger.error(`${this.name} Could not find element`);
+      Logger.error(`${this.name}: Could not find element`);
       return;
     }
 

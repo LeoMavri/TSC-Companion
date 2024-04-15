@@ -19,7 +19,7 @@ async function main() {
 
   for (const Feature of Object.values(Features)) {
     if ((await Feature.shouldRun()) === false) {
-      Logger.info(`${Feature.name} feature not applicable`);
+      Logger.debug(`${Feature.name} feature not applicable`);
       continue;
     }
 
@@ -27,7 +27,7 @@ async function main() {
       await Feature.start();
       Logger.info(`${Feature.name} feature started`);
     } catch (err) {
-      Logger.error(`Failed to start ${Feature.name} feature:`, err);
+      Logger.error(`Failed to start '${Feature.name}'`, err);
     }
   }
 }

@@ -141,10 +141,10 @@ export async function getLocalUserData(): Promise<Errorable<UserBasic>> {
       new Date().getTime() - new Date(userData.insertedAt).getTime() <
         CACHE_TIME
     ) {
-      Logger.debug("User cache still valid");
+      Logger.debug("User data cache still valid");
       return userData;
     } else {
-      Logger.debug("User cache expired, fetching new data");
+      Logger.debug("User data cache expired, fetching new data");
       Settings.setJSON("user-data", null);
     }
   }

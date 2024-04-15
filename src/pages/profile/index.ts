@@ -23,37 +23,30 @@ export const ProfilePage = new Page({
     );
   },
 
-  start: async () => {
+  start: async function () {
     const emptyBlock = await waitForElement(SPY_BLOCK_SELECTOR, 15_000);
 
     if (emptyBlock === null) {
-      Logger.warn("Could not find the empty block on the profile page");
+      Logger.warn(
+        `${this.name}: Could not find the empty block on the profile page`
+      );
       return;
     }
 
     const userId = window.location.search.split("XID=")[1];
-    const key = Settings.get("api-key");
-
-    if (!key) {
-      Logger.warn("No API key found, cannot fetch spy");
-      return;
-    }
-
     const spy = await getTSCSpyOld(userId);
 
     if ("error" in spy) {
-      Logger.error(spy.message);
+      Logger.error(`${this.name}: Failed to fetch spy`, spy);
       return;
     }
 
     if (spy.success !== true) {
-      Logger.error(`Failed to fetch spy: ${spy.code}`);
+      Logger.error(`${this.name}: Failed to fetch spy`, spy);
       return;
     }
 
     const { estimate, statInterval } = spy.spy;
-
-    Logger.debug(`Inteval: `, statInterval);
 
     $(emptyBlock).append(
       $("<table>")
