@@ -1,5 +1,3 @@
-import Logger from "./logger";
-
 // TODO: Add types to local storage stuff
 // type KnownLS = "tsc-key" | "ts-key" | "yata-key" | `spy-${number}`;
 
@@ -37,7 +35,6 @@ class Settings {
       const key = localStorage.key(i);
       if (key?.startsWith(this.storageKey)) {
         localStorage.removeItem(key);
-        Logger.debug(`Cleared ${key}`);
         ++counter;
       }
     }
@@ -52,7 +49,6 @@ class Settings {
       const key = localStorage.key(i);
       if (key?.startsWith(`${this.storageKey}-spy`)) {
         localStorage.removeItem(key);
-        Logger.debug(`Cleared ${key}`);
         ++counter;
       }
     }

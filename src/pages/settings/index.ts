@@ -11,6 +11,8 @@ import { getLocalUserData } from "../../utils/api";
  * TODO: Move this to your own profile page (I'll have to check the sidebar)
  */
 
+const FACTION_TAB_SELECTOR = `#factions > ul`;
+
 export const SettingsPanel = new Page({
   name: "Settings Panel",
   description: "Adds a settings panel to your own faction page.",
@@ -20,7 +22,7 @@ export const SettingsPanel = new Page({
   },
 
   start: async function () {
-    const element = await waitForElement(`#factions > ul`, 15_000);
+    const element = await waitForElement(FACTION_TAB_SELECTOR, 15_000);
 
     if (element === null) {
       Logger.warn(`${this.name}: Failed to find element to append to.`);
@@ -31,8 +33,6 @@ export const SettingsPanel = new Page({
       Logger.warn(`${this.name}: Element already exists`);
       return;
     }
-
-    Logger.debug(`Features:`, Object.values(Features));
     const userData = await getLocalUserData();
 
     const headerHtml =
@@ -62,6 +62,12 @@ export const SettingsPanel = new Page({
             "Here you can configure the settings to your liking. Please note that changes will be saved automatically."
           ),
 
+          $("<p>")
+            .css("margin-top", "5px")
+            .text(
+              "Note: Currently, the script works best with honor bars turned off. If you have them on, all spies (except on the profile page) will be unreadable. You can manage this in Settings -> General Settings -> Honor Names -> Off"
+            ),
+
           $("<br>"),
 
           // GLOBAL TOGGLE - BEGIN
@@ -74,7 +80,6 @@ export const SettingsPanel = new Page({
                 .prop("checked", Settings.getToggle("enable"))
                 .on("change", function () {
                   Settings.set("enable", $(this).prop("checked"));
-                  Logger.debug(`Set enable to ${$(this).prop("checked")}`);
                 })
             )
             .append($("<p>").text("Enable Script")),
@@ -97,12 +102,10 @@ export const SettingsPanel = new Page({
                   const key = $(this).val();
 
                   if (typeof key !== "string") {
-                    Logger.warn("API Key is not a string.");
                     return;
                   }
 
                   if (!/^[a-zA-Z0-9]{16}$/.test(key)) {
-                    Logger.warn("API Key is not valid.");
                     $(this).css("outline", "1px solid red");
                     return;
                   }
@@ -112,7 +115,6 @@ export const SettingsPanel = new Page({
                   if (key === Settings.get("api-key")) return;
 
                   Settings.set("api-key", key);
-                  Logger.debug(`Set api-key to ${key}`);
                 })
             ),
           // API KEY INPUT - END
@@ -134,9 +136,6 @@ export const SettingsPanel = new Page({
                       .prop("checked", Settings.getToggle(feature.name))
                       .on("change", function () {
                         Settings.set(feature.name, $(this).prop("checked"));
-                        Logger.debug(
-                          `Set ${feature.name} to ${$(this).prop("checked")}`
-                        );
                       })
                   )
                   .append($("<p>").text(feature.name))
@@ -165,7 +164,7 @@ export const SettingsPanel = new Page({
               if (!check) return;
 
               const counter = Settings.spyClear();
-              Logger.debug("Cleared all cached spies");
+              Logger.debug(`Cleared ${counter} spies from cache.`);
 
               const btn = $(this);
 
@@ -195,7 +194,7 @@ export const SettingsPanel = new Page({
               if (!check) return;
 
               const counter = Settings.fullClear();
-              Logger.debug("Cleared all cache");
+              Logger.debug(`Cleared ${counter} items in cache.`);
 
               const btn = $(this);
 
