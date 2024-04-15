@@ -7,6 +7,10 @@ import Logger from "../../../utils/logger";
 import { getTSCSpyOld } from "../../../utils/api";
 import { formatNumber } from "../../../utils/format";
 
+const FIRST_MEMBER_SELECTOR = `.faction-info-wrap.restyle.another-faction .table-body > li:nth-child(1)`;
+const INFO_BOX_SELECTOR = `[class*="userInfoBox"]`;
+const ID_HREF_SELECTOR = 'a[href^="/profiles.php?XID="]';
+
 export const FactionNormal = new Page({
   name: "Faction - Normal",
   description: "Shows a list of spies on the faction page",
@@ -19,10 +23,7 @@ export const FactionNormal = new Page({
   },
 
   start: async function () {
-    const firstMember = await waitForElement(
-      `.faction-info-wrap.restyle.another-faction .table-body > li:nth-child(1)`,
-      15_000
-    );
+    const firstMember = await waitForElement(FIRST_MEMBER_SELECTOR, 15_000);
 
     if (firstMember === null) {
       Logger.warn(`${this.name}: Failed to find element to append to.`);
@@ -34,9 +35,7 @@ export const FactionNormal = new Page({
     $(memberDiv)
       .find<HTMLLIElement>("li")
       .each((_index, member) => {
-        const infoBox = $(member).find<HTMLDivElement>(
-          `[class*="userInfoBox"]`
-        )[0];
+        const infoBox = $(member).find<HTMLDivElement>(INFO_BOX_SELECTOR)[0];
 
         //! This is a bit of a hack, but it works for now
         $(infoBox).css("width", "169px");
@@ -48,12 +47,11 @@ export const FactionNormal = new Page({
           return;
         }
 
-        const userHref = $(infoBox).find<HTMLAnchorElement>(
-          'a[href^="/profiles.php?XID="]'
-        )[0];
+        const userHref =
+          $(infoBox).find<HTMLAnchorElement>(ID_HREF_SELECTOR)[0];
 
         if (userHref === undefined) {
-          Logger.warn("Failed to find userHref", infoBox);
+          Logger.warn("Failed to find user's ID", infoBox);
           return;
         }
 

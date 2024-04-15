@@ -10,6 +10,8 @@ import { formatNumber } from "../../utils/format";
 TODO: Properly tell the user that fetching the spy failed, give the reason as well (wrong API key, etc)
  */
 
+const SPY_BLOCK_SELECTOR = `.empty-block`;
+
 export const ProfilePage = new Page({
   name: "Profile Page",
   description: "Shows a user's spy on their profile page",
@@ -22,7 +24,7 @@ export const ProfilePage = new Page({
   },
 
   start: async () => {
-    const emptyBlock = await waitForElement(`.empty-block`, 15_000);
+    const emptyBlock = await waitForElement(SPY_BLOCK_SELECTOR, 15_000);
 
     if (emptyBlock === null) {
       Logger.warn("Could not find the empty block on the profile page");
@@ -44,7 +46,7 @@ export const ProfilePage = new Page({
       return;
     }
 
-    if (!spy.success) {
+    if (spy.success !== true) {
       Logger.error(`Failed to fetch spy: ${spy.code}`);
       return;
     }

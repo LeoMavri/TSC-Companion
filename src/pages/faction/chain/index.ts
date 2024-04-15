@@ -7,6 +7,10 @@ import Logger from "../../../utils/logger";
 import { getTSCSpyOld } from "../../../utils/api";
 import { formatNumber } from "../../../utils/format";
 
+const CHAIN_ITEM_SELECTOR = `[class^="warListItem"][class*="first-in-row"]`;
+const ATTACK_LIST_SELECTOR = `[class^="chain-attacks-list"]`;
+const NAME_SELECTOR = `[class^="honorWrap"]`;
+
 export const FactionChain = new Page({
   name: "Faction - Chain",
   description: "Shows spies on the chain page",
@@ -23,9 +27,7 @@ export const FactionChain = new Page({
     )
       return false;
 
-    const el = await waitForElement(
-      `[class^="warListItem___eE_Ve first-in-row"]`
-    );
+    const el = await waitForElement(CHAIN_ITEM_SELECTOR);
 
     return el !== null;
   },
@@ -33,16 +35,12 @@ export const FactionChain = new Page({
   start: async function () {
     let updateChainMO: MutationObserver | null = null;
 
-    const chainBig = document.querySelector(
-      `[class^="warListItem___eE_Ve first-in-row"]`
-    );
+    const chainBig = document.querySelector(CHAIN_ITEM_SELECTOR);
 
     const observer = new MutationObserver(async (mutations) => {
       if (mutations.length === 0) return;
 
-      const newElement = document.querySelector(
-        `[class^="warListItem___eE_Ve first-in-row"]`
-      );
+      const newElement = document.querySelector(CHAIN_ITEM_SELECTOR);
 
       if (!newElement?.classList.contains("act")) {
         return;
@@ -54,10 +52,7 @@ export const FactionChain = new Page({
         updateChainMO = null;
       }
 
-      const attacks = await waitForElement(
-        `[class^="chain-attacks-list"]`,
-        15_000
-      );
+      const attacks = await waitForElement(ATTACK_LIST_SELECTOR, 15_000);
 
       if (!attacks) {
         Logger.warn(`Could not find attacks list (probable time-out)`);
@@ -65,20 +60,13 @@ export const FactionChain = new Page({
       }
 
       const addAttacks = async () => {
-        $(`[class^="chain-attacks-list"] li`).each(function (_index, element) {
-          const users = $(element).find(`[class^="honorWrap"]`);
+        $(`${ATTACK_LIST_SELECTOR} li`).each(function (_index, element) {
+          const users = $(element).find(NAME_SELECTOR);
 
           for (let i = 0; i <= 1; i++) {
             const u = users[i];
 
-            // see if this element has any children that has the class "tsc-chain-spy"
-            Logger.debug(`Element: `, u);
-            Logger.debug(
-              `Has spy: `,
-              $(u).find(".tsc-chain-spy").parent().length > 0
-            );
             if ($(u).parent().find(".tsc-chain-spy").length > 0) {
-              Logger.debug(`Skipping element as it already has a spy.`);
               continue;
             }
 
@@ -135,7 +123,7 @@ export const FactionChain = new Page({
         // check if there's rows that don't have a spy yet
 
         let redo = false;
-        $(`[class^="chain-attacks-list"] li`).each(function (_index, element) {
+        $(`${CHAIN_ITEM_SELECTOR} li`).each(function (_index, element) {
           if (
             $(element).find(".tsc-chain-spy").length === 0 &&
             redo === false

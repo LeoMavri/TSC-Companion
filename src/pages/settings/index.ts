@@ -11,6 +11,8 @@ import { getLocalUserData } from "../../utils/api";
  * TODO: Move this to your own profile page (I'll have to check the sidebar)
  */
 
+const FACTION_TAB_SELECTOR = `#factions > ul`;
+
 export const SettingsPanel = new Page({
   name: "Settings Panel",
   description: "Adds a settings panel to your own faction page.",
@@ -20,7 +22,7 @@ export const SettingsPanel = new Page({
   },
 
   start: async function () {
-    const element = await waitForElement(`#factions > ul`, 15_000);
+    const element = await waitForElement(FACTION_TAB_SELECTOR, 15_000);
 
     if (element === null) {
       Logger.warn(`${this.name}: Failed to find element to append to.`);
@@ -61,6 +63,12 @@ export const SettingsPanel = new Page({
           $("<p>").text(
             "Here you can configure the settings to your liking. Please note that changes will be saved automatically."
           ),
+
+          $("<p>")
+            .css("margin-top", "5px")
+            .text(
+              "Note: Currently, the script works best with honor bars turned off. If you have them on, all spies (except on the profile page) will be unreadable. You can manage this in Settings -> General Settings -> Honor Names -> Off"
+            ),
 
           $("<br>"),
 
