@@ -12,25 +12,29 @@ enum ErrorCode {
   ServiceDown = 999,
 }
 
-type SpyErrorable =
-  | {
-      success: true;
-      spy: {
-        userId: number;
-        userName: string;
-        estimate: {
-          stats: number;
-          lastUpdated: Date;
-        };
-        statInterval?: {
-          min: string;
-          max: string;
-          fairFight: string;
-          battleScore: number;
-          lastUpdated: Date;
-        };
-      };
-    }
+type TscSpy = {
+  success: true;
+  message: string;
+  insertedAt: Date;
+  spy: {
+    userId: number;
+    userName: string;
+    estimate: {
+      stats: number;
+      lastUpdated: Date;
+    };
+    statInterval?: {
+      min: string;
+      max: string;
+      fairFight: string;
+      battleScore: number;
+      lastUpdated: Date;
+    };
+  };
+};
+
+type TscSpyErrorable =
+  | TscSpy
   | {
       success: false;
       code: ErrorCode;
@@ -66,12 +70,8 @@ export type UserBasic = {
 
 const CACHE_TIME = 12 * 60 * 60 * 1000; // 12 hours
 
-export function getTSCSpyOld(
-  userId: string
-): Promise<SpyErrorable & { insertedAt: Date }> {
-  const spy = Settings.getJSON<SpyErrorable & { insertedAt: Date }>(
-    `spy-${userId}`
-  );
+export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
+  const spy = Settings.getJSON<TscSpy>(`spy-${userId}`);
 
   if (spy) {
     if (
@@ -86,7 +86,7 @@ export function getTSCSpyOld(
     }
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     const request = GM.xmlHttpRequest ?? (GM as any).xmlhttpRequest;
     request({
       method: "POST",
@@ -100,23 +100,36 @@ export function getTSCSpyOld(
         apiKey: Settings.get("api-key") ?? "",
         userId: userId,
       }),
-      onload(response: Tampermonkey.Response<any>) {
-        const test = JSON.parse(response.responseText);
-        console.log(test);
+      onload(response: Tampermonkey.Response<TscSpyErrorable>) {
+        const spy = JSON.parse(response.responseText);
 
-        if (!("error" in test) && test.success) {
+        Logger.debug("Spy response", spy);
+
+        if (!("error" in spy) && spy.success) {
           Settings.setJSON(`spy-${userId}`, {
-            ...test,
+            ...spy,
             insertedAt: new Date().getTime(),
           });
         }
 
-        resolve(test);
+        resolve(spy);
       },
-      onerror() {
-        reject({
-          success: false,
-          code: ErrorCode.ServiceDown,
+      onerror(err) {
+        resolve({
+          error: true,
+          message: `Failed to fetch spy: ${err.statusText}`,
+        });
+      },
+      onabort() {
+        resolve({
+          error: true,
+          message: "Request aborted",
+        });
+      },
+      ontimeout() {
+        resolve({
+          error: true,
+          message: "Request timed out",
         });
       },
       timeout: 5_000,
