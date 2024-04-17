@@ -12,7 +12,7 @@ enum ErrorCode {
   ServiceDown = 999,
 }
 
-type TscSpy = {
+export type TscSpy = {
   success: true;
   message: string;
   insertedAt: Date;
