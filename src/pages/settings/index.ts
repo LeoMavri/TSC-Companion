@@ -43,7 +43,7 @@ export const SettingsPanel = new Page({
             `Hey, ${$("<div>")
               .addClass("tsc-header-username")
               .text(userData.name)
-              .prop("outerHTML")}!`
+              .prop("outerHTML")}!`,
           );
 
     $(element).after(
@@ -57,16 +57,16 @@ export const SettingsPanel = new Page({
           $("<p>")
             .css("margin-top", "5px")
             .text(
-              "This is the settings panel for the Torn Spies Central script."
+              "This is the settings panel for the Torn Spies Central script.",
             ),
           $("<p>").text(
-            "Here you can configure the settings to your liking. Please note that changes will be saved automatically."
+            "Here you can configure the settings to your liking. Please note that changes will be saved automatically.",
           ),
 
           $("<p>")
             .css("margin-top", "5px")
             .text(
-              "Note: Currently, the script works best with honor bars turned off. If you have them on, all spies (except on the profile page) will be unreadable. You can manage this in Settings -> General Settings -> Honor Names -> Off"
+              "Note: Currently, the script works best with honor bars turned off. If you have them on, all spies (except on the profile page) will be unreadable. You can manage this in Settings -> General Settings -> Honor Names -> Off",
             ),
 
           $("<br>"),
@@ -81,7 +81,7 @@ export const SettingsPanel = new Page({
                 .prop("checked", Settings.getToggle("enable"))
                 .on("change", function () {
                   Settings.set("enable", $(this).prop("checked"));
-                })
+                }),
             )
             .append($("<p>").text("Enable Script")),
           // GLOBAL TOGGLE - END
@@ -116,7 +116,7 @@ export const SettingsPanel = new Page({
                   if (key === Settings.get("api-key")) return;
 
                   Settings.set("api-key", key);
-                })
+                }),
             ),
           // API KEY INPUT - END
 
@@ -137,11 +137,11 @@ export const SettingsPanel = new Page({
                       .prop("checked", Settings.getToggle(feature.name))
                       .on("change", function () {
                         Settings.set(feature.name, $(this).prop("checked"));
-                      })
+                      }),
                   )
-                  .append($("<p>").text(feature.name))
+                  .append($("<p>").text(feature.name)),
               )
-              .append($("<p>").text(feature.description))
+              .append($("<p>").text(feature.description)),
           ),
           // FEATURE TOGGLES - END
 
@@ -149,7 +149,7 @@ export const SettingsPanel = new Page({
 
           $("<p>")
             .text(
-              "The following buttons require a confirmation before anything is deleted."
+              "The following buttons require a confirmation before anything is deleted.",
             )
             .css("margin-bottom", "10px"),
 
@@ -159,7 +159,7 @@ export const SettingsPanel = new Page({
             .css("margin-right", "10px")
             .on("click", async function () {
               const check = confirm(
-                "Are you sure you want to clear cached spies?"
+                "Are you sure you want to clear cached spies?",
               );
 
               if (!check) return;
@@ -189,7 +189,7 @@ export const SettingsPanel = new Page({
             .addClass("tsc-button")
             .on("click", async function () {
               const check = confirm(
-                "Are you sure you want to clear all cache?"
+                "Are you sure you want to clear all cache?",
               );
 
               if (!check) return;
@@ -230,12 +230,12 @@ export const SettingsPanel = new Page({
                 .prop("checked", Settings.getToggle("debug-logs"))
                 .on("change", function () {
                   Settings.set("debug-logs", $(this).prop("checked"));
-                })
+                }),
             )
-            .append($("<p>").text("Extra debug logs"))
+            .append($("<p>").text("Extra debug logs")),
 
           // DEBUG TOGGLES - END
-        )
+        ),
     );
   },
 });

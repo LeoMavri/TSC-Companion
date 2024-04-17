@@ -6,7 +6,7 @@ export default class Logger {
     console.info(
       `%c[TSC Companion] ${message}`,
       `color: ${Constants.Colours.Info}`,
-      ...obj
+      ...obj,
     );
   }
 
@@ -14,7 +14,7 @@ export default class Logger {
     console.log(
       `%c[TSC Companion] ${message}`,
       `color: ${Constants.Colours.Warn}`,
-      ...obj
+      ...obj,
     );
   }
 
@@ -22,7 +22,7 @@ export default class Logger {
     console.error(
       `%c[TSC Companion] ${message}`,
       `color: ${Constants.Colours.Error}`,
-      ...obj
+      ...obj,
     );
   }
 
@@ -32,7 +32,7 @@ export default class Logger {
     console.log(
       `%c[TSC Companion] ${message}`,
       `color: ${Constants.Colours.Debug}`,
-      ...obj
+      ...obj,
     );
   }
 }

@@ -2,7 +2,7 @@ import { TscSpy } from "./api.js";
 
 export function formatNumber(
   number: number | bigint,
-  digits: number = 2
+  digits: number = 2,
 ): string {
   return Intl.NumberFormat("en-US", {
     notation: "compact",
@@ -23,15 +23,15 @@ export function formatSpy(spy: TscSpy): {
   if (statInterval?.battleScore) {
     spyText = `${formatNumber(BigInt(statInterval.min), 1)} - ${formatNumber(
       BigInt(statInterval.max),
-      1
+      1,
     )}`;
 
     tooltipText += `<br>Interval: ${formatNumber(
       BigInt(statInterval.min),
-      2
+      2,
     )} - ${formatNumber(
       BigInt(statInterval.max),
-      2
+      2,
     )}<br>Battle Score: ${formatNumber(statInterval.battleScore, 2)}`;
   }
 

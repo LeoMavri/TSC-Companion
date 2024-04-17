@@ -56,7 +56,7 @@ export const FactionChain = new Page({
 
       if (!attacks) {
         Logger.debug(
-          `${this.name}: Could not find attacks list (element did not show up in time)`
+          `${this.name}: Could not find attacks list (element did not show up in time)`,
         );
         return;
       }
@@ -85,7 +85,7 @@ export const FactionChain = new Page({
               if ("error" in spy || spy.success !== true) {
                 Logger.warn(
                   `Faction - Chain: Failed to find spy for ${userId}`,
-                  spy
+                  spy,
                 );
                 return;
               }
@@ -96,7 +96,7 @@ export const FactionChain = new Page({
                 $("<div>")
                   .addClass("tsc-chain-spy")
                   .text(spyText)
-                  .attr("title", tooltipText)
+                  .attr("title", tooltipText),
               );
             });
           }

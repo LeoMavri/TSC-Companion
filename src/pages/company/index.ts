@@ -58,7 +58,7 @@ export const CompanyPage = new Page({
             $("<div>")
               .addClass("tsc-company-spy")
               .text(spyText)
-              .attr("title", tooltipText)
+              .attr("title", tooltipText),
           );
         });
       });

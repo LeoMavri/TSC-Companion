@@ -1,6 +1,6 @@
 export function waitForElement<T extends HTMLElement>(
   querySelector: string,
-  timeout?: number
+  timeout?: number,
 ): Promise<T | null> {
   return new Promise((resolve, _reject) => {
     let timer: number;

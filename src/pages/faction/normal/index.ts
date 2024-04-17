@@ -45,7 +45,7 @@ export const FactionNormal = new Page({
         if (infoBox === undefined) {
           Logger.debug(
             `${this.name}: Failed to find the player's profile box.`,
-            member
+            member,
           );
           return;
         }
@@ -72,7 +72,7 @@ export const FactionNormal = new Page({
             $("<div>")
               .addClass("tsc-faction-spy")
               .text(spyText)
-              .attr("title", tooltipText)
+              .attr("title", tooltipText),
           );
         });
       });
