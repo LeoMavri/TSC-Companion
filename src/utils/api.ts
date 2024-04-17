@@ -12,7 +12,7 @@ enum ErrorCode {
   ServiceDown = 999,
 }
 
-type TscSpy = {
+export type TscSpy = {
   success: true;
   message: string;
   insertedAt: Date;
@@ -91,6 +91,7 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
     request({
       method: "POST",
       url: `https://tsc.diicot.cc/stats/update`,
+      timeout: 15_000,
       headers: {
         authorization: "10000000-6000-0000-0009-000000000001",
         "x-requested-with": "XMLHttpRequest",
@@ -100,19 +101,19 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
         apiKey: Settings.get("api-key") ?? "",
         userId: userId,
       }),
+      responseType: "json",
+
       onload(response: Tampermonkey.Response<TscSpyErrorable>) {
-        const spy = JSON.parse(response.responseText);
+        const res = response.response;
 
-        Logger.debug("Spy response", spy);
-
-        if (!("error" in spy) && spy.success) {
+        if (!("error" in res) && res.success) {
           Settings.setJSON(`spy-${userId}`, {
-            ...spy,
+            ...res,
             insertedAt: new Date().getTime(),
           });
         }
 
-        resolve(spy);
+        resolve(res);
       },
       onerror(err) {
         resolve({
@@ -132,7 +133,6 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
           message: "Request timed out",
         });
       },
-      timeout: 5_000,
     });
   });
 }

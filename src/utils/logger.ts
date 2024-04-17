@@ -1,4 +1,4 @@
-import { Constants } from "../constants";
+import { Constants } from "../constants.js";
 import Settings from "./local-storage.js";
 
 export default class Logger {

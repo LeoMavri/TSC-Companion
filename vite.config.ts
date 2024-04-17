@@ -18,6 +18,7 @@ export default defineConfig({
         match: [
           "https://www.torn.com/profiles.php?*", // User Profile
           "https://www.torn.com/factions.php*", // All factions
+          "https://www.torn.com/joblist.php*", // Company Page
         ],
         updateURL:
           "https://github.com/LeoMavri/TSC-Companion/raw/next/dist/tsc-companion.user.js",

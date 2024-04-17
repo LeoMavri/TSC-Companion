@@ -1,11 +1,11 @@
 import "./faction-normal.css";
 
-import Page from "../../page";
-import Settings from "../../../utils/local-storage";
-import { waitForElement } from "../../../utils/dom";
-import Logger from "../../../utils/logger";
-import { getTSCSpyOld } from "../../../utils/api";
-import { formatNumber } from "../../../utils/format";
+import Page from "../../page.js";
+import Settings from "../../../utils/local-storage.js";
+import { waitForElement } from "../../../utils/dom.js";
+import Logger from "../../../utils/logger.js";
+import { getTSCSpyOld } from "../../../utils/api.js";
+import { formatSpy } from "../../../utils/format.js";
 
 const FIRST_MEMBER_SELECTOR = `.faction-info-wrap.restyle.another-faction .table-body > li:nth-child(1)`;
 const INFO_BOX_SELECTOR = `[class*="userInfoBox"]`;
@@ -30,10 +30,10 @@ export const FactionNormal = new Page({
       return;
     }
 
-    const memberDiv = $(firstMember).parent().parent()[0];
+    const memberDiv = $(firstMember).parent()[0];
 
     $(memberDiv)
-      .find<HTMLLIElement>("li")
+      .children("li")
       .each((_index, member) => {
         const infoBox = $(member).find<HTMLDivElement>(INFO_BOX_SELECTOR)[0];
 
@@ -66,25 +66,7 @@ export const FactionNormal = new Page({
             return;
           }
 
-          const { estimate, statInterval } = spy.spy;
-
-          let spyText = formatNumber(estimate.stats, 1);
-          let tooltipText = `Estimate: ${formatNumber(estimate.stats, 2)}`;
-
-          if (statInterval?.battleScore) {
-            spyText = `${formatNumber(
-              BigInt(statInterval.min),
-              1
-            )} - ${formatNumber(BigInt(statInterval.max), 1)}`;
-
-            tooltipText += `<br>Interval: ${formatNumber(
-              BigInt(statInterval.min),
-              2
-            )} - ${formatNumber(
-              BigInt(statInterval.max),
-              2
-            )}<br>Battle Score: ${formatNumber(statInterval.battleScore, 2)}`;
-          }
+          const { spyText, tooltipText } = formatSpy(spy);
 
           $(infoBox).after(
             $("<div>")

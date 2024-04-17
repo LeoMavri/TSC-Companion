@@ -1,10 +1,11 @@
 import "./profile.css";
+
 import Page from "../page.js";
 import Settings from "../../utils/local-storage.js";
 import Logger from "../../utils/logger.js";
 import { waitForElement } from "../../utils/dom.js";
 import { getTSCSpyOld } from "../../utils/api.js";
-import { formatNumber } from "../../utils/format";
+import { formatNumber } from "../../utils/format.js";
 
 /**
 TODO: Properly tell the user that fetching the spy failed, give the reason as well (wrong API key, etc)

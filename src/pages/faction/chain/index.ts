@@ -1,11 +1,11 @@
 import "./faction-chain.css";
 
-import Page from "../../page";
-import Settings from "../../../utils/local-storage";
-import { waitForElement } from "../../../utils/dom";
-import Logger from "../../../utils/logger";
-import { getTSCSpyOld } from "../../../utils/api";
-import { formatNumber } from "../../../utils/format";
+import Page from "../../page.js";
+import Settings from "../../../utils/local-storage.js";
+import { waitForElement } from "../../../utils/dom.js";
+import Logger from "../../../utils/logger.js";
+import { getTSCSpyOld } from "../../../utils/api.js";
+import { formatSpy } from "../../../utils/format.js";
 
 const CHAIN_ITEM_SELECTOR = `[class^="warListItem"][class*="first-in-row"]`;
 const ATTACK_LIST_SELECTOR = `[class^="chain-attacks-list"]`;
@@ -90,28 +90,7 @@ export const FactionChain = new Page({
                 return;
               }
 
-              const { estimate, statInterval } = spy.spy;
-
-              let spyText = formatNumber(estimate.stats, 1);
-              let tooltipText = `Estimate: ${formatNumber(estimate.stats, 2)}`;
-
-              if (statInterval?.battleScore) {
-                spyText = `${formatNumber(
-                  BigInt(statInterval.min),
-                  1
-                )} - ${formatNumber(BigInt(statInterval.max), 1)}`;
-
-                tooltipText += `<br>Interval: ${formatNumber(
-                  BigInt(statInterval.min),
-                  2
-                )} - ${formatNumber(
-                  BigInt(statInterval.max),
-                  2
-                )}<br>Battle Score: ${formatNumber(
-                  statInterval.battleScore,
-                  2
-                )}`;
-              }
+              const { spyText, tooltipText } = formatSpy(spy);
 
               $(u).append(
                 $("<div>")
