@@ -145,7 +145,7 @@ export async function getLocalUserData(): Promise<Errorable<UserBasic>> {
     };
   }
   const userData = Settings.getJSON<UserBasic & { insertedAt: Date }>(
-    "user-data"
+    "user-data",
   );
 
   if (userData) {
@@ -164,8 +164,8 @@ export async function getLocalUserData(): Promise<Errorable<UserBasic>> {
 
   const res = await fetch(
     `https://api.torn.com/user/?selections=basic&key=${Settings.get(
-      "api-key"
-    )}&comment=TSC-Next`
+      "api-key",
+    )}&comment=TSC-Next`,
   );
 
   if (!res.ok) {

@@ -7,7 +7,8 @@ import Logger from "../../../utils/logger.js";
 import { getTSCSpyOld } from "../../../utils/api.js";
 import { formatSpy } from "../../../utils/format.js";
 
-const FIRST_MEMBER_SELECTOR = ".faction-info-wrap.restyle.another-faction .table-body > li:nth-child(1)";
+const FIRST_MEMBER_SELECTOR =
+  ".faction-info-wrap.restyle.another-faction .table-body > li:nth-child(1)";
 const INFO_BOX_SELECTOR = '[class*="userInfoBox"]';
 const ID_HREF_SELECTOR = 'a[href^="/profiles.php?XID="]';
 
@@ -45,7 +46,7 @@ export const FactionNormal = new Page({
         if (infoBox === undefined) {
           Logger.debug(
             `${this.name}: Failed to find the player's profile box.`,
-            member
+            member,
           );
           return;
         }
@@ -72,7 +73,7 @@ export const FactionNormal = new Page({
             $("<div>")
               .addClass("tsc-faction-spy")
               .text(spyText)
-              .attr("title", tooltipText)
+              .attr("title", tooltipText),
           );
         });
       });

@@ -29,7 +29,7 @@ export const ProfilePage = new Page({
 
     if (emptyBlock === null) {
       Logger.warn(
-        `${this.name}: Could not find the empty block on the profile page`
+        `${this.name}: Could not find the empty block on the profile page`,
       );
       return;
     }
@@ -59,10 +59,10 @@ export const ProfilePage = new Page({
               ? new Date(statInterval.lastUpdated).toLocaleString()
               : "N/A"
           }<br>Estimate: ${new Date(
-            estimate.lastUpdated
+            estimate.lastUpdated,
           ).toLocaleString()}<br>Cache: ${new Date(
-            spy.insertedAt
-          ).toLocaleString()}`
+            spy.insertedAt,
+          ).toLocaleString()}`,
         )
         .append(
           $("<tr>")
@@ -70,7 +70,7 @@ export const ProfilePage = new Page({
             .append($("<th>").text("Min"))
             .append($("<th>").text("Max"))
             .append($("<th>").text("Battle Score"))
-            .append($("<th>").text("Fair Fight"))
+            .append($("<th>").text("Fair Fight")),
         )
         .append(
           $("<tr>")
@@ -79,29 +79,29 @@ export const ProfilePage = new Page({
               $("<td>").text(
                 statInterval?.battleScore
                   ? formatNumber(BigInt(statInterval.min))
-                  : "N/A"
-              )
+                  : "N/A",
+              ),
             )
             .append(
               $("<td>").text(
                 statInterval?.battleScore
                   ? formatNumber(BigInt(statInterval.max))
-                  : "N/A"
-              )
+                  : "N/A",
+              ),
             )
             .append(
               $("<td>").text(
                 statInterval?.battleScore
                   ? formatNumber(statInterval.battleScore)
-                  : "N/A"
-              )
+                  : "N/A",
+              ),
             )
             .append(
               $("<td>").text(
-                statInterval?.battleScore ? statInterval.fairFight : "N/A"
-              )
-            )
-        )
+                statInterval?.battleScore ? statInterval.fairFight : "N/A",
+              ),
+            ),
+        ),
     );
   },
 });

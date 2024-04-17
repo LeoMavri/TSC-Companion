@@ -7,7 +7,8 @@ import { waitForElement } from "../../utils/dom.js";
 import { getTSCSpyOld } from "../../utils/api.js";
 import { formatSpy } from "../../utils/format.js";
 
-const COMPANY_MEMBERS_SELECTOR = "#mainContainer > div.content-wrapper.spring > div.employees-wrap > ul";
+const COMPANY_MEMBERS_SELECTOR =
+  "#mainContainer > div.content-wrapper.spring > div.employees-wrap > ul";
 const ID_HREF_SELECTOR = 'a[href^="/profiles.php?XID="]';
 
 export const CompanyPage = new Page({
@@ -58,7 +59,7 @@ export const CompanyPage = new Page({
             $("<div>")
               .addClass("tsc-company-spy")
               .text(spyText)
-              .attr("title", tooltipText)
+              .attr("title", tooltipText),
           );
         });
       });
