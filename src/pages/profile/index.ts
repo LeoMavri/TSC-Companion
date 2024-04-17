@@ -1,11 +1,11 @@
-import "./profile.css";
+import './profile.css';
 
-import Page from "../page.js";
-import Settings from "../../utils/local-storage.js";
-import Logger from "../../utils/logger.js";
-import { waitForElement } from "../../utils/dom.js";
-import { getTSCSpyOld } from "../../utils/api.js";
-import { formatNumber } from "../../utils/format.js";
+import { getTSCSpyOld } from '../../utils/api.js';
+import { waitForElement } from '../../utils/dom.js';
+import { formatNumber } from '../../utils/format.js';
+import Settings from '../../utils/local-storage.js';
+import Logger from '../../utils/logger.js';
+import Page from '../page.js';
 
 /**
 TODO: Properly tell the user that fetching the spy failed, give the reason as well (wrong API key, etc)
@@ -14,30 +14,25 @@ TODO: Properly tell the user that fetching the spy failed, give the reason as we
 const SPY_BLOCK_SELECTOR = `.empty-block`;
 
 export const ProfilePage = new Page({
-  name: "Profile Page",
+  name: 'Profile Page',
   description: "Shows a user's spy on their profile page",
 
   shouldRun: async function () {
-    return (
-      Settings.getToggle(this.name) &&
-      window.location.pathname === "/profiles.php"
-    );
+    return Settings.getToggle(this.name) && window.location.pathname === '/profiles.php';
   },
 
   start: async function () {
     const emptyBlock = await waitForElement(SPY_BLOCK_SELECTOR, 15_000);
 
     if (emptyBlock === null) {
-      Logger.warn(
-        `${this.name}: Could not find the empty block on the profile page`
-      );
+      Logger.warn(`${this.name}: Could not find the empty block on the profile page`);
       return;
     }
 
-    const userId = window.location.search.split("XID=")[1];
+    const userId = window.location.search.split('XID=')[1];
     const spy = await getTSCSpyOld(userId);
 
-    if ("error" in spy) {
+    if ('error' in spy) {
       Logger.error(`${this.name}: Failed to fetch spy`, spy);
       return;
     }
@@ -50,57 +45,43 @@ export const ProfilePage = new Page({
     const { estimate, statInterval } = spy.spy;
 
     $(emptyBlock).append(
-      $("<table>")
-        .addClass("tsc-stat-table")
+      $('<table>')
+        .addClass('tsc-stat-table')
         .attr(
-          "title",
+          'title',
           `Inteval: ${
-            statInterval?.lastUpdated
-              ? new Date(statInterval.lastUpdated).toLocaleString()
-              : "N/A"
-          }<br>Estimate: ${new Date(
-            estimate.lastUpdated
-          ).toLocaleString()}<br>Cache: ${new Date(
+            statInterval?.lastUpdated ? new Date(statInterval.lastUpdated).toLocaleString() : 'N/A'
+          }<br>Estimate: ${new Date(estimate.lastUpdated).toLocaleString()}<br>Cache: ${new Date(
             spy.insertedAt
           ).toLocaleString()}`
         )
         .append(
-          $("<tr>")
-            .append($("<th>").text("Estimated Stats"))
-            .append($("<th>").text("Min"))
-            .append($("<th>").text("Max"))
-            .append($("<th>").text("Battle Score"))
-            .append($("<th>").text("Fair Fight"))
+          $('<tr>')
+            .append($('<th>').text('Estimated Stats'))
+            .append($('<th>').text('Min'))
+            .append($('<th>').text('Max'))
+            .append($('<th>').text('Battle Score'))
+            .append($('<th>').text('Fair Fight'))
         )
         .append(
-          $("<tr>")
-            .append($("<td>").text(formatNumber(BigInt(estimate.stats))))
+          $('<tr>')
+            .append($('<td>').text(formatNumber(BigInt(estimate.stats))))
             .append(
-              $("<td>").text(
-                statInterval?.battleScore
-                  ? formatNumber(BigInt(statInterval.min))
-                  : "N/A"
+              $('<td>').text(
+                statInterval?.battleScore ? formatNumber(BigInt(statInterval.min)) : 'N/A'
               )
             )
             .append(
-              $("<td>").text(
-                statInterval?.battleScore
-                  ? formatNumber(BigInt(statInterval.max))
-                  : "N/A"
+              $('<td>').text(
+                statInterval?.battleScore ? formatNumber(BigInt(statInterval.max)) : 'N/A'
               )
             )
             .append(
-              $("<td>").text(
-                statInterval?.battleScore
-                  ? formatNumber(statInterval.battleScore)
-                  : "N/A"
+              $('<td>').text(
+                statInterval?.battleScore ? formatNumber(statInterval.battleScore) : 'N/A'
               )
             )
-            .append(
-              $("<td>").text(
-                statInterval?.battleScore ? statInterval.fairFight : "N/A"
-              )
-            )
+            .append($('<td>').text(statInterval?.battleScore ? statInterval.fairFight : 'N/A'))
         )
     );
   },

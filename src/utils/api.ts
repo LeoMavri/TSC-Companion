@@ -1,5 +1,5 @@
-import Settings from "./local-storage.js";
-import Logger from "./logger.js";
+import Settings from './local-storage.js';
+import Logger from './logger.js';
 
 // TODO: Absolutely redo these, they're just so I can get the profile page going
 enum ErrorCode {
@@ -48,21 +48,14 @@ type Errorable<T> = T | { error: boolean; message: string };
 
 export type UserBasic = {
   level: number;
-  gender: "Enby" | "Female" | "Male";
+  gender: 'Enby' | 'Female' | 'Male';
   player_id: number;
   name: string;
   status: {
-    color: "blue" | "green" | "red";
+    color: 'blue' | 'green' | 'red';
     description: string;
     details: string;
-    state:
-      | "Hospital"
-      | "Okay"
-      | "Jail"
-      | "Traveling"
-      | "Abroad"
-      | "Federal"
-      | "Fallen";
+    state: 'Hospital' | 'Okay' | 'Jail' | 'Traveling' | 'Abroad' | 'Federal' | 'Fallen';
     // Epoch TS (in seconds)
     until: number;
   };
@@ -74,14 +67,11 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
   const spy = Settings.getJSON<TscSpy>(`spy-${userId}`);
 
   if (spy) {
-    if (
-      spy.insertedAt &&
-      new Date().getTime() - new Date(spy.insertedAt).getTime() < CACHE_TIME
-    ) {
-      Logger.debug("Spy cache still valid");
+    if (spy.insertedAt && new Date().getTime() - new Date(spy.insertedAt).getTime() < CACHE_TIME) {
+      Logger.debug('Spy cache still valid');
       return Promise.resolve(spy);
     } else {
-      Logger.debug("Spy cache expired, fetching new data");
+      Logger.debug('Spy cache expired, fetching new data');
       Settings.setJSON(`spy-${userId}`, null);
     }
   }
@@ -89,24 +79,24 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
   return new Promise((resolve, _reject) => {
     const request = GM.xmlHttpRequest ?? (GM as any).xmlhttpRequest;
     request({
-      method: "POST",
+      method: 'POST',
       url: `https://tsc.diicot.cc/stats/update`,
       timeout: 15_000,
       headers: {
-        authorization: "10000000-6000-0000-0009-000000000001",
-        "x-requested-with": "XMLHttpRequest",
-        "Content-Type": "application/json",
+        authorization: '10000000-6000-0000-0009-000000000001',
+        'x-requested-with': 'XMLHttpRequest',
+        'Content-Type': 'application/json',
       },
       data: JSON.stringify({
-        apiKey: Settings.get("api-key") ?? "",
+        apiKey: Settings.get('api-key') ?? '',
         userId: userId,
       }),
-      responseType: "json",
+      responseType: 'json',
 
       onload(response: Tampermonkey.Response<TscSpyErrorable>) {
         const res = response.response;
 
-        if (!("error" in res) && res.success) {
+        if (!('error' in res) && res.success) {
           Settings.setJSON(`spy-${userId}`, {
             ...res,
             insertedAt: new Date().getTime(),
@@ -115,7 +105,7 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
 
         resolve(res);
       },
-      onerror(err) {
+      onerror(err: Tampermonkey.ErrorResponse) {
         resolve({
           error: true,
           message: `Failed to fetch spy: ${err.statusText}`,
@@ -124,13 +114,13 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
       onabort() {
         resolve({
           error: true,
-          message: "Request aborted",
+          message: 'Request aborted',
         });
       },
       ontimeout() {
         resolve({
           error: true,
-          message: "Request timed out",
+          message: 'Request timed out',
         });
       },
     });
@@ -138,34 +128,29 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
 }
 
 export async function getLocalUserData(): Promise<Errorable<UserBasic>> {
-  if (Settings.get("api-key") === null) {
+  if (Settings.get('api-key') === null) {
     return {
       error: true,
-      message: "API Key not set",
+      message: 'API Key not set',
     };
   }
-  const userData = Settings.getJSON<UserBasic & { insertedAt: Date }>(
-    "user-data"
-  );
+  const userData = Settings.getJSON<UserBasic & { insertedAt: Date }>('user-data');
 
   if (userData) {
     if (
       userData.insertedAt &&
-      new Date().getTime() - new Date(userData.insertedAt).getTime() <
-        CACHE_TIME
+      new Date().getTime() - new Date(userData.insertedAt).getTime() < CACHE_TIME
     ) {
-      Logger.debug("User data cache still valid");
+      Logger.debug('User data cache still valid');
       return userData;
     } else {
-      Logger.debug("User data cache expired, fetching new data");
-      Settings.setJSON("user-data", null);
+      Logger.debug('User data cache expired, fetching new data');
+      Settings.setJSON('user-data', null);
     }
   }
 
   const res = await fetch(
-    `https://api.torn.com/user/?selections=basic&key=${Settings.get(
-      "api-key"
-    )}&comment=TSC-Next`
+    `https://api.torn.com/user/?selections=basic&key=${Settings.get('api-key')}&comment=TSC-Next`
   );
 
   if (!res.ok) {
@@ -184,7 +169,7 @@ export async function getLocalUserData(): Promise<Errorable<UserBasic>> {
     };
   }
 
-  Settings.setJSON("user-data", {
+  Settings.setJSON('user-data', {
     ...data,
     insertedAt: new Date().getTime(),
   });
@@ -192,12 +177,12 @@ export async function getLocalUserData(): Promise<Errorable<UserBasic>> {
   return data;
 }
 
-export function getYATASpy(_userId: string) {
+export function getYATASpy(_userId: string): Promise<unknown> {
   // todo
-  throw new Error("Not implemented");
+  throw new Error('Not implemented');
 }
 
-export function getTornStatsSpy(_userId: string) {
+export function getTornStatsSpy(_userId: string): Promise<unknown> {
   // todo
-  throw new Error("Not implemented");
+  throw new Error('Not implemented');
 }

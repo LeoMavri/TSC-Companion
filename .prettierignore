@@ -1,0 +1,11 @@
+# Folders
+/.cache
+/.git
+/dist
+/docs
+/misc
+/node_modules
+/.github
+pnpm-lock.yaml
+.TODO
+/temp
