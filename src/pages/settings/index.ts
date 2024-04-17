@@ -1,10 +1,11 @@
 import "./settings.css";
+
 import Logger from "../../utils/logger.js";
 import Page from "../page.js";
 import Settings from "../../utils/local-storage.js";
 import * as Features from "../index.js";
 import { waitForElement } from "../../utils/dom.js";
-import { getLocalUserData } from "../../utils/api";
+import { getLocalUserData } from "../../utils/api.js";
 
 /**
  * TODO: Look into making an object that contains each setting and just iterate over that.
