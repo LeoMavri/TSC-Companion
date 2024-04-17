@@ -11,7 +11,7 @@ import { formatNumber } from "../../utils/format.js";
 TODO: Properly tell the user that fetching the spy failed, give the reason as well (wrong API key, etc)
  */
 
-const SPY_BLOCK_SELECTOR = `.empty-block`;
+const SPY_BLOCK_SELECTOR = ".empty-block";
 
 export const ProfilePage = new Page({
   name: "Profile Page",

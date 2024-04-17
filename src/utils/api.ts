@@ -90,7 +90,7 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
     const request = GM.xmlHttpRequest ?? (GM as any).xmlhttpRequest;
     request({
       method: "POST",
-      url: `https://tsc.diicot.cc/stats/update`,
+      url: "https://tsc.diicot.cc/stats/update",
       timeout: 15_000,
       headers: {
         authorization: "10000000-6000-0000-0009-000000000001",

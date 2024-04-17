@@ -7,9 +7,9 @@ import Logger from "../../../utils/logger.js";
 import { getTSCSpyOld } from "../../../utils/api.js";
 import { formatSpy } from "../../../utils/format.js";
 
-const CHAIN_ITEM_SELECTOR = `[class^="warListItem"][class*="first-in-row"]`;
-const ATTACK_LIST_SELECTOR = `[class^="chain-attacks-list"]`;
-const NAME_SELECTOR = `[class^="honorWrap"]`;
+const CHAIN_ITEM_SELECTOR = '[class^="warListItem"][class*="first-in-row"]';
+const ATTACK_LIST_SELECTOR = '[class^="chain-attacks-list"]';
+const NAME_SELECTOR = '[class^="honorWrap"]';
 
 export const FactionChain = new Page({
   name: "Faction - Chain",
@@ -75,7 +75,7 @@ export const FactionChain = new Page({
             const id = $(u).find("a").attr("href");
 
             if (!id) {
-              Logger.warn(`Faction - Chain: Failed to find ID.`);
+              Logger.warn("Faction - Chain: Failed to find ID.");
               return;
             }
 
