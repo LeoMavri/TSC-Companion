@@ -12,7 +12,7 @@ import Page from '../page.js';
  * TODO: Move this to your own profile page (I'll have to check the sidebar)
  */
 
-const FACTION_TAB_SELECTOR = "#factions > ul";
+const FACTION_TAB_SELECTOR = '#factions > ul';
 
 export const SettingsPanel = new Page({
   name: 'Settings Panel',
@@ -75,10 +75,10 @@ export const SettingsPanel = new Page({
             .append(
               $('<input>')
                 .attr('type', 'checkbox')
-                .attr('id', 'enable')
-                .prop('checked', Settings.getToggle('enable'))
+                .attr('id', 'enabled')
+                .prop('checked', Settings.getToggle('enabled'))
                 .on('change', function () {
-                  Settings.set('enable', $(this).prop('checked'));
+                  Settings.set('enabled', $(this).prop('checked'));
                 })
             )
             .append($('<p>').text('Enable Script')),
@@ -96,7 +96,7 @@ export const SettingsPanel = new Page({
                 .attr('placeholder', 'Paste your key here...')
                 .addClass('tsc-key-input')
                 .addClass('tsc-blur')
-                .val(Settings.get('api-key') || '')
+                .val(Settings.get('tsc-key') || '')
                 .on('change', function () {
                   const key = $(this).val();
 
@@ -111,9 +111,9 @@ export const SettingsPanel = new Page({
 
                   $(this).css('outline', 'none');
 
-                  if (key === Settings.get('api-key')) return;
+                  if (key === Settings.get('tsc-key')) return;
 
-                  Settings.set('api-key', key);
+                  Settings.set('tsc-key', key);
                 })
             ),
           // API KEY INPUT - END
@@ -227,7 +227,7 @@ export const SettingsPanel = new Page({
             .append($('<p>').text('Extra debug logs'))
 
           // DEBUG TOGGLES - END
-        ),
+        )
     );
   },
 });

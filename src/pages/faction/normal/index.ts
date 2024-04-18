@@ -8,7 +8,7 @@ import Logger from '../../../utils/logger.js';
 import Page from '../../page.js';
 
 const FIRST_MEMBER_SELECTOR =
-  ".faction-info-wrap.restyle.another-faction .table-body > li:nth-child(1)";
+  '.faction-info-wrap.restyle.another-faction .table-body > li:nth-child(1)';
 const INFO_BOX_SELECTOR = '[class*="userInfoBox"]';
 const ID_HREF_SELECTOR = 'a[href^="/profiles.php?XID="]';
 

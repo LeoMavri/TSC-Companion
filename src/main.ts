@@ -10,7 +10,7 @@ async function main(): Promise<void> {
     await SettingsPanel.start();
   }
 
-  if (Settings.getToggle('enable') === false) {
+  if (Settings.getToggle('enabled') === false) {
     Logger.info('TSC is disabled');
     return;
   }
