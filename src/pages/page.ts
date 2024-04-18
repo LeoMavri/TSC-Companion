@@ -3,7 +3,8 @@ export type FeatureNames =
   | 'Profile Page'
   | 'Faction - Chain'
   | 'Faction - Normal'
-  | 'Company Page';
+  | 'Company Page'
+  | 'Faction - War';
 
 type PageOptions = {
   name: FeatureNames;

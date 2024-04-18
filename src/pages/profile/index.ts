@@ -15,7 +15,7 @@ const SPY_BLOCK_SELECTOR = '.empty-block';
 
 export const ProfilePage = new Page({
   name: 'Profile Page',
-  description: "Shows a user's spy on their profile page",
+  description: `Shows a user's spy on their profile page`,
 
   shouldRun: async function () {
     return Settings.getToggle(this.name) && window.location.pathname === '/profiles.php';
