@@ -2,7 +2,7 @@
   "name": "tsc-companion",
   "author": "Leo Mavri <me@mavri.dev> (https://mavri.dev)",
   "private": true,
-  "version": "next-10",
+  "version": "next-11",
   "type": "module",
   "scripts": {
     "dev": "vite",
