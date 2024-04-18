@@ -1,5 +1,12 @@
+export type FeatureNames =
+  | 'Settings Panel'
+  | 'Profile Page'
+  | 'Faction - Chain'
+  | 'Faction - Normal'
+  | 'Company Page';
+
 type PageOptions = {
-  name: string;
+  name: FeatureNames;
   description: string;
 
   shouldRun: () => Promise<boolean>;
@@ -7,7 +14,7 @@ type PageOptions = {
 };
 
 export default class Page {
-  readonly name: string;
+  readonly name: FeatureNames;
   readonly description: string;
   shouldRun: () => Promise<boolean>;
   start: () => Promise<void>;

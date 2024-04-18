@@ -88,7 +88,7 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
         'Content-Type': 'application/json',
       },
       data: JSON.stringify({
-        apiKey: Settings.get('api-key') ?? '',
+        apiKey: Settings.get('tsc-key') ?? '',
         userId: userId,
       }),
       responseType: 'json',
@@ -128,7 +128,7 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
 }
 
 export async function getLocalUserData(): Promise<Errorable<UserBasic>> {
-  if (Settings.get('api-key') === null) {
+  if (Settings.get('tsc-key') === null) {
     return {
       error: true,
       message: 'API Key not set',
@@ -150,7 +150,7 @@ export async function getLocalUserData(): Promise<Errorable<UserBasic>> {
   }
 
   const res = await fetch(
-    `https://api.torn.com/user/?selections=basic&key=${Settings.get('api-key')}&comment=TSC-Next`
+    `https://api.torn.com/user/?selections=basic&key=${Settings.get('tsc-key')}&comment=TSC-Next`
   );
 
   if (!res.ok) {

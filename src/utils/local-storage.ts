@@ -1,5 +1,10 @@
-// TODO: Add types to local storage stuff
-// type KnownLS = "tsc-key" | "ts-key" | "yata-key" | `spy-${number}`;
+import type { FeatureNames } from '../pages/page.js';
+
+type Toggles = 'enabled' | 'debug-logs' | FeatureNames;
+
+type JSON = `spy-${string}` | 'user-data';
+
+type KnownLS = 'tsc-key' | 'torn-stats-key' | 'yata-key' | JSON | Toggles;
 
 class Settings {
   private storageKey: string;
@@ -7,25 +12,25 @@ class Settings {
     this.storageKey = storageKey;
   }
 
-  get(key: string): string | null {
+  get(key: KnownLS): string | null {
     return localStorage.getItem(`${this.storageKey}-${key}`);
   }
 
-  set(key: string, value: string): void {
+  set(key: KnownLS, value: string): void {
     localStorage.setItem(`${this.storageKey}-${key}`, value);
   }
 
-  getToggle(key: string): boolean {
+  getToggle(key: Toggles): boolean {
     return this.get(key) === 'true';
   }
 
-  getJSON<T>(key: string): T | null {
+  getJSON<T>(key: JSON): T | null {
     const value = this.get(key);
     if (value === null) return null;
     return JSON.parse(value);
   }
 
-  setJSON(key: string, value: any): void {
+  setJSON(key: JSON, value: any): void {
     this.set(key, JSON.stringify(value));
   }
 
