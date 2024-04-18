@@ -1,21 +1,21 @@
-import "./style.css";
-import Logger from "./utils/logger.js";
-import * as Features from "./pages/index.js";
-import { SettingsPanel } from "./pages/settings/index.js";
-import Settings from "./utils/local-storage.js";
+import './style.css';
+import * as Features from './pages/index.js';
+import { SettingsPanel } from './pages/settings/index.js';
+import Settings from './utils/local-storage.js';
+import Logger from './utils/logger.js';
 
-async function main() {
+async function main(): Promise<void> {
   if ((await SettingsPanel.shouldRun()) === true) {
-    Logger.info("Settings panel feature started");
+    Logger.info('Settings panel feature started');
     await SettingsPanel.start();
   }
 
-  if (Settings.getToggle("enable") === false) {
-    Logger.info("TSC is disabled");
+  if (Settings.getToggle('enable') === false) {
+    Logger.info('TSC is disabled');
     return;
   }
 
-  Logger.info("Starting TSC features...");
+  Logger.info('Starting TSC features...');
 
   for (const Feature of Object.values(Features)) {
     if ((await Feature.shouldRun()) === false) {
@@ -32,6 +32,6 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  Logger.error("TSC failed catastrophically:", err);
+main().catch(err => {
+  Logger.error('TSC failed catastrophically:', err);
 });

@@ -16,7 +16,7 @@ class Settings {
   }
 
   getToggle(key: string): boolean {
-    return this.get(key) === "true";
+    return this.get(key) === 'true';
   }
 
   getJSON<T>(key: string): T | null {
@@ -25,7 +25,7 @@ class Settings {
     return JSON.parse(value);
   }
 
-  setJSON(key: string, value: any) {
+  setJSON(key: string, value: any): void {
     this.set(key, JSON.stringify(value));
   }
 
@@ -57,4 +57,4 @@ class Settings {
   }
 }
 
-export default new Settings("kwack.mavri.tsc.rocks");
+export default new Settings('kwack.mavri.tsc.rocks');
