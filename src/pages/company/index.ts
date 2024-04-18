@@ -7,7 +7,8 @@ import Settings from '../../utils/local-storage.js';
 import Logger from '../../utils/logger.js';
 import Page from '../page.js';
 
-const COMPANY_MEMBERS_SELECTOR = `#mainContainer > div.content-wrapper.spring > div.employees-wrap > ul`;
+const COMPANY_MEMBERS_SELECTOR =
+  "#mainContainer > div.content-wrapper.spring > div.employees-wrap > ul";
 const ID_HREF_SELECTOR = 'a[href^="/profiles.php?XID="]';
 
 export const CompanyPage = new Page({
