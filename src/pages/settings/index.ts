@@ -12,7 +12,7 @@ import Page from '../page.js';
  * TODO: Move this to your own profile page (I'll have to check the sidebar)
  */
 
-const FACTION_TAB_SELECTOR = "#factions > ul";
+const FACTION_TAB_SELECTOR = '#factions > ul';
 
 export const SettingsPanel = new Page({
   name: 'Settings Panel',
@@ -227,7 +227,7 @@ export const SettingsPanel = new Page({
             .append($('<p>').text('Extra debug logs'))
 
           // DEBUG TOGGLES - END
-        ),
+        )
     );
   },
 });

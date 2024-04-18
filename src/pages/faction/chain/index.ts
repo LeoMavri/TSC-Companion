@@ -70,7 +70,7 @@ export const FactionChain = new Page({
             const id = $(u).find('a').attr('href');
 
             if (!id) {
-              Logger.warn("Faction - Chain: Failed to find ID.");
+              Logger.warn('Faction - Chain: Failed to find ID.');
               return;
             }
 
