@@ -91,10 +91,8 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
         apiKey: Settings.get('tsc-key') ?? '',
         userId: userId,
       }),
-      responseType: 'json',
-
       onload(response: Tampermonkey.Response<TscSpyErrorable>) {
-        const res = response.response;
+        const res = JSON.parse(response.responseText);
 
         if (!('error' in res) && res.success) {
           Settings.setJSON(`spy-${userId}`, {

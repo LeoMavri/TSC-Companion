@@ -32,12 +32,7 @@ export const ProfilePage = new Page({
     const userId = window.location.search.split('XID=')[1];
     const spy = await getTSCSpyOld(userId);
 
-    if ('error' in spy) {
-      Logger.error(`${this.name}: Failed to fetch spy`, spy);
-      return;
-    }
-
-    if (spy.success !== true) {
+    if ('error' in spy || spy.success !== true) {
       Logger.error(`${this.name}: Failed to fetch spy`, spy);
       return;
     }
