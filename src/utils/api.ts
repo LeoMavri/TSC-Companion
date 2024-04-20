@@ -92,7 +92,7 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
         userId: userId,
       }),
       onload(response: Tampermonkey.Response<TscSpyErrorable>) {
-        const res = JSON.parse(response.responseText);
+        const res = JSON.parse(response.responseText) as TscSpyErrorable;
 
         if (!('error' in res) && res.success) {
           Settings.setJSON(`spy-${userId}`, {
