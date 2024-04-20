@@ -9,21 +9,43 @@ import Page from '../page.js';
 
 /**
  * TODO: Look into making an object that contains each setting and just iterate over that.
- * TODO: Move this to your own profile page (I'll have to check the sidebar)
  */
 
-const FACTION_TAB_SELECTOR = '#factions > ul';
+const PROFILE_TAB_SELECTOR = '.profile-wrapper';
+const SIDEBAR_NAME_SELECTOR = '[class^="menu-value___"]';
 
 export const SettingsPanel = new Page({
   name: 'Settings Panel',
-  description: 'Adds a settings panel to your own faction page.',
+  description: 'Adds a settings panel to your own profile page.',
 
   shouldRun: async function () {
-    return window.location.href.includes('factions.php?step=your');
+    if (window.location.href.includes('profiles.php?XID=') === false) return false;
+
+    const name = await waitForElement<HTMLAnchorElement>(SIDEBAR_NAME_SELECTOR, 15_000);
+
+    if (name === null) {
+      Logger.warn(`${this.name}: Failed to find name element.`);
+      return false;
+    }
+
+    const pageId = window.location.href.match(/XID=(\d+)/)?.[1];
+    const nameId = name.href.match(/XID=(\d+)/)?.[1];
+
+    if (pageId === null || nameId === null) {
+      Logger.warn(`${this.name}: Failed to find page ID or name ID.`);
+      return false;
+    }
+
+    if (pageId !== nameId) {
+      Logger.warn(`${this.name}: Page ID does not match name ID.`);
+      return false;
+    }
+
+    return true;
   },
 
   start: async function () {
-    const element = await waitForElement(FACTION_TAB_SELECTOR, 15_000);
+    const element = await waitForElement(PROFILE_TAB_SELECTOR, 15_000);
 
     if (element === null) {
       Logger.warn(`${this.name}: Failed to find element to append to.`);
