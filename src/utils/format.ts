@@ -31,3 +31,24 @@ export function formatSpy(spy: TscSpy): {
 
   return { spyText, tooltipText };
 }
+
+export function formatSpyLong(spy: TscSpy): {
+  longTextInterval: string;
+  longTextEstimate: string;
+  toolTipText: string;
+} {
+  const { estimate, statInterval } = spy.spy;
+
+  let longTextInterval = '';
+  let longTextEstimate = `Estimate: ${formatNumber(estimate.stats)}`;
+  let toolTipText = `Estimate: ${new Date(estimate.lastUpdated).toLocaleDateString()}`;
+
+  if (statInterval?.battleScore) {
+    longTextInterval = `${formatNumber(BigInt(statInterval.min))} - ${formatNumber(
+      BigInt(statInterval.max)
+    )} / FF: ${statInterval.fairFight}`;
+    toolTipText += `<br>Interval: ${new Date(statInterval.lastUpdated).toLocaleDateString()}`;
+  }
+
+  return { longTextInterval, longTextEstimate, toolTipText };
+}

@@ -83,7 +83,7 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
       url: `https://tsc.diicot.cc/stats/update`,
       timeout: 15_000,
       headers: {
-        authorization: '10000000-6000-0000-0009-000000000001',
+        Authorization: '10000000-6000-0000-0009-000000000001',
         'x-requested-with': 'XMLHttpRequest',
         'Content-Type': 'application/json',
       },
@@ -92,7 +92,7 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
         userId: userId,
       }),
       onload(response: Tampermonkey.Response<TscSpyErrorable>) {
-        const res = JSON.parse(response.responseText);
+        const res = JSON.parse(response.responseText) as TscSpyErrorable;
 
         if (!('error' in res) && res.success) {
           Settings.setJSON(`spy-${userId}`, {
@@ -104,6 +104,7 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
         resolve(res);
       },
       onerror(err: Tampermonkey.ErrorResponse) {
+        Logger.debug(`Failed to fetch spy: `, err);
         resolve({
           error: true,
           message: `Failed to fetch spy: ${err.statusText}`,
