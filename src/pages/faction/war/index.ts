@@ -4,7 +4,7 @@ import xhook from 'xhook';
 
 import { getTSCSpyOld } from '../../../utils/api.js';
 import { waitForElement } from '../../../utils/dom.js';
-import { formatSpy } from '../../../utils/format.js';
+import { formatSpyLong } from '../../../utils/format.js';
 import Settings from '../../../utils/local-storage.js';
 import Logger from '../../../utils/logger.js';
 import Page from '../../page.js';
@@ -62,18 +62,18 @@ export const FactionWar = new Page({
             return;
           }
 
-          const { spyText, tooltipText } = formatSpy(spy);
+          const { longTextInterval, longTextEstimate, toolTipText } = formatSpyLong(spy);
 
-          const div = $('<div>').text(spyText).attr('title', tooltipText);
+          const parentDiv = $('<div>')
+            .addClass('tsc-faction-war')
+            .attr('title', toolTipText)
+            .append($('<span>').text(longTextEstimate));
 
-          // todo: make this work on TT wars as well
-          if (window.location.href.includes('war/rank')) {
-            div.addClass('tsc-faction-rw');
-          } else {
-            div.addClass('tsc-faction-war');
+          if (longTextInterval !== '') {
+            $(parentDiv).append($('<span>').text(longTextInterval));
           }
 
-          $(member).append(div);
+          $(element).parent().append(parentDiv);
         });
       });
     });

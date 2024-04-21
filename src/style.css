@@ -1,5 +1,6 @@
 body {
   --tsc-bg-color: #f0f0f0;
+  --tsc-alt-bg-color: #fff;
   --tsc-border-color: #ccc;
   --tsc-input-color: #ccc;
   --tsc-text-color: #000;
@@ -8,6 +9,7 @@ body {
 
 body.dark-mode {
   --tsc-bg-color: #333;
+  --tsc-alt-bg-color: #383838;
   --tsc-border-color: #444;
   --tsc-input-color: #504f4f;
   --tsc-text-color: #ccc;

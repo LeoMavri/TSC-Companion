@@ -1,33 +1,12 @@
 .tsc-faction-war {
   display: flex;
-  background-color: var(--tsc-bg-color);
+  background-color: var(--tsc-alt-bg-color);
   color: var(--tsc-text-color);
   border: 1px solid var(--tsc-border-color);
-  border-radius: 5px;
-  padding: 3px 5px;
+  padding: 3px 3px;
   cursor: pointer;
   height: 15px;
-  margin-left: auto;
-  margin-right: 9px;
   vertical-align: middle;
-  justify-content: center;
-  align-items: center;
-}
-
-/*div.css('margin-left', '5px').css('font-size', '10px').css('margin-right', '9px');*/
-.tsc-faction-rw {
-  display: flex;
-  background-color: var(--tsc-bg-color);
-  color: var(--tsc-text-color);
-  border: 1px solid var(--tsc-border-color);
-  border-radius: 5px;
-  padding: 3px 5px;
-  cursor: pointer;
-  height: 15px;
-  font-size: 10px;
-  margin-left: 5px;
-  margin-right: 9px;
-  vertical-align: middle;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 }
