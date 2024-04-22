@@ -12,7 +12,9 @@ import Page from '../page.js';
  */
 
 const PROFILE_TAB_SELECTOR = '.profile-wrapper';
-const SIDEBAR_NAME_SELECTOR = '[class^="menu-value___"]';
+// const SIDEBAR_NAME_SELECTOR = '[class^="menu-value___"]';
+
+const MY_PROFILE_BUTTON = '.settings-menu > .link > a:first-child';
 
 export const SettingsPanel = new Page({
   name: 'Settings Panel',
@@ -21,7 +23,7 @@ export const SettingsPanel = new Page({
   shouldRun: async function () {
     if (window.location.href.includes('profiles.php?XID=') === false) return false;
 
-    const name = await waitForElement<HTMLAnchorElement>(SIDEBAR_NAME_SELECTOR, 15_000);
+    const name = await waitForElement<HTMLAnchorElement>(MY_PROFILE_BUTTON, 15_000);
 
     if (name === null) {
       Logger.warn(`${this.name}: Failed to find name element.`);

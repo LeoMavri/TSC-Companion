@@ -1,15 +1,11 @@
 import './profile.css';
 
-import { getTSCSpyOld } from '../../utils/api.js';
+import { errorToString, getTSCSpyOld } from '../../utils/api.js';
 import { waitForElement } from '../../utils/dom.js';
 import { formatNumber } from '../../utils/format.js';
 import Settings from '../../utils/local-storage.js';
 import Logger from '../../utils/logger.js';
 import Page from '../page.js';
-
-/**
-TODO: Properly tell the user that fetching the spy failed, give the reason as well (wrong API key, etc)
- */
 
 const SPY_BLOCK_SELECTOR = '.empty-block';
 
@@ -30,10 +26,31 @@ export const ProfilePage = new Page({
     }
 
     const userId = window.location.search.split('XID=')[1];
+
+    if (!userId) {
+      Logger.error(`${this.name}: Could not find the user's ID`);
+      return;
+    }
+
+    $(emptyBlock).append($('<img>').addClass('tsc-loader')).css({
+      display: 'flex',
+      'justify-content': 'center',
+      'align-items': 'center',
+    });
+
     const spy = await getTSCSpyOld(userId);
+
+    $(emptyBlock).empty();
 
     if ('error' in spy || spy.success !== true) {
       Logger.error(`${this.name}: Failed to fetch spy`, spy);
+
+      if ('error' in spy) {
+        $(emptyBlock).append($('<div>').text(spy.message));
+      } else {
+        $(emptyBlock).append($('<div>').text(errorToString(spy.code)));
+      }
+
       return;
     }
 

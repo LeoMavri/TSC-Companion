@@ -2,7 +2,7 @@ import './faction-war.css';
 
 import xhook from 'xhook';
 
-import { getTSCSpyOld } from '../../../utils/api.js';
+import { errorToString, getTSCSpyOld } from '../../../utils/api.js';
 import { waitForElement } from '../../../utils/dom.js';
 import { formatSpyLong } from '../../../utils/format.js';
 import Settings from '../../../utils/local-storage.js';
@@ -34,7 +34,6 @@ export const FactionWar = new Page({
       }
 
       $(MEMBER_SELECTOR).each((_index, element) => {
-        Logger.debug('element', element);
         const userHref = $(element).find<HTMLAnchorElement>(ID_HREF_SELECTOR)[0];
 
         if (!userHref) {
@@ -56,18 +55,29 @@ export const FactionWar = new Page({
           return;
         }
 
+        const parentDiv = $('<div>').addClass('tsc-faction-war');
+        parentDiv.append($('<img>').addClass('tsc-loader'));
+
+        $(element).parent().append(parentDiv);
+
         getTSCSpyOld(userId).then(spy => {
+          parentDiv.empty();
+
           if ('error' in spy || spy.success !== true) {
             Logger.warn(`${this.name}: Failed to find spy for ${userId}`, spy);
+
+            if ('error' in spy) {
+              $(parentDiv).append($('<span>').text(spy.message));
+            } else {
+              $(parentDiv).append($('<span>').text(errorToString(spy.code)));
+            }
+
             return;
           }
 
           const { longTextInterval, longTextEstimate, toolTipText } = formatSpyLong(spy);
 
-          const parentDiv = $('<div>')
-            .addClass('tsc-faction-war')
-            .attr('title', toolTipText)
-            .append($('<span>').text(longTextEstimate));
+          parentDiv.attr('title', toolTipText).append($('<span>').text(longTextEstimate));
 
           if (longTextInterval !== '') {
             $(parentDiv).append($('<span>').text(longTextInterval));
