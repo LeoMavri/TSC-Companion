@@ -61,6 +61,27 @@ export type UserBasic = {
   };
 };
 
+export function errorToString(code: ErrorCode): string {
+  switch (code) {
+    case ErrorCode.InvalidRequest:
+      return 'Invalid request';
+    case ErrorCode.Maintenance:
+      return 'Maintenance';
+    case ErrorCode.InvalidApiKey:
+      return 'Invalid API Key';
+    case ErrorCode.InternalError:
+      return 'Internal Error';
+    case ErrorCode.UserDisabled:
+      return 'User Disabled';
+    case ErrorCode.CachedOnly:
+      return 'Cached Only';
+    case ErrorCode.ServiceDown:
+      return 'Service Down';
+    default:
+      return 'Unknown error';
+  }
+}
+
 const CACHE_TIME = 12 * 60 * 60 * 1000; // 12 hours
 
 export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
@@ -81,7 +102,7 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
     request({
       method: 'POST',
       url: `https://tsc.diicot.cc/stats/update`,
-      timeout: 15_000,
+      timeout: 30_000,
       headers: {
         Authorization: '10000000-6000-0000-0009-000000000001',
         'x-requested-with': 'XMLHttpRequest',

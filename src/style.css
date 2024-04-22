@@ -15,3 +15,11 @@ body.dark-mode {
   --tsc-text-color: #ccc;
   --tsc-hover-color: #555;
 }
+
+.tsc-loader {
+  content: url(https://www.torn.com/images/v2/main/ajax-loader.gif);
+}
+
+body.dark-mode .tsc-loader {
+  content: url(https://www.torn.com/images/v2/main/ajax-loader-white.gif);
+}
