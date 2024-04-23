@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TSC Companion - Next
 // @namespace    TSC
-// @version      next-14
+// @version      next-15
 // @author       mavri [2402357]
 // @description  A very early version of the new TSC Companion. Special thanks to Kwack [2190604]
 // @copyright    2024, diicot.cc
