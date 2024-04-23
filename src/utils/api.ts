@@ -97,6 +97,11 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
     }
   }
 
+  const data = {
+    apiKey: Settings.get('tsc-key') ?? '',
+    userId: userId,
+  };
+
   return new Promise((resolve, _reject) => {
     const request = GM.xmlHttpRequest ?? (GM as any).xmlhttpRequest;
     request({
@@ -108,10 +113,7 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
         'x-requested-with': 'XMLHttpRequest',
         'Content-Type': 'application/json',
       },
-      data: JSON.stringify({
-        apiKey: Settings.get('tsc-key') ?? '',
-        userId: userId,
-      }),
+      data: JSON.stringify(data),
       onload(response: Tampermonkey.Response<TscSpyErrorable>) {
         const res = JSON.parse(response.responseText) as TscSpyErrorable;
 
@@ -125,10 +127,10 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
         resolve(res);
       },
       onerror(err: Tampermonkey.ErrorResponse) {
-        Logger.debug(`Failed to fetch spy: `, err);
+        Logger.debug(`Data used: `, data);
         resolve({
           error: true,
-          message: `Failed to fetch spy: ${err.statusText}`,
+          message: `Failed to fetch spy ${err.statusText}`,
         });
       },
       onabort() {
