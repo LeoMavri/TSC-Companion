@@ -19,7 +19,6 @@ async function main(): Promise<void> {
 
   for (const Feature of Object.values(Features)) {
     if ((await Feature.shouldRun()) === false) {
-      Logger.debug(`${Feature.name} feature not applicable`);
       continue;
     }
 
