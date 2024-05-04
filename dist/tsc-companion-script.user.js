@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Torn Spies Central Companion
 // @namespace    TSC
-// @version      2.0.5
+// @version      2.0.6
 // @author       mitza [2549762] && mavri [2402357]
 // @description  Companion script for Torn Spies Central
 // @license      MIT
@@ -10,9 +10,7 @@
 // @downloadURL  https://github.com/LeoMavri/TSC-Companion/raw/main/dist/tsc-companion-script.user.js
 // @updateURL    https://github.com/LeoMavri/TSC-Companion/raw/main/dist/tsc-companion-script.user.js
 // @match        https://www.torn.com/profiles.php?*
-// @grant        GM.getValue
-// @grant        GM.setValue
-// @grant        GM.xmlHttpRequest
+// @grant        GM.deleteValue
 // @grant        GM_addStyle
 // @run-at       document-end
 // ==/UserScript==
@@ -22,40 +20,6 @@
 (function () {
   'use strict';
 
-  var ErrorCode = /* @__PURE__ */ ((ErrorCode2) => {
-    ErrorCode2[ErrorCode2["InvalidRequest"] = 1] = "InvalidRequest";
-    ErrorCode2[ErrorCode2["Maintenance"] = 2] = "Maintenance";
-    ErrorCode2[ErrorCode2["InvalidApiKey"] = 3] = "InvalidApiKey";
-    ErrorCode2[ErrorCode2["InternalError"] = 4] = "InternalError";
-    ErrorCode2[ErrorCode2["UserDisabled"] = 5] = "UserDisabled";
-    ErrorCode2[ErrorCode2["CachedOnly"] = 6] = "CachedOnly";
-    ErrorCode2[ErrorCode2["ServiceDown"] = 999] = "ServiceDown";
-    return ErrorCode2;
-  })(ErrorCode || {});
-  function shortenNumber(number) {
-    let prefix = "";
-    if (number < 0)
-      prefix = "-";
-    let num = parseInt(number.toString().replace(/[^0-9.]/g, ""));
-    if (num < 1e3) {
-      return num.toString();
-    }
-    let si = [
-      { v: 1e3, s: "K" },
-      { v: 1e6, s: "M" },
-      { v: 1e9, s: "B" },
-      { v: 1e12, s: "T" },
-      { v: 1e15, s: "P" },
-      { v: 1e18, s: "E" }
-    ];
-    let index;
-    for (index = si.length - 1; index > 0; index--) {
-      if (num >= si[index].v) {
-        break;
-      }
-    }
-    return prefix + (num / si[index].v).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + si[index].s;
-  }
   async function waitForElement(querySelector, timeout) {
     return await new Promise((resolve, reject) => {
       let timer;
@@ -75,7 +39,7 @@
         childList: true,
         subtree: true
       });
-      if (timeout) {
+      {
         timer = setTimeout(() => {
           observer.disconnect();
           reject();
@@ -84,186 +48,27 @@
     });
   }
   function createErrorHeader(text, url) {
-    if (!url) {
-      return `
-        <div>
-            <h3 class = "hed">${text}</h3>
-        </div>
-        `;
-    }
     return `
     <div>
         <h3 class = "hed"><a href="${url}" style="color: #3777FF;">${text}</a></h3>
     </div>
     `;
   }
-  const TSC_API = "https://tsc.diicot.cc/stats/update";
-  const AUTHORIZATION = "10000000-6000-0000-0009-000000000001";
   const API_KEY_ENTRY = "tsc_api_key";
   const PROFILE_ELEMENT = `#profileroot > div > div > div > div:nth-child(1) > div.profile-right-wrapper.right > div.profile-buttons.profile-action > div > div.cont.bottom-round > div > div > div.empty-block`;
-  const KNWON_ISSUES = ["99177"];
-  async function getSpy(key, id) {
-    return await new Promise((resolve, reject) => {
-      const request = GM.xmlHttpRequest ?? GM.xmlhttpRequest;
-      request({
-        method: "POST",
-        url: TSC_API,
-        headers: {
-          authorization: AUTHORIZATION,
-          "x-requested-with": "XMLHttpRequest",
-          "Content-Type": "application/json"
-        },
-        data: JSON.stringify({
-          apiKey: key,
-          userId: id
-        }),
-        onload(response) {
-          const test = JSON.parse(response.responseText);
-          console.log(test);
-          resolve(test);
-        },
-        onerror() {
-          reject({
-            success: false,
-            code: ErrorCode.ServiceDown
-          });
-        },
-        timeout: 5e3
-      });
-    });
-  }
   (async function() {
-    var _a, _b;
-    let key = await GM.getValue(API_KEY_ENTRY, null);
-    if (key === "" || key == null) {
-      key = prompt(`Please fill in your API key with the one used in Torn Spies Central.`);
-      await GM.setValue(API_KEY_ENTRY, key);
-      return;
-    }
-    const keyRegex = new RegExp(/^[a-zA-Z0-9]{16}$/);
-    if (keyRegex.test(key) === false || typeof key !== "string") {
-      key = prompt(
-        `The API key you have entered is invalid, please try again and refresh the page.`
-      );
-      await GM.setValue(API_KEY_ENTRY, key);
-      return;
-    }
-    const userIdRegex = new RegExp(/XID=(\d+)/);
-    const userId = window.location.href.match(userIdRegex)[1];
-    if (KNWON_ISSUES.includes(userId)) {
-      console.warn(`This user is known to cause issues with TSC's algorithms. Sorry :()`);
-      return;
-    }
-    const [_, spyInfo] = await Promise.all([
-      waitForElement(PROFILE_ELEMENT, 1e4),
-      getSpy(key, userId)
+    await Promise.all([
+      waitForElement(PROFILE_ELEMENT, 1e4)
+      // getSpy(key, userId),
     ]);
     const profile = Array.from(
       document.getElementsByClassName(`profile-right-wrapper right`)
     )[0].getElementsByClassName(`empty-block`)[0];
-    console.log(spyInfo);
-    if ("error" in spyInfo) {
-      if (KNWON_ISSUES.includes(userId)) {
-        profile.innerHTML += createErrorHeader(`This is a known issue. Sorry :(`);
-        console.warn(spyInfo);
-        return;
-      }
-      profile.innerHTML += createErrorHeader(`Unexpected Response`);
-      console.warn(`The API encountered an error before it could finish your request`);
-      console.warn(spyInfo);
-      return;
-    }
-    let text;
-    if (spyInfo.success === false) {
-      let requestNewKey = false;
-      switch (spyInfo.code) {
-        case ErrorCode.Maintenance:
-          text = createErrorHeader(`TSC is undergoing maintenance.`);
-          break;
-        case ErrorCode.InvalidApiKey:
-          text = createErrorHeader(`Invalid API key.`);
-          requestNewKey = true;
-          break;
-        case ErrorCode.InternalError:
-          text = createErrorHeader(`Torn API Down`);
-          break;
-        case ErrorCode.InvalidRequest:
-          text = createErrorHeader(`Invalid request.`);
-          break;
-        case ErrorCode.ServiceDown:
-          text = createErrorHeader(
-            `TSC is down. Check Discord`,
-            `https://discord.gg/eegQhTUqPS`
-          );
-          break;
-        case ErrorCode.UserDisabled:
-          text = createErrorHeader(
-            `Account disabled. Check Discord`,
-            `https://discord.gg/eegQhTUqPS`
-          );
-          break;
-        case ErrorCode.CachedOnly:
-          text = createErrorHeader(`User not found in cache.`);
-          break;
-        default:
-          text = createErrorHeader(`Unknown error.`);
-          break;
-      }
-      console.warn(`TORN SPIES CENTRAL DEBUG INFORMATION BELOW`);
-      console.warn(`The API has returned the following message:`);
-      console.log(spyInfo);
-      console.warn(`TORN SPIES CENTRAL DEBUG INFORMATION ABOVE`);
-      profile.innerHTML += text;
-      if (requestNewKey) {
-        key = prompt(
-          `The API key you have entered does not match the one used in Torn Spies Central, please try again. If you believe this is an error, please contact Mavri.`
-        );
-        await GM.setValue(API_KEY_ENTRY, key);
-      }
-      return;
-    }
-    if ((_b = (_a = spyInfo == null ? void 0 : spyInfo.spy) == null ? void 0 : _a.statInterval) == null ? void 0 : _b.battleScore) {
-      text = `
-                    <table class="customTable">
-                    <thead>
-                        <tr>
-                            <th>Battle score</th>
-                            <th>Min stat range</th>
-                            <th>Max stat range</th>
-                            <th>Date spied</th>
-                        </tr>
-                        </thdead>
-                    <tbody>
-                        <tr>
-                            <td>${shortenNumber(spyInfo.spy.statInterval.battleScore)}</td>
-                            <td>${shortenNumber(spyInfo.spy.statInterval.min)}</td>
-                            <td>${shortenNumber(spyInfo.spy.statInterval.max)}</td>
-                            <td>${new Date(spyInfo.spy.statInterval.lastUpdated).toLocaleString().split(",")[0]}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                </div>
-                `;
-    } else {
-      text = `
-                <table class="customTable">
-                    <thead>
-                        <tr>
-                            <th>Stat estimate</th>
-                            <th>Date</th>
-                        </tr>
-                        </thdead>
-                    <tbody>
-                        <tr>
-                            <td>${shortenNumber(spyInfo.spy.estimate.stats)}</td>
-                            <td>${new Date(spyInfo.spy.estimate.lastUpdated).toLocaleString().split(",")[0]}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                </div>
-            `;
-    }
-    profile.innerHTML += text;
+    profile.innerHTML += createErrorHeader(
+      'Update to the "Next" version.',
+      "https://github.com/LeoMavri/TSC-Companion/tree/next"
+    );
+    await GM.deleteValue(API_KEY_ENTRY);
   })();
 
 })();

@@ -29,7 +29,7 @@ export function shortenNumber(number: number): string {
 
 export async function waitForElement(querySelector: string, timeout?: number): Promise<void> {
     return await new Promise((resolve, reject) => {
-        let timer: NodeJS.Timeout;
+        let timer: number;
         if (document.querySelectorAll(querySelector).length) {
             return resolve();
         }
