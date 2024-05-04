@@ -6,7 +6,7 @@ import Logger from './utils/logger.js';
 
 async function main(): Promise<void> {
   if ((await SettingsPanel.shouldRun()) === true) {
-    Logger.info('Settings panel feature started');
+    Logger.info('Settings panel initialized');
     await SettingsPanel.start();
   }
 
@@ -19,13 +19,12 @@ async function main(): Promise<void> {
 
   for (const Feature of Object.values(Features)) {
     if ((await Feature.shouldRun()) === false) {
-      Logger.debug(`${Feature.name} feature not applicable`);
       continue;
     }
 
     try {
       await Feature.start();
-      Logger.info(`${Feature.name} feature started`);
+      Logger.info(`'${Feature.name}' started`);
     } catch (err) {
       Logger.error(`Failed to start '${Feature.name}'`, err);
     }
