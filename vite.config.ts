@@ -21,6 +21,8 @@ export default defineConfig({
           'https://www.torn.com/joblist.php*', // Company Page
         ],
         updateURL: 'https://github.com/LeoMavri/TSC-Companion/raw/next/dist/tsc-companion.user.js',
+        downloadURL:
+          'https://github.com/LeoMavri/TSC-Companion/raw/next/dist/tsc-companion.user.js',
         'run-at': 'document-end',
       },
     }),
