@@ -25,6 +25,18 @@ export const ProfilePage = new Page({
       return;
     }
 
+    if (!Settings.get('tsc-key')) {
+      $(emptyBlock)
+        .append($('<div>').text('[TSC] Go to your own profile to set your API key.'))
+        .css({
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+        });
+
+      return;
+    }
+
     const userId = window.location.search.split('XID=')[1];
 
     if (!userId) {
