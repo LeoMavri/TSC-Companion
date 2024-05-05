@@ -1,7 +1,7 @@
 import './settings.css';
 
 import { getLocalUserData } from '../../utils/api.js';
-import { waitForElement } from '../../utils/dom.js';
+import { getLocalUserId, waitForElement } from '../../utils/dom.js';
 import Settings from '../../utils/local-storage.js';
 import Logger from '../../utils/logger.js';
 import * as Features from '../index.js';
@@ -12,9 +12,6 @@ import Page from '../page.js';
  */
 
 const PROFILE_TAB_SELECTOR = '.profile-wrapper';
-// const SIDEBAR_NAME_SELECTOR = '[class^="menu-value___"]';
-
-const MY_PROFILE_BUTTON = '.settings-menu > .link > a:first-child';
 
 export const SettingsPanel = new Page({
   name: 'Settings Panel',
@@ -23,27 +20,10 @@ export const SettingsPanel = new Page({
   shouldRun: async function () {
     if (window.location.href.includes('profiles.php?XID=') === false) return false;
 
-    const name = await waitForElement<HTMLAnchorElement>(MY_PROFILE_BUTTON, 15_000);
-
-    if (name === null) {
-      Logger.warn(`${this.name}: Failed to find name element.`);
-      return false;
-    }
-
     const pageId = window.location.href.match(/XID=(\d+)/)?.[1];
-    const nameId = name.href.match(/XID=(\d+)/)?.[1];
+    const localUserId = await getLocalUserId();
 
-    if (pageId === null || nameId === null) {
-      Logger.warn(`${this.name}: Failed to find page ID or name ID.`);
-      return false;
-    }
-
-    if (pageId !== nameId) {
-      Logger.warn(`${this.name}: Page ID does not match name ID.`);
-      return false;
-    }
-
-    return true;
+    return pageId === localUserId;
   },
 
   start: async function () {
@@ -74,6 +54,7 @@ export const SettingsPanel = new Page({
       $('<details>')
         // .attr("open", "")
         .addClass('tsc-accordion')
+        .addClass(Settings.get('tsc-key') ? '' : 'tsc-glow')
         .append($('<summary>').text('TSC Settings'))
         .append(
           $('<div>').addClass('tsc-header').append(headerHtml),
@@ -119,7 +100,7 @@ export const SettingsPanel = new Page({
                 .attr('id', 'api-key')
                 .attr('placeholder', 'Paste your key here...')
                 .addClass('tsc-key-input')
-                .addClass('tsc-blur')
+                .addClass(Settings.get('tsc-key') ? 'tsc-blur' : '')
                 .val(Settings.get('tsc-key') || '')
                 .on('change', function () {
                   const key = $(this).val();

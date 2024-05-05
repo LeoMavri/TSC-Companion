@@ -62,3 +62,17 @@
   transition-duration: 0.5s;
   filter: blur(0);
 }
+
+.tsc-glow {
+  animation: glow 1s infinite alternate;
+  border-width: 3px;
+}
+
+@keyframes glow {
+  0% {
+    border-color: var(--tsc-border-color);
+  }
+  100% {
+    border-color: var(--tsc-glow-color);
+  }
+}

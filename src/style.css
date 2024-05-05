@@ -5,6 +5,7 @@ body {
   --tsc-input-color: #ccc;
   --tsc-text-color: #000;
   --tsc-hover-color: #ddd;
+  --tsc-glow-color: #ffb6c1;
 }
 
 body.dark-mode {
@@ -14,6 +15,7 @@ body.dark-mode {
   --tsc-input-color: #504f4f;
   --tsc-text-color: #ccc;
   --tsc-hover-color: #555;
+  --tsc-glow-color: #ffb6c1;
 }
 
 .tsc-loader {

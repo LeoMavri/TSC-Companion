@@ -28,3 +28,15 @@ export function waitForElement<T extends HTMLElement>(
     }
   });
 }
+
+const MY_PROFILE_BUTTON = '.settings-menu > .link > a:first-child';
+
+export async function getLocalUserId(): Promise<string> {
+  const name = await waitForElement<HTMLAnchorElement>(MY_PROFILE_BUTTON, 15_000);
+
+  if (name === null) {
+    return '';
+  }
+
+  return name.href.match(/XID=(\d+)/)?.[1] ?? '';
+}
