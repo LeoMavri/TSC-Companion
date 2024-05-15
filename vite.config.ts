@@ -8,8 +8,7 @@ export default defineConfig({
       entry: 'src/main.ts',
       userscript: {
         name: 'TSC Companion - Next',
-        description:
-          'A very early version of the new TSC Companion. Special thanks to Kwack [2190604]',
+        description: 'The new and improved TSC Companion. Special thanks to Kwack [2190604]',
         author: 'mavri [2402357]',
         copyright: '2024, diicot.cc',
         icon: 'https://i.imgur.com/8eydsOA.png',
