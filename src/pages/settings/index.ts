@@ -12,6 +12,7 @@ import Page from '../page.js';
  */
 
 const PROFILE_TAB_SELECTOR = '.profile-wrapper';
+const EMPTY_BLOCK_SELECTOR = '.empty-block';
 
 export const SettingsPanel = new Page({
   name: 'Settings Panel',
@@ -22,6 +23,30 @@ export const SettingsPanel = new Page({
 
     const pageId = window.location.href.match(/XID=(\d+)/)?.[1];
     const localUserId = await getLocalUserId();
+
+    // TODO: Unfuck this
+    // This is a terrible hack, but otherwise we can't show the warning on first script start
+    // since everything except the settings panel is disabled
+
+    const emptyBlock = await waitForElement(EMPTY_BLOCK_SELECTOR, 15_000);
+
+    if (emptyBlock === null) {
+      Logger.warn(`${this.name}: Could not find the empty block on the profile page`);
+      return pageId === localUserId;
+    }
+
+    if (!Settings.get('tsc-key')) {
+      const anchor = $('<a>')
+        .attr('href', `https://www.torn.com/profiles.php?XID=${await getLocalUserId()}`)
+        .text(`your own profile`);
+      $(emptyBlock)
+        .append($('<div>').html(`Please enter your TSC API key on `).append(anchor).append('.'))
+        .css({
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+        });
+    }
 
     return pageId === localUserId;
   },

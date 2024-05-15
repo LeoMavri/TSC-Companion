@@ -1,7 +1,7 @@
 import './profile.css';
 
 import { errorToString, getTSCSpyOld } from '../../utils/api.js';
-import { getLocalUserId, waitForElement } from '../../utils/dom.js';
+import { waitForElement } from '../../utils/dom.js';
 import { formatNumber } from '../../utils/format.js';
 import Settings from '../../utils/local-storage.js';
 import Logger from '../../utils/logger.js';
@@ -26,17 +26,6 @@ export const ProfilePage = new Page({
     }
 
     if (!Settings.get('tsc-key')) {
-      const anchor = $('<a>')
-        .attr('href', `https://www.torn.com/profiles.php?XID=${await getLocalUserId()}`)
-        .text(`your own profile`);
-      $(emptyBlock)
-        .append($('<div>').html(`Please enter your TSC API key on `).append(anchor).append('.'))
-        .css({
-          display: 'flex',
-          'justify-content': 'center',
-          'align-items': 'center',
-        });
-
       return;
     }
 
