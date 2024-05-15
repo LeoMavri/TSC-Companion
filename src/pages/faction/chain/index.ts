@@ -1,5 +1,4 @@
 import './faction-chain.css';
-
 import xhook from 'xhook';
 
 import { getTSCSpyOld } from '../../../utils/api.js';
@@ -14,6 +13,9 @@ const ATTACK_LIST_SELECTOR = '[class^="chain-attacks-list"]';
 const NAME_SELECTOR = '[class^="honorWrap"]';
 
 const addStats = async (): Promise<void> => {
+  $(`*[class='respect']`).css('margin-left', '32px !important');
+  $(`*[class='attack-number']`).css('min-width', '45px !important');
+
   $(`${ATTACK_LIST_SELECTOR} li`).each(function (_index: number, element: HTMLElement) {
     const users = $(element).find(NAME_SELECTOR);
 
@@ -35,8 +37,8 @@ const addStats = async (): Promise<void> => {
         }
 
         const { spyText, tooltipText } = formatSpy(spy);
-        // I know this technically wastes a call, but it seems it only works like this
 
+        // I know this technically wastes a call, but it seems it only works like this
         if ($(u).find('.tsc-chain-spy').length > 0) {
           return;
         }
@@ -118,74 +120,3 @@ export const FactionChain = new Page({
     }
   },
 });
-
-// const chainBig = document.querySelector(CHAIN_ITEM_SELECTOR);
-// if (!chainBig) {
-//   Logger.error(`${this.name}: Could not find element`);
-//   return;
-// }
-// const observer = new MutationObserver(async mutations => {
-//   if (mutations.length === 0) return;
-//   const newElement = document.querySelector(CHAIN_ITEM_SELECTOR);
-//   if (!newElement?.classList.contains('act')) {
-//     return;
-//   }
-//   Logger.debug(`${this.name}: Chain is active`);
-//   if (updateChainMO !== null) {
-//     updateChainMO.disconnect();
-//     updateChainMO = null;
-//   }
-//   // RW: faction_wars.php?redirect=false&step=getwarusers&factionID=ID_HERE&userID=0&warID=rank&rfcv=somethingHere
-//   // CH: faction_wars.php?redirect=false&step=getwarusers&factionID=0&userID=0&warID=chain&rfcv=somethingHere
-//   const attacks = await waitForElement(ATTACK_LIST_SELECTOR, 15_000);
-//   if (!attacks) {
-//     Logger.debug(`${this.name}: Could not find attacks list (element did not show up in time)`);
-//     return;
-//   }
-// const addAttacks = async (): Promise<void> => {
-//   $(`${ATTACK_LIST_SELECTOR} li`).each(function (_index: number, element: HTMLElement) {
-//     const users = $(element).find(NAME_SELECTOR);
-//     for (let i = 0; i <= 1; i++) {
-//       const u = users[i];
-//       const id = $(u).find('a').attr('href');
-//       if (!id) {
-//         Logger.warn('Faction - Chain: Failed to find ID.');
-//         return;
-//       }
-//       const userId = id.split('XID=')[1];
-//       getTSCSpyOld(userId).then(spy => {
-//         if ('error' in spy || spy.success !== true) {
-//           Logger.warn(`Faction - Chain: Failed to find spy for ${userId}`, spy);
-//           return;
-//         }
-//         const { spyText, tooltipText } = formatSpy(spy);
-//         // I know this technically wastes a call, but it seems it only works like this
-//         if ($(u).find('.tsc-chain-spy').length > 0) {
-//           return;
-//         }
-//         $(u).append(
-//           $('<div>').addClass('tsc-chain-spy').text(spyText).attr('title', tooltipText)
-//         );
-//       });
-//     }
-//   });
-// };
-// updateChainMO = new MutationObserver(async _mutations => {
-//   let redo = false;
-//   $(`${CHAIN_ITEM_SELECTOR} li`).each(function (_index: number, element: HTMLElement) {
-//     if ($(element).find('.tsc-chain-spy').length === 0 && redo === false) {
-//       redo = true;
-//       addAttacks();
-//     }
-//   });
-// });
-// await addAttacks();
-// updateChainMO.observe(attacks, {
-//   childList: true,
-//   subtree: true,
-// });
-// });
-// observer.observe(chainBig, {
-//   attributes: true,
-//   attributeFilter: ['class'],
-// });
