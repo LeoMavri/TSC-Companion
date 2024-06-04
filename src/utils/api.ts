@@ -15,20 +15,20 @@ enum ErrorCode {
 export type TscSpy = {
   success: true;
   message: string;
-  insertedAt: Date;
+  insertedAt: string; // this is a date in string format
   spy: {
     userId: number;
     userName: string;
     estimate: {
       stats: number;
-      lastUpdated: Date;
+      lastUpdated: string; // this is a date in string format
     };
     statInterval?: {
       min: string;
       max: string;
       fairFight: string;
       battleScore: number;
-      lastUpdated: Date;
+      lastUpdated: string; // this is a date in string format
     };
   };
 };
