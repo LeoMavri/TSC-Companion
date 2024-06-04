@@ -36,12 +36,18 @@ class Settings {
 
   fullClear(): number {
     let counter = 0;
+    let keysToRemove = [];
+
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key?.startsWith(this.storageKey)) {
-        localStorage.removeItem(key);
-        ++counter;
+        keysToRemove.push(key);
       }
+    }
+
+    for (let key of keysToRemove) {
+      localStorage.removeItem(key);
+      ++counter;
     }
 
     return counter;
@@ -49,13 +55,18 @@ class Settings {
 
   spyClear(): number {
     let counter = 0;
+    let keysToRemove = [];
 
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key?.startsWith(`${this.storageKey}-spy`)) {
-        localStorage.removeItem(key);
-        ++counter;
+        keysToRemove.push(key);
       }
+    }
+
+    for (let key of keysToRemove) {
+      localStorage.removeItem(key);
+      ++counter;
     }
 
     return counter;
