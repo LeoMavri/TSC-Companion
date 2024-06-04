@@ -13,7 +13,7 @@ const ID_HREF_SELECTOR = 'a[href^="/profiles.php?XID="]';
 
 export const CompanyPage = new Page({
   name: 'Company Page',
-  description: 'Shows a user spies on the company page',
+  description: 'Shows user spies on the company page',
 
   shouldRun: async function () {
     return (
