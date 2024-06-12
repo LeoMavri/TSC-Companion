@@ -16,7 +16,7 @@ export const AbroadPage = new Page({
     return (
       Settings.getToggle(this.name) &&
       window.location.pathname === '/index.php' &&
-      window.location.search === '?page=people'
+      window.location.search.includes('?page=people')
     );
   },
 

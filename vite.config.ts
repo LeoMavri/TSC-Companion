@@ -18,7 +18,7 @@ export default defineConfig({
           'https://www.torn.com/profiles.php?*', // User Profile
           'https://www.torn.com/factions.php*', // All factions
           'https://www.torn.com/joblist.php*', // Company Page
-          'https://www.torn.com/index.php?page=people', // Abroad Page
+          'https://www.torn.com/index.php?page=people*', // Abroad Page
         ],
         updateURL: 'https://github.com/LeoMavri/TSC-Companion/raw/next/dist/tsc-companion.user.js',
         downloadURL:
