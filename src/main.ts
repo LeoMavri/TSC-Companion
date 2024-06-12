@@ -31,6 +31,6 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch(err => {
+main().catch((err) => {
   Logger.error('TSC failed catastrophically:', err);
 });

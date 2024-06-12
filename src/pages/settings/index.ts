@@ -66,14 +66,14 @@ export const SettingsPanel = new Page({
     const userData = await getLocalUserData();
 
     const headerHtml =
-      'error' in userData
-        ? $('<div>').text('Welcome!')
-        : $('<div>').html(
-            `Hey, ${$('<div>')
-              .addClass('tsc-header-username')
-              .text(userData.name)
-              .prop('outerHTML')}!`
-          );
+      'error' in userData ?
+        $('<div>').text('Welcome!')
+      : $('<div>').html(
+          `Hey, ${$('<div>')
+            .addClass('tsc-header-username')
+            .text(userData.name)
+            .prop('outerHTML')}!`
+        );
 
     $(element).after(
       $('<details>')
@@ -153,7 +153,7 @@ export const SettingsPanel = new Page({
           $('<p>').text('Feature toggles:'),
 
           // FEATURE TOGGLES - BEGIN
-          Object.values(Features).map(feature =>
+          Object.values(Features).map((feature) =>
             $('<div>')
               .append(
                 $('<div>')

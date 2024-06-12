@@ -43,7 +43,7 @@ export const AbroadPage = new Page({
 
         Logger.debug(`${this.name}: Found user ID`, id);
 
-        getTSCSpyOld(id).then(spy => {
+        getTSCSpyOld(id).then((spy) => {
           if ('error' in spy || spy.success !== true) {
             Logger.warn(`${this.name}: Failed to find spy for ${id}`, spy);
             return;

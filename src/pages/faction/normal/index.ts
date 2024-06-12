@@ -56,7 +56,7 @@ export const FactionNormal = new Page({
 
         const userId = userHref.href.split('XID=')[1];
 
-        getTSCSpyOld(userId).then(spy => {
+        getTSCSpyOld(userId).then((spy) => {
           if ('error' in spy || spy.success !== true) {
             Logger.warn(`${this.name}: Failed to find spy for ${userId}`, spy);
             return;

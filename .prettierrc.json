@@ -7,6 +7,7 @@
   "quoteProps": "as-needed",
   "trailingComma": "es5",
   "bracketSpacing": true,
-  "arrowParens": "avoid",
-  "endOfLine": "auto"
+  "arrowParens": "always",
+  "endOfLine": "auto",
+  "experimentalTernaries": true
 }

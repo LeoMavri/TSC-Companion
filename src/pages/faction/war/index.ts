@@ -53,7 +53,7 @@ const addStats = async (name: string): Promise<void> => {
 
     $(element).parent().append(parentDiv);
 
-    getTSCSpyOld(userId).then(spy => {
+    getTSCSpyOld(userId).then((spy) => {
       parentDiv.empty();
 
       if ('error' in spy || spy.success !== true) {

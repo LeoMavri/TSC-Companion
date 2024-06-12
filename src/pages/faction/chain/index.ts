@@ -30,7 +30,7 @@ const addStats = async (): Promise<void> => {
 
       const userId = id.split('XID=')[1];
 
-      getTSCSpyOld(userId).then(spy => {
+      getTSCSpyOld(userId).then((spy) => {
         if ('error' in spy || spy.success !== true) {
           Logger.warn(`Faction - Chain: Failed to find spy for ${userId}`, spy);
           return;
@@ -86,7 +86,7 @@ export const FactionChain = new Page({
 
       await addStats();
 
-      updateChainMO = new MutationObserver(async _mutations => {
+      updateChainMO = new MutationObserver(async (_mutations) => {
         let redo = false;
 
         $(`${CHAIN_ITEM_SELECTOR} li`).each(function (_index: number, element: HTMLElement) {
