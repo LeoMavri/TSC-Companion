@@ -1,3 +1,5 @@
+import './abroad.css';
+
 import { getTSCSpyOld } from '../../utils/api.js';
 import { waitForElement } from '../../utils/dom.js';
 import { formatSpy } from '../../utils/format.js';
@@ -53,7 +55,7 @@ export const AbroadPage = new Page({
 
           $(userAnchor).append(
             $('<div>')
-              .addClass('tsc-company-spy')
+              .addClass('tsc-abroad-spy')
               .text(spyText)
               .attr('title', tooltipText)
               .css('font-size', '0.8em')
