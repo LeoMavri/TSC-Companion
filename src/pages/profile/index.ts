@@ -102,50 +102,5 @@ export const ProfilePage = new Page({
     }
 
     $(emptyBlock).append(table);
-
-    //   $('<table>')
-    //     .addClass('tsc-stat-table')
-    //     .attr(
-    //       'title',
-    //       `Inteval: ${
-    //         statInterval?.lastUpdated ? new Date(statInterval.lastUpdated).toLocaleString() : 'N/A'
-    //       }<br>Estimate: ${new Date(estimate.lastUpdated).toLocaleString()}<br>Cache: ${new Date(
-    //         spy.insertedAt
-    //       ).toLocaleString()}`
-    //     )
-    //     .append(
-    //       $('<tr>')
-    //         .append($('<th>').text('Estimate'))
-    //         // .append($('<th>').text('Min'))
-    //         // .append($('<th>').text('Max'))
-    //         .append($('<th>').text('Interval'))
-    //         .append($('<th>').text('Battle Score'))
-    //         .append($('<th>').text('Fair Fight'))
-    //     )
-    //     .append(
-    //       $('<tr>')
-    //         .append($('<td>').text(formatNumber(BigInt(estimate.stats))))
-    //         // .append(
-    //         //   $('<td>').text(
-    //         //     statInterval?.battleScore ? formatNumber(BigInt(statInterval.min)) : 'N/A'
-    //         //   )
-    //         // )
-    //         // .append(
-    //         //   $('<td>').text(
-    //         //     statInterval?.battleScore ? formatNumber(BigInt(statInterval.max)) : 'N/A'
-    //         //   )
-    //         // )
-    //         .append(
-    //           $('<td>').text(
-    //             `${statInterval?.battleScore ? formatNumber(BigInt(statInterval.min)) : 'N/A'} - ${statInterval?.battleScore ? formatNumber(BigInt(statInterval.max)) : 'N/A'}`
-    //           )
-    //         )
-    //         .append(
-    //           $('<td>').text(
-    //             statInterval?.battleScore ? formatNumber(statInterval.battleScore) : 'N/A'
-    //           )
-    //         )
-    //         .append($('<td>').text(statInterval?.battleScore ? statInterval.fairFight : 'N/A'))
-    //     )
   },
 });
