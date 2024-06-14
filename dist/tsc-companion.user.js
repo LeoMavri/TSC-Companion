@@ -12,6 +12,7 @@
 // @match        https://www.torn.com/factions.php*
 // @match        https://www.torn.com/joblist.php*
 // @match        https://www.torn.com/index.php?page=people*
+// @match        https://www.torn.com/pmarket.php
 // @connect      api.torn.com
 // @connect      tsc.diicot.cc
 // @grant        GM.xmlHttpRequest
