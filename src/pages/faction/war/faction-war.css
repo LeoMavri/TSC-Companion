@@ -1,12 +1,13 @@
 .tsc-faction-war {
   display: flex;
-  background-color: var(--tsc-alt-bg-color);
-  color: var(--tsc-text-color);
-  border: 1px solid var(--tsc-border-color);
-  padding: 3px 3px;
-  cursor: pointer;
-  height: 15px;
-  vertical-align: middle;
   justify-content: space-around;
   align-items: center;
+  height: 15px;
+  padding: 3px 3px;
+  background-color: var(--tsc-alt-bg-color);
+  cursor: pointer;
+  border: 1px solid var(--tsc-border-color);
+  color: var(--tsc-text-color);
+  text-wrap: nowrap;
+  vertical-align: middle;
 }
