@@ -15,18 +15,18 @@
   },
   "devDependencies": {
     "@types/jquery": "^3.5.30",
-    "@types/jqueryui": "^1.12.22",
+    "@types/jqueryui": "^1.12.23",
     "@types/tampermonkey": "^5.0.3",
     "@types/xhook": "^1.5.3",
-    "@typescript-eslint/eslint-plugin": "^7.12.0",
-    "@typescript-eslint/parser": "^7.12.0",
-    "eslint": "9.4.0",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.14.1",
+    "eslint": "9.5.0",
     "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-unicorn": "^53.0.0",
-    "prettier": "^3.3.0",
-    "typescript": "^5.4.5",
-    "vite": "^5.2.12",
-    "vite-plugin-monkey": "^4.0.0"
+    "eslint-plugin-unicorn": "^54.0.0",
+    "prettier": "^3.3.2",
+    "typescript": "^5.5.2",
+    "vite": "^5.3.2",
+    "vite-plugin-monkey": "^4.0.3"
   },
   "dependencies": {
     "xhook": "^1.6.2"
