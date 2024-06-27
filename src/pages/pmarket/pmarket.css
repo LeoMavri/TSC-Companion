@@ -1,5 +1,6 @@
 .tsc-points-market-spy {
   display: inline;
+  vertical-align: middle;
   background-color: var(--tsc-bg-color);
   color: var(--tsc-text-color);
   border: 1px solid var(--tsc-border-color);
