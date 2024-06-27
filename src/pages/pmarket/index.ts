@@ -8,10 +8,10 @@ import Logger from '../../utils/logger.js';
 import Page from '../page.js';
 
 const PMARKET_MEMBERS_SELECTOR =
-  '#mainContainer > div.content-wrapper.spring > div.points-market > div.chart-main-wrap > ul:nth-of-type(2)';
+  'div.points-market > div.chart-main-wrap > ul:nth-of-type(2)';
 const ID_HREF_SELECTOR = 'a[href^="/profiles.php?XID="]';
 
-export const pMarket = new Page({
+export const PointsMarket = new Page({
   name: 'Points Market',
   description: 'Shows user spies on the points market',
 
@@ -55,7 +55,7 @@ export const pMarket = new Page({
           const { spyText, tooltipText } = formatSpy(spy);
 
           $(userAnchor).after(
-            $('<div>').addClass('tsc-company-spy').text(spyText).attr('title', tooltipText)
+            $('<div>').addClass('tsc-points-market-spy').text(spyText).attr('title', tooltipText)
           );
         });
       });
