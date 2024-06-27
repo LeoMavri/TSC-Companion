@@ -1,10 +1,11 @@
 export type FeatureNames =
   | 'Settings Panel'
   | 'Profile Page'
-  | 'Faction - Chain'
   | 'Faction - Normal'
-  | 'Company Page'
   | 'Faction - War'
+  | 'Faction - Chain'
+  | 'Faction - TT War'
+  | 'Company Page'
   | 'Abroad Page'
   | 'Points Market';
 
