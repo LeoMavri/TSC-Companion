@@ -91,11 +91,14 @@ export const FactionWar = new Page({
 
   start: async function () {
     xhook.after(async (request, _response) => {
-      if (request.url.includes('&warID=rank') === false) {
+      if (
+        request.url.includes('&warID=rank') === false && // ranked war
+        request.url.includes('&warID=raid') === false // raid
+      ) {
         return;
       }
 
-      Logger.debug(`${this.name}: Found Ranked War users request: ${request.url}`);
+      Logger.debug(`${this.name}: Found users request: ${request.url}`);
 
       await addStats(this.name);
     });
