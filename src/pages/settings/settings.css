@@ -1,25 +1,24 @@
 .tsc-accordion {
+  margin: 10px 0;
+  padding: 10px;
   background-color: var(--tsc-bg-color);
   border: 1px solid var(--tsc-border-color);
   border-radius: 5px;
-  margin: 10px 0;
-  padding: 10px;
 }
 
 .tsc-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  font-weight: bold;
-  font-size: 1.2em;
   margin-top: 10px;
   margin-bottom: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 .tsc-header-username {
-  font-style: italic;
   display: inline;
+  font-style: italic;
 }
 
 .tsc-setting-entry {
@@ -38,18 +37,18 @@
 }
 
 .tsc-button {
-  background-color: var(--tsc-bg-color);
-  color: var(--tsc-text-color);
-  border: 1px solid var(--tsc-border-color);
-  transition: background-color 0.5s;
-  border-radius: 5px;
   padding: 5px 10px;
+  transition: background-color 0.5s;
+  background-color: var(--tsc-bg-color);
   cursor: pointer;
+  border: 1px solid var(--tsc-border-color);
+  border-radius: 5px;
+  color: var(--tsc-text-color);
 }
 
 .tsc-button:hover {
-  background-color: var(--tsc-hover-color);
   transition: background-color 0.5s;
+  background-color: var(--tsc-hover-color);
 }
 
 .tsc-blur {
@@ -59,8 +58,8 @@
 
 .tsc-blur:focus,
 .tsc-blur:active {
-  transition-duration: 0.5s;
   filter: blur(0);
+  transition-duration: 0.5s;
 }
 
 .tsc-glow {

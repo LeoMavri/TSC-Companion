@@ -1,15 +1,15 @@
 table.tsc-stat-table {
-  width: 100%;
   border-collapse: collapse;
-  color: var(--tsc-text-color);
+  width: 100%;
   background-color: var(--tsc-bg-color);
+  color: var(--tsc-text-color);
 }
 
 table.tsc-stat-table th,
 table.tsc-stat-table td {
+  padding: 4px;
   border: 1px solid var(--tsc-border-color);
   color: var(--tsc-text-color);
-  padding: 4px;
   text-align: center;
 }
 

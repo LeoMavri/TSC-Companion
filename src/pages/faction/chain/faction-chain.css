@@ -1,16 +1,14 @@
 .tsc-chain-spy {
-  background-color: var(--tsc-bg-color);
-  color: var(--tsc-text-color);
-  border: 1px solid var(--tsc-border-color);
-  font-size: 10px;
   display: flex;
-  vertical-align: middle;
-  justify-content: center;
   align-items: center;
-  width: 250%;
-  height: 15px;
-  border-radius: 5px;
-  padding: 3px;
+  height: 0.7rem;
   margin-left: 2px;
+  padding: 3px;
+  background-color: var(--tsc-bg-color);
   cursor: pointer;
+  border: 1px solid var(--tsc-border-color);
+  border-radius: 5px;
+  font-size: 0.6rem;
+  color: var(--tsc-text-color);
+  text-wrap: nowrap;
 }
