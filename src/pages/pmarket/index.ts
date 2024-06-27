@@ -7,8 +7,7 @@ import Settings from '../../utils/local-storage.js';
 import Logger from '../../utils/logger.js';
 import Page from '../page.js';
 
-const PMARKET_MEMBERS_SELECTOR =
-  'div.points-market > div.chart-main-wrap > ul:nth-of-type(2)';
+const PMARKET_MEMBERS_SELECTOR = 'div.points-market > div.chart-main-wrap > ul:nth-of-type(2)';
 const ID_HREF_SELECTOR = 'a[href^="/profiles.php?XID="]';
 
 export const PointsMarket = new Page({
@@ -16,10 +15,7 @@ export const PointsMarket = new Page({
   description: 'Shows user spies on the points market',
 
   shouldRun: async function () {
-    return (
-      Settings.getToggle(this.name) &&
-      window.location.pathname === '/pmarket.php'
-    );
+    return Settings.getToggle(this.name) && window.location.pathname === '/pmarket.php';
   },
 
   start: async function () {
