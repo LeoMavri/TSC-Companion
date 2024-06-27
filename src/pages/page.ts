@@ -5,7 +5,8 @@ export type FeatureNames =
   | 'Faction - Normal'
   | 'Company Page'
   | 'Faction - War'
-  | 'Abroad Page';
+  | 'Abroad Page'
+  | 'Points Market';
 
 type PageOptions = {
   name: FeatureNames;
