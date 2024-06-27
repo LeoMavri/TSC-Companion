@@ -95,7 +95,7 @@ export const FactionTTWar = new Page({
       await addStats(this.name);
     });
 
-    if (window.location.href.includes('/war/')) {
+    if (/\/war\/\d+/.test(window.location.href)) {
       await addStats(this.name);
     }
   },

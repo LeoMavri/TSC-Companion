@@ -95,7 +95,7 @@ export const FactionWar = new Page({
       await addStats(this.name);
     });
 
-    if (window.location.href.includes('/war/rank')) {
+    if (window.location.href.includes('/war/rank') || window.location.href.includes('/war/raid-')) {
       await addStats(this.name);
     }
   },
