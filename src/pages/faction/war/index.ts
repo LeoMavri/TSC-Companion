@@ -10,7 +10,6 @@ import Logger from '../../../utils/logger.js';
 import Page from '../../page.js';
 
 const ID_HREF_SELECTOR = 'a[href^="/profiles.php?XID="]';
-const INFO_BOX_SELECTOR = '[class*="userInfoBox"]';
 const MEMBER_SELECTOR = 'div.member.icons.left';
 
 const addStats = async (name: string): Promise<void> => {
@@ -33,13 +32,6 @@ const addStats = async (name: string): Promise<void> => {
 
     if (!userId) {
       Logger.error(`${name}: Could not find the user's ID`);
-      return;
-    }
-
-    const member = $(element).find<HTMLDivElement>(INFO_BOX_SELECTOR)[0];
-
-    if (!member) {
-      Logger.debug(`${name}: Could not find member's info box.`);
       return;
     }
 
