@@ -5,3 +5,4 @@ export { CompanyPage } from './company/index.js';
 export { FactionWar } from './faction/war/index.js';
 export { AbroadPage } from './abroad/index.js';
 export { PointsMarket } from './pmarket/index.js';
+export { FactionTTWar } from './faction/tt/index.js';
