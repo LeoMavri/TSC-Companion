@@ -21,7 +21,7 @@ export const AttackPage = new Page({
     const localUserName = await waitForElement(ENEMY_NAME_SELECTOR);
 
     if (localUserName === null) {
-      Logger.debug('Could not find enemy name element');
+      Logger.debug('Could not find local name element');
       return;
     }
 
@@ -42,6 +42,7 @@ export const AttackPage = new Page({
 
       $(ENEMY_NAME_SELECTOR)
         .eq(1)
+        .addClass('tsc-attack-mobile') // just makes sure the estimate always shows up all the way to the left
         .after(
           $('<div>')
             .addClass('tsc-attack-spy')

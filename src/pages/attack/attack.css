@@ -1,7 +1,7 @@
 .tsc-attack-spy {
   display: flex;
   align-items: center;
-  height: 0.7rem;
+  height: 0.44rem;
   margin-left: 2px;
   padding: 3px;
   background-color: var(--tsc-bg-color);
@@ -11,4 +11,9 @@
   font-size: 0.6rem;
   color: var(--tsc-text-color);
   text-wrap: nowrap;
+}
+
+.tsc-attack-mobile {
+  flex: none !important;
+  margin-right: 3px !important;
 }
