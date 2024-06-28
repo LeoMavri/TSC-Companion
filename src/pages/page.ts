@@ -1,6 +1,7 @@
 export type FeatureNames =
   | 'Settings Panel'
   | 'Profile Page'
+  | 'Attack Page'
   | 'Faction - Normal'
   | 'Faction - War'
   | 'Faction - Chain'

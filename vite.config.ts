@@ -20,6 +20,7 @@ export default defineConfig({
           'https://www.torn.com/joblist.php*', // Company Page
           'https://www.torn.com/index.php?page=people*', // Abroad Page
           'https://www.torn.com/pmarket.php', // Points Market
+          'https://www.torn.com/loader.php?sid=attack&user2ID=*', // Attack Page
         ],
         updateURL: 'https://github.com/LeoMavri/TSC-Companion/raw/next/dist/tsc-companion.user.js',
         downloadURL:

@@ -6,3 +6,4 @@ export { FactionWar } from './faction/war/index.js';
 export { AbroadPage } from './abroad/index.js';
 export { PointsMarket } from './pmarket/index.js';
 export { FactionTTWar } from './faction/tt/index.js';
+export { AttackPage } from './attack/index.js';

@@ -1,0 +1,14 @@
+.tsc-attack-spy {
+  display: flex;
+  align-items: center;
+  height: 0.7rem;
+  margin-left: 2px;
+  padding: 3px;
+  background-color: var(--tsc-bg-color);
+  cursor: pointer;
+  border: 1px solid var(--tsc-border-color);
+  border-radius: 5px;
+  font-size: 0.6rem;
+  color: var(--tsc-text-color);
+  text-wrap: nowrap;
+}
