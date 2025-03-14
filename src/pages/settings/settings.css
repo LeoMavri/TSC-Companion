@@ -1,77 +1,77 @@
 .tsc-accordion {
-  margin: 10px 0;
-  padding: 10px;
-  background-color: var(--tsc-bg-color);
-  border: 1px solid var(--tsc-border-color);
-  border-radius: 5px;
+	margin: 10px 0;
+	padding: 10px;
+	background-color: var(--tsc-bg-color);
+	border: 1px solid var(--tsc-border-color);
+	border-radius: 5px;
 }
 
 .tsc-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 1.2em;
-  font-weight: bold;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 1.2em;
+	font-weight: bold;
 }
 
 .tsc-header-username {
-  display: inline;
-  font-style: italic;
+	display: inline;
+	font-style: italic;
 }
 
 .tsc-setting-entry {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 10px;
-  margin-bottom: 5px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	margin-top: 10px;
+	margin-bottom: 5px;
 }
 
 .tsc-key-input {
-  width: 120px;
-  padding-left: 5px;
-  background-color: var(--tsc-input-color);
-  color: var(--tsc-text-color);
+	width: 120px;
+	padding-left: 5px;
+	background-color: var(--tsc-input-color);
+	color: var(--tsc-text-color);
 }
 
 .tsc-button {
-  padding: 5px 10px;
-  transition: background-color 0.5s;
-  background-color: var(--tsc-bg-color);
-  cursor: pointer;
-  border: 1px solid var(--tsc-border-color);
-  border-radius: 5px;
-  color: var(--tsc-text-color);
+	padding: 5px 10px;
+	transition: background-color 0.5s;
+	background-color: var(--tsc-bg-color);
+	cursor: pointer;
+	border: 1px solid var(--tsc-border-color);
+	border-radius: 5px;
+	color: var(--tsc-text-color);
 }
 
 .tsc-button:hover {
-  transition: background-color 0.5s;
-  background-color: var(--tsc-hover-color);
+	transition: background-color 0.5s;
+	background-color: var(--tsc-hover-color);
 }
 
 .tsc-blur {
-  filter: blur(3px);
-  transition: filter 2s;
+	filter: blur(3px);
+	transition: filter 2s;
 }
 
 .tsc-blur:focus,
 .tsc-blur:active {
-  filter: blur(0);
-  transition-duration: 0.5s;
+	filter: blur(0);
+	transition-duration: 0.5s;
 }
 
 .tsc-glow {
-  animation: glow 1s infinite alternate;
-  border-width: 3px;
+	animation: glow 1s infinite alternate;
+	border-width: 3px;
 }
 
 @keyframes glow {
-  0% {
-    border-color: var(--tsc-border-color);
-  }
-  100% {
-    border-color: var(--tsc-glow-color);
-  }
+	0% {
+		border-color: var(--tsc-border-color);
+	}
+	100% {
+		border-color: var(--tsc-glow-color);
+	}
 }

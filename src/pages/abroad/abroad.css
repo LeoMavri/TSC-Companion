@@ -1,11 +1,11 @@
 .tsc-abroad-spy {
-  display: inline;
-  margin-left: 2px;
-  padding: 3px 4px;
-  background-color: var(--tsc-bg-color);
-  cursor: pointer;
-  border: 1px solid var(--tsc-border-color);
-  border-radius: 5px;
-  color: var(--tsc-text-color);
-  text-wrap: nowrap;
+	display: inline;
+	margin-left: 2px;
+	padding: 3px 4px;
+	background-color: var(--tsc-bg-color);
+	cursor: pointer;
+	border: 1px solid var(--tsc-border-color);
+	border-radius: 5px;
+	color: var(--tsc-text-color);
+	text-wrap: nowrap;
 }

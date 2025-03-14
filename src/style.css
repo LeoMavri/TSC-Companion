@@ -1,27 +1,27 @@
 body {
-  --tsc-bg-color: #f0f0f0;
-  --tsc-alt-bg-color: #fff;
-  --tsc-border-color: #ccc;
-  --tsc-input-color: #ccc;
-  --tsc-text-color: #000;
-  --tsc-hover-color: #ddd;
-  --tsc-glow-color: #ffb6c1;
+	--tsc-bg-color: #f0f0f0;
+	--tsc-alt-bg-color: #fff;
+	--tsc-border-color: #ccc;
+	--tsc-input-color: #ccc;
+	--tsc-text-color: #000;
+	--tsc-hover-color: #ddd;
+	--tsc-glow-color: #ffb6c1;
 }
 
 body.dark-mode {
-  --tsc-bg-color: #333;
-  --tsc-alt-bg-color: #383838;
-  --tsc-border-color: #444;
-  --tsc-input-color: #504f4f;
-  --tsc-text-color: #ccc;
-  --tsc-hover-color: #555;
-  --tsc-glow-color: #ffb6c1;
+	--tsc-bg-color: #333;
+	--tsc-alt-bg-color: #383838;
+	--tsc-border-color: #444;
+	--tsc-input-color: #504f4f;
+	--tsc-text-color: #ccc;
+	--tsc-hover-color: #555;
+	--tsc-glow-color: #ffb6c1;
 }
 
 .tsc-loader {
-  content: url(https://www.torn.com/images/v2/main/ajax-loader.gif);
+	content: url(https://www.torn.com/images/v2/main/ajax-loader.gif);
 }
 
 body.dark-mode .tsc-loader {
-  content: url(https://www.torn.com/images/v2/main/ajax-loader-white.gif);
+	content: url(https://www.torn.com/images/v2/main/ajax-loader-white.gif);
 }

@@ -1,13 +1,13 @@
 .tsc-points-market-spy {
-  display: inline;
-  margin-left: 5px;
-  padding: 3px 5px;
-  background-color: var(--tsc-bg-color);
-  cursor: pointer;
-  border: 1px solid var(--tsc-border-color);
-  border-radius: 5px;
-  font-size: 0.6rem;
-  color: var(--tsc-text-color);
-  text-wrap: nowrap;
-  vertical-align: middle;
+	display: inline;
+	margin-left: 5px;
+	padding: 3px 5px;
+	background-color: var(--tsc-bg-color);
+	cursor: pointer;
+	border: 1px solid var(--tsc-border-color);
+	border-radius: 5px;
+	font-size: 0.6rem;
+	color: var(--tsc-text-color);
+	text-wrap: nowrap;
+	vertical-align: middle;
 }

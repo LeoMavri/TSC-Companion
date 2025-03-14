@@ -1,76 +1,76 @@
-import type { FeatureNames } from '../pages/page.js';
+import type { FeatureNames } from "../pages/page.js";
 
-type Toggles = 'enabled' | 'debug-logs' | FeatureNames;
+type Toggles = "enabled" | "debug-logs" | FeatureNames;
 
-type JSON = `spy-${string}` | 'user-data';
+type JSON = `spy-${string}` | "user-data";
 
-type KnownLS = 'tsc-key' | 'torn-stats-key' | 'yata-key' | JSON | Toggles;
+type KnownLS = "tsc-key" | "torn-stats-key" | "yata-key" | JSON | Toggles;
 
 class Settings {
-  private storageKey: string;
-  constructor(storageKey: string) {
-    this.storageKey = storageKey;
-  }
+	private storageKey: string;
+	constructor(storageKey: string) {
+		this.storageKey = storageKey;
+	}
 
-  get(key: KnownLS): string | null {
-    return localStorage.getItem(`${this.storageKey}-${key}`);
-  }
+	get(key: KnownLS): string | null {
+		return localStorage.getItem(`${this.storageKey}-${key}`);
+	}
 
-  set(key: KnownLS, value: string): void {
-    localStorage.setItem(`${this.storageKey}-${key}`, value);
-  }
+	set(key: KnownLS, value: string): void {
+		localStorage.setItem(`${this.storageKey}-${key}`, value);
+	}
 
-  getToggle(key: Toggles): boolean {
-    return this.get(key) === 'true';
-  }
+	getToggle(key: Toggles): boolean {
+		return this.get(key) === "true";
+	}
 
-  getJSON<T>(key: JSON): T | null {
-    const value = this.get(key);
-    if (value === null) return null;
-    return JSON.parse(value);
-  }
+	getJSON<T>(key: JSON): T | null {
+		const value = this.get(key);
+		if (value === null) return null;
+		return JSON.parse(value);
+	}
 
-  setJSON(key: JSON, value: any): void {
-    this.set(key, JSON.stringify(value));
-  }
+	setJSON(key: JSON, value: any): void {
+		this.set(key, JSON.stringify(value));
+	}
 
-  fullClear(): number {
-    let counter = 0;
-    let keysToRemove = [];
+	fullClear(): number {
+		let counter = 0;
+		const keysToRemove = [];
 
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith(this.storageKey)) {
-        keysToRemove.push(key);
-      }
-    }
+		for (let i = 0; i < localStorage.length; i++) {
+			const key = localStorage.key(i);
+			if (key?.startsWith(this.storageKey)) {
+				keysToRemove.push(key);
+			}
+		}
 
-    for (let key of keysToRemove) {
-      localStorage.removeItem(key);
-      ++counter;
-    }
+		for (const key of keysToRemove) {
+			localStorage.removeItem(key);
+			++counter;
+		}
 
-    return counter;
-  }
+		return counter;
+	}
 
-  spyClear(): number {
-    let counter = 0;
-    let keysToRemove = [];
+	spyClear(): number {
+		let counter = 0;
+		const keysToRemove = [];
 
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith(`${this.storageKey}-spy`)) {
-        keysToRemove.push(key);
-      }
-    }
+		for (let i = 0; i < localStorage.length; i++) {
+			const key = localStorage.key(i);
+			if (key?.startsWith(`${this.storageKey}-spy`)) {
+				keysToRemove.push(key);
+			}
+		}
 
-    for (let key of keysToRemove) {
-      localStorage.removeItem(key);
-      ++counter;
-    }
+		for (const key of keysToRemove) {
+			localStorage.removeItem(key);
+			++counter;
+		}
 
-    return counter;
-  }
+		return counter;
+	}
 }
 
-export default new Settings('kwack.mavri.tsc.rocks');
+export default new Settings("kwack.mavri.tsc.rocks");
