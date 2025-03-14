@@ -7,7 +7,7 @@ import Settings from "../../utils/local-storage.js";
 import Logger from "../../utils/logger.js";
 import Page from "../page.js";
 
-const SPY_BLOCK_SELECTOR = ".empty-block";
+const SPY_BLOCK_SELECTOR = ".profile-container";
 
 export const ProfilePage = new Page({
 	name: "Profile Page",
@@ -41,15 +41,17 @@ export const ProfilePage = new Page({
 			return;
 		}
 
-		$(emptyBlock).append($("<img>").addClass("tsc-loader")).css({
-			display: "flex",
-			"justify-content": "center",
-			"align-items": "center",
-		});
+		// const loading = $(emptyBlock)
+		// 	.append($("<img>").addClass("tsc-loader"))
+		// 	.css({
+		// 		display: "flex",
+		// 		"justify-content": "center",
+		// 		"align-items": "center",
+		// 	});
 
 		const spy = await getTSCSpyOld(userId);
 
-		$(emptyBlock).empty();
+		// loading.remove();
 
 		if ("error" in spy || spy.success !== true) {
 			Logger.error(`${this.name}: Failed to fetch spy`, spy);

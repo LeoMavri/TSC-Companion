@@ -12,7 +12,7 @@ import Page from "../page.js";
  */
 
 const PROFILE_TAB_SELECTOR = ".profile-wrapper";
-const EMPTY_BLOCK_SELECTOR = ".empty-block";
+const EMPTY_BLOCK_SELECTOR = ".profile-container";
 
 export const SettingsPanel = new Page({
 	name: "Settings Panel",

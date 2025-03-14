@@ -94,17 +94,18 @@ const CACHE_TIME = 12 * 60 * 60 * 1000; // 12 hours
 export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
 	const spy = Settings.getJSON<TscSpy>(`spy-${userId}`);
 
+	const currentTime = Date.now();
+
 	if (spy) {
-		if (
-			spy.insertedAt &&
-			new Date().getTime() - new Date(spy.insertedAt).getTime() < CACHE_TIME
-		) {
+		const spyTime = new Date(spy.insertedAt).getTime();
+
+		if (spy.insertedAt && currentTime - spyTime < CACHE_TIME) {
 			Logger.debug("Spy cache still valid");
 			return Promise.resolve(spy);
-		} else {
-			Logger.debug("Spy cache expired, fetching new data");
-			Settings.setJSON(`spy-${userId}`, null);
 		}
+
+		Logger.debug("Spy cache expired, fetching new data");
+		Settings.setJSON(`spy-${userId}`, null);
 	}
 
 	const data = {
@@ -113,17 +114,20 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
 	};
 
 	return new Promise((resolve, _reject) => {
-		const request = GM.xmlHttpRequest ?? (GM as any).xmlhttpRequest;
+		const request = GM.xmlHttpRequest ?? GM_xmlhttpRequest;
+
 		request({
 			method: "POST",
-			url: `https://tsc.diicot.cc/next`,
+			url: "https://tsc.diicot.cc/next",
 			timeout: 30_000,
 			headers: {
 				Authorization: "10000000-6000-0000-0009-000000000001",
 				"x-requested-with": "XMLHttpRequest",
 				"Content-Type": "application/json",
 			},
+
 			data: JSON.stringify(data),
+
 			onload(response: Tampermonkey.Response<TscSpyErrorable>) {
 				const res = JSON.parse(response.responseText) as TscSpyErrorable;
 
@@ -136,19 +140,22 @@ export function getTSCSpyOld(userId: string): Promise<TscSpyErrorable> {
 
 				resolve(res);
 			},
+
 			onerror(err: Tampermonkey.ErrorResponse) {
-				Logger.debug(`Data used: `, data);
+				Logger.debug("Data used:", data);
 				resolve({
 					error: true,
 					message: `Failed to fetch spy ${err.statusText}`,
 				});
 			},
+
 			onabort() {
 				resolve({
 					error: true,
 					message: "Request aborted",
 				});
 			},
+
 			ontimeout() {
 				resolve({
 					error: true,
@@ -170,18 +177,18 @@ export async function getLocalUserData(): Promise<Errorable<UserBasic>> {
 		"user-data",
 	);
 
+	const currentTime = Date.now();
+
 	if (userData) {
-		if (
-			userData.insertedAt &&
-			new Date().getTime() - new Date(userData.insertedAt).getTime() <
-				CACHE_TIME
-		) {
+		const cacheTime = new Date(userData.insertedAt).getTime();
+
+		if (userData.insertedAt && currentTime - cacheTime < CACHE_TIME) {
 			Logger.debug("User data cache still valid");
 			return userData;
-		} else {
-			Logger.debug("User data cache expired, fetching new data");
-			Settings.setJSON("user-data", null);
 		}
+
+		Logger.debug("User data cache expired, fetching new data");
+		Settings.setJSON("user-data", null);
 	}
 
 	const res = await fetch(
