@@ -15,7 +15,7 @@ export function formatSpy(spy: TscSpy): {
 	const { estimate, statInterval } = spy.spy;
 
 	let spyText = formatNumber(estimate.stats, 1);
-	let tooltipText = `Estimate: ${formatNumber(estimate.stats, 2)}`;
+	let tooltipText = `Estimate: ${formatNumber(estimate.stats, 2)} (${dateToRelative(new Date(estimate.lastUpdated))})`;
 
 	if (statInterval?.battleScore) {
 		spyText = `${formatNumber(BigInt(statInterval.min), 1)} - ${formatNumber(
@@ -26,7 +26,7 @@ export function formatSpy(spy: TscSpy): {
 		tooltipText += `<br>Interval: ${formatNumber(BigInt(statInterval.min), 2)} - ${formatNumber(
 			BigInt(statInterval.max),
 			2,
-		)}<br>Battle Score: ${formatNumber(statInterval.battleScore, 2)}`;
+		)} (${dateToRelative(new Date(statInterval.lastUpdated))})<br>Battle Score: ${formatNumber(statInterval.battleScore, 2)}`;
 	}
 
 	return { spyText, tooltipText };
