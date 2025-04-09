@@ -3,7 +3,7 @@ export function waitForElement<T extends HTMLElement>(
 	timeout?: number,
 ): Promise<T | null> {
 	return new Promise((resolve, _reject) => {
-		let timer: Timer;
+		let timer: ReturnType<typeof setTimeout>;
 		if (document.querySelectorAll(querySelector).length) {
 			return resolve(document.querySelector<T>(querySelector));
 		}
