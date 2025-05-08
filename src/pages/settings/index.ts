@@ -44,11 +44,11 @@ export const SettingsPanel = new Page({
 					"href",
 					`https://www.torn.com/profiles.php?XID=${await getLocalUserId()}`,
 				)
-				.text(`your own profile`);
+				.text("your own profile");
 			$(emptyBlock)
 				.append(
 					$("<div>")
-						.html(`Please enter your TSC API key on `)
+						.html("Please enter your TSC API key on ")
 						.append(anchor)
 						.append("."),
 				)

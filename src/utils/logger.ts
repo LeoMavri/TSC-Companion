@@ -4,7 +4,9 @@ import Settings from "./local-storage.js";
 const pdaKey = "###PDA-APIKEY###";
 const isPda = pdaKey.includes("PDA-APIKEY") === false;
 
+// biome-ignore lint/complexity/noStaticOnlyClass: cba to refactor this
 export default class Logger {
+	// biome-ignore lint/suspicious/noExplicitAny: it's any
 	public static info(message: string, ...obj: any): void {
 		let colorFirst = "%c";
 		let colorEnd = `color: ${Constants.Colours.Info}`;
@@ -18,6 +20,7 @@ export default class Logger {
 		console.info(`${colorFirst}[TSC Companion] ${message}`, colorEnd, ...obj);
 	}
 
+	// biome-ignore lint/suspicious/noExplicitAny: it's any
 	public static warn(message: string, ...obj: any): void {
 		let colorFirst = "%c";
 		let colorEnd = `color: ${Constants.Colours.Warn}`;
@@ -31,6 +34,7 @@ export default class Logger {
 		console.log(`${colorFirst}[TSC Companion] ${message}`, colorEnd, ...obj);
 	}
 
+	// biome-ignore lint/suspicious/noExplicitAny: it's any
 	public static error(message: string, ...obj: any): void {
 		let colorFirst = "%c";
 		let colorEnd = `color: ${Constants.Colours.Error}`;
@@ -43,6 +47,7 @@ export default class Logger {
 		console.error(`${colorFirst}[TSC Companion] ${message}`, colorEnd, ...obj);
 	}
 
+	// biome-ignore lint/suspicious/noExplicitAny: it's any
 	public static debug(message: string, ...obj: any): void {
 		if (!Settings.getToggle("debug-logs")) return;
 
