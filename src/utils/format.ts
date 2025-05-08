@@ -54,8 +54,14 @@ export function formatSpyLong(spy: TscSpy): {
 }
 
 export function dateToRelative(date: Date): string {
-	const diff = new Date().getTime() - date.getTime();
+	const now = new Date();
+	const diff = now.getTime() - date.getTime();
+
+	if (diff < 0) return "in the future";
+
 	const minutes = Math.floor(diff / (1000 * 60));
+	if (minutes < 1) return "just now";
+
 	const hours = Math.floor(minutes / 60);
 	const days = Math.floor(hours / 24);
 	const months = Math.floor(days / 30);
@@ -63,17 +69,39 @@ export function dateToRelative(date: Date): string {
 
 	if (years > 0) {
 		const remainingMonths = months % 12;
-		return `${years} year${years > 1 ? "s" : ""}, ${remainingMonths} month${remainingMonths > 1 ? "s" : ""}`;
-	} else if (months > 0) {
-		const remainingDays = days % 30;
-		return `${months} month${months > 1 ? "s" : ""}, ${remainingDays} day${remainingDays > 1 ? "s" : ""}`;
-	} else if (days > 0) {
-		const remainingHours = hours % 24;
-		return `${days} day${days > 1 ? "s" : ""}, ${remainingHours} hour${remainingHours > 1 ? "s" : ""}`;
-	} else if (hours > 0) {
-		const remainingMinutes = minutes % 60;
-		return `${hours} hour${hours > 1 ? "s" : ""}, ${remainingMinutes} minute${remainingMinutes > 1 ? "s" : ""}`;
-	} else {
-		return `${minutes} minute${minutes > 1 ? "s" : ""}`;
+		let result = `${years} year${years !== 1 ? "s" : ""}`;
+		if (remainingMonths > 0) {
+			result += `, ${remainingMonths} month${remainingMonths !== 1 ? "s" : ""}`;
+		}
+		return result;
 	}
+
+	if (months > 0) {
+		const remainingDays = days % 30;
+		let result = `${months} month${months !== 1 ? "s" : ""}`;
+		if (remainingDays > 0) {
+			result += `, ${remainingDays} day${remainingDays !== 1 ? "s" : ""}`;
+		}
+		return result;
+	}
+
+	if (days > 0) {
+		const remainingHours = hours % 24;
+		let result = `${days} day${days !== 1 ? "s" : ""}`;
+		if (remainingHours > 0) {
+			result += `, ${remainingHours} hour${remainingHours !== 1 ? "s" : ""}`;
+		}
+		return result;
+	}
+
+	if (hours > 0) {
+		const remainingMinutes = minutes % 60;
+		let result = `${hours} hour${hours !== 1 ? "s" : ""}`;
+		if (remainingMinutes > 0) {
+			result += `, ${remainingMinutes} minute${remainingMinutes !== 1 ? "s" : ""}`;
+		}
+		return result;
+	}
+
+	return `${minutes} minute${minutes !== 1 ? "s" : ""}`;
 }
