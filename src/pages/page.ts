@@ -6,6 +6,7 @@ export type FeatureNames =
 	| "Faction - War"
 	| "Faction - Chain"
 	| "Faction - TT War"
+	| "Faction - Banking Fix"
 	| "Company Page"
 	| "Abroad Page"
 	| "Points Market";

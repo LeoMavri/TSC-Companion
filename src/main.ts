@@ -1,10 +1,16 @@
 import "./style.css";
+import xhook from "xhook";
 import * as Features from "./pages/index.js";
 import { SettingsPanel } from "./pages/settings/index.js";
 import Settings from "./utils/local-storage.js";
 import Logger from "./utils/logger.js";
 
 async function main(): Promise<void> {
+	// TODO: This is horrible. I hate xhook :(
+	if (window.location.href.includes("tab=controls")) {
+		xhook.disable();
+	}
+
 	if ((await SettingsPanel.shouldRun()) === true) {
 		Logger.info("Settings panel initialized");
 		await SettingsPanel.start();
