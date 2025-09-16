@@ -23,3 +23,8 @@ table.tsc-stat-table th {
 	padding: 5px;
 	border: 1px solid var(--tsc-border-color);
 }
+
+table.tsc-stat-table th {
+  background-color: var(--tsc-bg-color);
+  color: var(--tsc-text-color);
+}
